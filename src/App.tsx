@@ -1,26 +1,26 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import LevelsPage from './pages/LevelsPage';
+
+// You can define a theme for your admin panel
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#1976d2',
+        },
+    },
+});
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            {/* Later, you will add routing here to switch between pages */}
+            <main>
+                <LevelsPage />
+            </main>
+        </ThemeProvider>
+    );
 }
 
 export default App;

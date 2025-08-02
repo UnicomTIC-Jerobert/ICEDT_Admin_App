@@ -1,46 +1,41 @@
 import { Level } from '../types/level';
 
-const API_BASE_URL = '/api/levels'; // The proxy will handle the full URL
+const API_BASE_URL = '/api/levels';
 
-export const getLevels = async (): Promise<Level[]> => {
+export type LevelCreateDto = Omit<Level, 'levelId'>;
+
+// GET all levels
+export const getAll = async (): Promise<Level[]> => {
     const response = await fetch(API_BASE_URL);
-    if (!response.ok) {
-        throw new Error('Failed to fetch levels');
-    }
+    if (!response.ok) throw new Error('Failed to fetch levels');
     return response.json();
 };
 
-export const createLevel = async (level: Omit<Level, 'levelId'>): Promise<Level> => {
+// POST a new level
+export const create = async (newItem: LevelCreateDto): Promise<Level> => {
     const response = await fetch(API_BASE_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(level)
+        body: JSON.stringify(newItem)
     });
-
-    if (!response.ok) {
-        throw new Error('Failed to create level');
-    }
+    if (!response.ok) throw new Error('Failed to create level');
     return response.json();
 };
 
-export const updateLevel = async (levelId: number, level: Omit<Level, 'levelId'>): Promise<void> => {
-    const response = await fetch(`${API_BASE_URL}/${levelId}`, {
+// PUT (update) an existing level
+export const update = async (id: number | string, itemToUpdate: Partial<LevelCreateDto>): Promise<void> => {
+    const response = await fetch(`${API_BASE_URL}/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(level)
+        body: JSON.stringify(itemToUpdate)
     });
-
-    if (!response.ok) {
-        throw new Error('Failed to update level');
-    }
+    if (!response.ok) throw new Error('Failed to update level');
 };
 
-export const deleteLevel = async (levelId: number): Promise<void> => {
-    const response = await fetch(`${API_BASE_URL}/${levelId}`, {
+// DELETE a level
+export const deleteItem = async (id: number | string): Promise<void> => {
+    const response = await fetch(`${API_BASE_URL}/${id}`, {
         method: 'DELETE'
     });
-
-    if (!response.ok) {
-        throw new Error('Failed to delete level');
-    }
+    if (!response.ok) throw new Error('Failed to delete level');
 };

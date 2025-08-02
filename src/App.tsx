@@ -1,8 +1,15 @@
 import React from 'react';
-import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
-import LevelsPage from './pages/LevelsPage';
+import { BrowserRouter as Router, Routes, Route, Link as RouterLink } from 'react-router-dom';
+import { CssBaseline, ThemeProvider, createTheme, AppBar, Toolbar, Typography, Container, Box, Button } from '@mui/material';
 
-// You can define a theme for your admin panel
+// Import your page components
+import LevelsPage from './pages/LevelsPage';
+import MainActivityPage from './pages/MainActivityPage';
+import ActivityTypesPage from './pages/ActivityTypesPage';
+import LessonsPage from './pages/LessonsPage';
+import ActivitiesListPage from './pages/ActivitiesListPage';
+import ActivityEditPage from './pages/ActivityEditPage';
+
 const theme = createTheme({
     palette: {
         primary: {
@@ -15,10 +22,33 @@ function App() {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            {/* Later, you will add routing here to switch between pages */}
-            <main>
-                <LevelsPage />
-            </main>
+            <Router>
+                {/* Simple Navigation Header */}
+                <AppBar position="static">
+                    <Toolbar>
+                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                            Tamil App Admin
+                        </Typography>
+                        <Button component={RouterLink} to="/levels" color="inherit">Levels</Button>
+                        <Button component={RouterLink} to="/main-activities" color="inherit">Main Activities</Button>
+                        <Button component={RouterLink} to="/activity-types" color="inherit">Activity Types</Button> {/* <-- ADD NEW LINK */}
+                    </Toolbar>
+                </AppBar>
+
+                {/* Main Content Area */}
+                <Container component="main" sx={{ mt: 4 }}>
+                    <Routes>
+                        {/* Define the route for each page */}
+                        <Route path="/" element={<Typography variant="h5">Welcome to the Admin Panel!</Typography>} />
+                        <Route path="/levels" element={<LevelsPage />} />
+                        <Route path="/lessons" element={<LessonsPage />} />
+                        <Route path="/main-activities" element={<MainActivityPage />} />
+                        <Route path="/activity-types" element={<ActivityTypesPage />} />
+                        <Route path="/activities" element={<ActivitiesListPage />} />
+                        <Route path="/activity-edit" element={<ActivityEditPage />} />
+                    </Routes>
+                </Container>
+            </Router>
         </ThemeProvider>
     );
 }

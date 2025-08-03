@@ -48,3 +48,11 @@ export const deleteItem = async (id: number | string): Promise<void> => {
         throw new Error('Failed to delete lesson');
     }
 };
+
+export const getLessonById = async (lessonId: number | string): Promise<Lesson> => {
+    const response = await fetch(`${API_BASE_URL}/lessons/${lessonId}`);
+    if (!response.ok) {
+        throw new Error('Failed to fetch lesson details');
+    }
+    return response.json();
+};

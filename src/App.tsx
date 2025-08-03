@@ -8,7 +8,7 @@ import MainActivityPage from './pages/MainActivityPage';
 import ActivityTypesPage from './pages/ActivityTypesPage';
 import LessonsPage from './pages/LessonsPage';
 import ActivitiesListPage from './pages/ActivitiesListPage';
-import ActivityEditPage from './pages/ActivityEditPage';
+import ActivityEditorPage from './pages/ActivityEditorPage';
 
 const theme = createTheme({
     palette: {
@@ -45,7 +45,7 @@ function App() {
                         <Route path="/main-activities" element={<MainActivityPage />} />
                         <Route path="/activity-types" element={<ActivityTypesPage />} />
                         <Route path="/activities" element={<ActivitiesListPage />} />
-                        <Route path="/activity-edit" element={<ActivityEditPage />} />
+                        <Route path="/activity-edit" element={<ActivityEditorPage />} />
                     </Routes>
                 </Container>
             </Router>

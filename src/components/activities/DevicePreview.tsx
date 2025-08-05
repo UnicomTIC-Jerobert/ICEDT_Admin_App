@@ -4,6 +4,11 @@ import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
 import TabletMacIcon from '@mui/icons-material/TabletMac';
 import { Activity } from '../../types/activity';
 
+import MCQActivity from './activity-types/MCQActivity';
+import { MCQContent } from '../../types/activityContentTypes';
+import MatchingActivity from './activity-types/MatchingActivity';
+import { MatchingContent } from '../../types/activityContentTypes';
+
 // --- Placeholder Activity Components (We will build these out properly next) ---
 const PlaceholderActivity = ({ type, content }: { type: string, content: any }) => (
     <Box p={2} sx={{ textAlign: 'center' }}>
@@ -13,8 +18,8 @@ const PlaceholderActivity = ({ type, content }: { type: string, content: any }) 
         </Typography>
     </Box>
 );
-const MatchingActivity = ({ content }: { content: any }) => <PlaceholderActivity type="Matching" content={content} />;
-const MCQActivity = ({ content }: { content: any }) => <PlaceholderActivity type="MCQ" content={content} />;
+const WordScrambleActivity = ({ content }: { content: any }) => <PlaceholderActivity type="Matching" content={content} />;
+
 // --- End of Placeholders ---
 
 interface DevicePreviewProps {
@@ -29,12 +34,12 @@ const DevicePreview: React.FC<DevicePreviewProps> = ({ activityData }) => {
             setDevice(newDevice);
         }
     };
-    
+
     const renderActivityComponent = () => {
         if (!activityData.activityTypeId || !activityData.contentJson) {
             return <Typography p={2} color="text.secondary">Please select an activity type and provide JSON content.</Typography>;
         }
-        
+
         let content;
         try {
             content = JSON.parse(activityData.contentJson);
@@ -44,9 +49,10 @@ const DevicePreview: React.FC<DevicePreviewProps> = ({ activityData }) => {
 
         switch (activityData.activityTypeId) {
             case 4: // Matching (Assuming ID from your DB)
-                 return <MatchingActivity content={content} />;
-            case 13: // MultipleChoiceQuestion
-                 return <MCQActivity content={content} />;
+                return <MatchingActivity content={content as MatchingContent} />;
+            case 13: // MultipleChoiceQuestion (ID from your DB seeder)
+                // Type assertion tells TypeScript to trust us that the content matches the MCQContent interface
+                return <MCQActivity content={content as MCQContent} />;
             // Add cases for all 18 activity types here
             default:
                 return <Typography p={2} color="text.secondary">Preview for this activity type is not yet implemented.</Typography>;
@@ -61,7 +67,7 @@ const DevicePreview: React.FC<DevicePreviewProps> = ({ activityData }) => {
     return (
         <Box>
             <Box display="flex" justifyContent="center" mb={2}>
-                 <ToggleButtonGroup
+                <ToggleButtonGroup
                     value={device}
                     exclusive
                     onChange={handleDeviceChange}
@@ -75,7 +81,7 @@ const DevicePreview: React.FC<DevicePreviewProps> = ({ activityData }) => {
                     </ToggleButton>
                 </ToggleButtonGroup>
             </Box>
-            
+
             <Box display="flex" justifyContent="center">
                 <Paper
                     elevation={6}
@@ -91,10 +97,10 @@ const DevicePreview: React.FC<DevicePreviewProps> = ({ activityData }) => {
                         backgroundColor: '#fff'
                     }}
                 >
-                    <Box 
-                        sx={{ 
-                            position: 'absolute', top: 0, left: 0, right: 0, 
-                            height: '25px', background: 'black', 
+                    <Box
+                        sx={{
+                            position: 'absolute', top: 0, left: 0, right: 0,
+                            height: '25px', background: 'black',
                             borderTopLeftRadius: '25px', borderTopRightRadius: '25px'
                         }}
                     >
@@ -102,7 +108,7 @@ const DevicePreview: React.FC<DevicePreviewProps> = ({ activityData }) => {
                             width: '40%', height: '5px', background: '#333',
                             borderRadius: '5px', position: 'absolute',
                             top: '10px', left: '50%', transform: 'translateX(-50%)'
-                        }}/>
+                        }} />
                     </Box>
                     <Box sx={{ paddingTop: '25px', height: '100%', overflowY: 'auto' }}>
                         {renderActivityComponent()}

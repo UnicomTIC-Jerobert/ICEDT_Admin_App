@@ -26,3 +26,19 @@ export interface MatchingContent {
     // Optional title for the activity
     title?: string;
 }
+
+// --- NEW: Type for First Letter Word Match Activity ---
+export interface FirstLetterMatchContent {
+    title: string;
+    words: string[];
+}
+
+// --- NEW: Type for Fill-in-the-Equation Activity ---
+// --- REFINED: Type for Fill-in-the-Equation Activity ---
+// This is much simpler and less prone to data entry errors.
+export interface SimpleEquationContent {
+    leftOperand: string;  // e.g., "க்"
+    rightOperand: string; // e.g., "ஆ"
+    correctAnswer: string; // e.g., "கா"
+    options: string[];     // e.g., ["கா", "கி", "க", "கூ"]
+}

@@ -6,21 +6,16 @@ import { Activity } from '../../types/activity';
 
 import MCQActivity from './activity-types/MCQActivity';
 import { MCQContent } from '../../types/activityContentTypes';
+
 import MatchingActivity from './activity-types/MatchingActivity';
 import { MatchingContent } from '../../types/activityContentTypes';
 
-// --- Placeholder Activity Components (We will build these out properly next) ---
-const PlaceholderActivity = ({ type, content }: { type: string, content: any }) => (
-    <Box p={2} sx={{ textAlign: 'center' }}>
-        <Typography variant="h6">{type} Component</Typography>
-        <Typography variant="body2" sx={{ color: 'text.secondary', wordBreak: 'break-all' }}>
-            Content: {JSON.stringify(content)}
-        </Typography>
-    </Box>
-);
-const WordScrambleActivity = ({ content }: { content: any }) => <PlaceholderActivity type="Matching" content={content} />;
+import EquationFillInTheBlank from './activity-types/EquationFillInTheBlank';
+// Import the REFINED type
+import { SimpleEquationContent } from '../../types/activityContentTypes';
 
-// --- End of Placeholders ---
+import FirstLetterMatch from './activity-types/FirstLetterMatch';
+import { FirstLetterMatchContent } from '../../types/activityContentTypes';
 
 interface DevicePreviewProps {
     activityData: Partial<Activity>;
@@ -49,7 +44,15 @@ const DevicePreview: React.FC<DevicePreviewProps> = ({ activityData }) => {
 
         switch (activityData.activityTypeId) {
             case 4: // Matching (Assuming ID from your DB)
-                return <MatchingActivity content={content as MatchingContent} />;
+                if ('words' in content) {
+                     return <FirstLetterMatch content={content as FirstLetterMatchContent} />;
+                 }
+                 if ('columnA' in content) {
+                     return <MatchingActivity content={content as MatchingContent} />;
+                 }
+                 return <Typography p={2} color="error">Invalid JSON structure for Matching activity.</Typography>;
+            case 7: // FillInTheBlanks
+                return <EquationFillInTheBlank content={content as SimpleEquationContent} />;
             case 13: // MultipleChoiceQuestion (ID from your DB seeder)
                 // Type assertion tells TypeScript to trust us that the content matches the MCQContent interface
                 return <MCQActivity content={content as MCQContent} />;

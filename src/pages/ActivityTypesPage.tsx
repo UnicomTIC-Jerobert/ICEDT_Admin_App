@@ -8,7 +8,7 @@ const ActivityTypesPage: React.FC = () => {
     
     // 1. Define the columns for the table.
     const columns = [
-        { field: 'name' as keyof ActivityType, headerName: 'Activity Type Name', type: 'string' as const }
+        { field: 'activityName' as keyof ActivityType, headerName: 'Activity Type Name', type: 'string' as const }
     ];
 
     // 2. Define the API service object.
@@ -25,7 +25,7 @@ const ActivityTypesPage: React.FC = () => {
             entityName="Activity Type"
             apiService={apiService}
             columns={columns}
-            idField="id" // Tell the component the unique ID property is 'id'
+            idField="activityTypeId" // Tell the component the unique ID property is 'id'
         />
     );
 };

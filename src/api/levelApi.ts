@@ -39,3 +39,9 @@ export const deleteItem = async (id: number | string): Promise<void> => {
     });
     if (!response.ok) throw new Error('Failed to delete level');
 };
+
+export const getLevelById = async (id: number | string): Promise<Level> => {
+    const response = await fetch(`${API_BASE_URL}/${id}`);
+    if (!response.ok) throw new Error('Failed to fetch levels');
+    return response.json();
+}

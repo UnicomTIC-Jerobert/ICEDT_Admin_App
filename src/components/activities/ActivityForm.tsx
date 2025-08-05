@@ -74,7 +74,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ activityData, onDataChange,
                     <FormControl fullWidth>
                         <InputLabel>Activity Type</InputLabel>
                         <Select name="activityTypeId" value={activityData.activityTypeId || ''} onChange={handleChange} label="Activity Type">
-                            {activityTypes.map(at => <MenuItem key={at.id} value={at.id}>{at.name}</MenuItem>)}
+                            {activityTypes.map(at => <MenuItem key={at.activityTypeId} value={at.activityTypeId}>{at.activityName}</MenuItem>)}
                         </Select>
                     </FormControl>
                 </Grid>

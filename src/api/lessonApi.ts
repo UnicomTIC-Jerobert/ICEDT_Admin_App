@@ -6,13 +6,15 @@ export type LessonGetDto = Omit<Lesson, 'level'>; // DTO for getting lessons
 export type LessonCreateDto = Omit<Lesson, 'lessonId' | 'level'>; // DTO for creating/updating
 
 // GET lessons for a specific level
-export const getLessonsByLevelId = async (levelId: number | string): Promise<LessonGetDto[]> => {
-    const response = await fetch(`${API_BASE_URL}/levels/${levelId}/lessons`);
+export const getLessonsByLevelId = async (levelId: number | string): Promise<Lesson[]> => {
+    // This endpoint should return a direct array: [ { lessonId: 1, ... }, { lessonId: 2, ... } ]
+    const response = await fetch(`/api/levels/${levelId}/lessons`);
     if (!response.ok) {
-        throw new Error('Failed to fetch lessons for this level');
+        throw new Error('Failed to fetch lessons');
     }
     return response.json();
 };
+
 
 // POST a new lesson
 export const create = async (newItem: LessonCreateDto): Promise<Lesson> => {

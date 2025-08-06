@@ -28,6 +28,7 @@ interface DependentInlineCrudTableProps<T, TCreateDto> {
     columns: ColumnDef<T>[];
     idField: keyof T;
     renderCustomActions?: (item: T) => React.ReactNode;
+    initialData?: T[]; // *** NEW: Add optional initialData prop ***
 }
 
 // --- The Generic Dependent Component ---
@@ -39,9 +40,10 @@ const DependentInlineCrudTable = <T extends Record<string, any>, TCreateDto exte
     apiService,
     columns,
     idField,
-    renderCustomActions
+    renderCustomActions,
+    initialData
 }: DependentInlineCrudTableProps<T, TCreateDto>) => {
-    const [items, setItems] = useState<T[]>([]);
+    const [items, setItems] = useState<T[]>(initialData || []); // *** Use initialData if provided ***
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [editRowId, setEditRowId] = useState<number | string | null>(null);
     const [editedRowData, setEditedRowData] = useState<Partial<TCreateDto> | null>(null);
@@ -49,6 +51,11 @@ const DependentInlineCrudTable = <T extends Record<string, any>, TCreateDto exte
     const navigate = useNavigate();
 
     const fetchData = useCallback(async () => {
+        // If we were given initial data, we don't need to fetch on the first load.
+        if (initialData && items.length > 0) {
+            setIsLoading(false);
+            return;
+        }
         setIsLoading(true);
         try {
             const data = await apiService.getAllByParentId(parentId);
@@ -58,7 +65,7 @@ const DependentInlineCrudTable = <T extends Record<string, any>, TCreateDto exte
         } finally {
             setIsLoading(false);
         }
-    }, [apiService, parentId]);
+    }, [apiService, parentId, initialData, items.length]); // Add dependencies
 
     useEffect(() => {
         fetchData();

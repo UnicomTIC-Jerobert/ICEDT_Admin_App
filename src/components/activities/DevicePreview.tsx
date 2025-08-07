@@ -3,25 +3,16 @@ import { Box, Paper, Typography, ToggleButtonGroup, ToggleButton } from '@mui/ma
 import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
 import TabletMacIcon from '@mui/icons-material/TabletMac';
 import { Activity } from '../../types/activity';
-
-import MCQActivity from './activity-types/MCQActivity';
-import { MCQContent } from '../../types/activityContentTypes';
-
-import MatchingActivity from './activity-types/MatchingActivity';
-import { MatchingContent } from '../../types/activityContentTypes';
-
-import EquationFillInTheBlank from './activity-types/EquationFillInTheBlank';
-// Import the REFINED type
-import { SimpleEquationContent } from '../../types/activityContentTypes';
-
-import FirstLetterMatch from './activity-types/FirstLetterMatch';
-import { FirstLetterMatchContent } from '../../types/activityContentTypes';
+import ActivityRenderer from './previews/ActivityRenderer';
 
 interface DevicePreviewProps {
     activityData: Partial<Activity>;
+    // This prop will receive a single question object when the admin
+    // clicks a "Preview" button in the QuestionListEditor.
+    overridePreviewData?: any; 
 }
 
-const DevicePreview: React.FC<DevicePreviewProps> = ({ activityData }) => {
+const DevicePreview: React.FC<DevicePreviewProps> = ({ activityData, overridePreviewData }) => {
     const [device, setDevice] = useState<'phone' | 'tablet'>('phone');
 
     const handleDeviceChange = (event: React.MouseEvent<HTMLElement>, newDevice: 'phone' | 'tablet' | null) => {
@@ -29,92 +20,97 @@ const DevicePreview: React.FC<DevicePreviewProps> = ({ activityData }) => {
             setDevice(newDevice);
         }
     };
-
-    const renderActivityComponent = () => {
-        if (!activityData.activityTypeId || !activityData.contentJson) {
-            return <Typography p={2} color="text.secondary">Please select an activity type and provide JSON content.</Typography>;
+    
+    // Parse the full JSON to get the overall activity title for the header
+    let contentTitle = 'Activity Preview';
+    try {
+        if (activityData.contentJson) {
+            const parsedContent = JSON.parse(activityData.contentJson);
+            if (parsedContent.activityTitle) {
+                contentTitle = parsedContent.activityTitle;
+            }
         }
+    } catch {
+        // Ignore parsing errors for the title, the renderer will handle the full error
+    }
 
-        let content;
-        try {
-            content = JSON.parse(activityData.contentJson);
-        } catch (e) {
-            return <Typography p={2} color="error">Invalid JSON format. Preview is paused.</Typography>;
-        }
-
-        switch (activityData.activityTypeId) {
-            case 4: // Matching (Assuming ID from your DB)
-                if ('words' in content) {
-                     return <FirstLetterMatch content={content as FirstLetterMatchContent} />;
-                 }
-                 if ('columnA' in content) {
-                     return <MatchingActivity content={content as MatchingContent} />;
-                 }
-                 return <Typography p={2} color="error">Invalid JSON structure for Matching activity.</Typography>;
-            case 7: // FillInTheBlanks
-                return <EquationFillInTheBlank content={content as SimpleEquationContent} />;
-            case 13: // MultipleChoiceQuestion (ID from your DB seeder)
-                // Type assertion tells TypeScript to trust us that the content matches the MCQContent interface
-                return <MCQActivity content={content as MCQContent} />;
-            // Add cases for all 18 activity types here
-            default:
-                return <Typography p={2} color="text.secondary">Preview for this activity type is not yet implemented.</Typography>;
-        }
-    };
-
+    // Define the dimensions for our simulated devices
+    // These are scaled down to fit nicely on a typical monitor.
     const deviceStyles = {
         phone: { width: '375px', height: '667px' },
-        tablet: { width: '768px', height: '1024px' }
+        tablet: { width: '540px', height: '720px' }
     };
 
     return (
-        <Box>
+        <Box sx={{ position: 'sticky', top: '20px' }}> {/* Makes the preview stay in view on scroll */}
+            <Typography variant="h6" align="center" gutterBottom>Live Preview</Typography>
             <Box display="flex" justifyContent="center" mb={2}>
-                <ToggleButtonGroup
+                 <ToggleButtonGroup
                     value={device}
                     exclusive
                     onChange={handleDeviceChange}
-                    aria-label="device orientation"
+                    aria-label="device preview size"
                 >
                     <ToggleButton value="phone" aria-label="phone">
                         <PhoneIphoneIcon />
+                        <Typography variant="caption" sx={{ ml: 1, display: { xs: 'none', sm: 'block' } }}>Phone</Typography>
                     </ToggleButton>
                     <ToggleButton value="tablet" aria-label="tablet">
                         <TabletMacIcon />
+                        <Typography variant="caption" sx={{ ml: 1, display: { xs: 'none', sm: 'block' } }}>Tablet</Typography>
                     </ToggleButton>
                 </ToggleButtonGroup>
             </Box>
-
+            
             <Box display="flex" justifyContent="center">
                 <Paper
-                    elevation={6}
+                    elevation={8}
                     sx={{
                         width: deviceStyles[device].width,
                         height: deviceStyles[device].height,
-                        borderRadius: '36px',
-                        border: '10px solid black',
-                        boxSizing: 'border-box',
-                        overflow: 'hidden',
-                        transition: 'width 0.3s, height 0.3s',
-                        position: 'relative',
-                        backgroundColor: '#fff'
+                        borderRadius: '40px',
+                        border: '12px solid #333',
+                        bgcolor: '#111',
+                        p: '2px',
+                        boxSizing: 'content-box',
+                        transition: 'width 0.3s ease, height 0.3s ease',
+                        position: 'relative'
                     }}
                 >
-                    <Box
-                        sx={{
-                            position: 'absolute', top: 0, left: 0, right: 0,
-                            height: '25px', background: 'black',
-                            borderTopLeftRadius: '25px', borderTopRightRadius: '25px'
-                        }}
-                    >
-                        <Box sx={{
-                            width: '40%', height: '5px', background: '#333',
-                            borderRadius: '5px', position: 'absolute',
-                            top: '10px', left: '50%', transform: 'translateX(-50%)'
-                        }} />
-                    </Box>
-                    <Box sx={{ paddingTop: '25px', height: '100%', overflowY: 'auto' }}>
-                        {renderActivityComponent()}
+                    {/* The content area of the simulated device */}
+                    <Box sx={{ 
+                        width: '100%', 
+                        height: '100%', 
+                        bgcolor: 'white', 
+                        borderRadius: '28px', 
+                        overflow: 'hidden', 
+                        position: 'relative',
+                        display: 'flex',
+                        flexDirection: 'column'
+                    }}>
+                         {/* The "notch" at the top of the phone */}
+                         <Box sx={{
+                            width: '40%', height: '20px', background: '#111',
+                            borderBottomLeftRadius: '10px', borderBottomRightRadius: '10px',
+                            position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', zIndex: 2
+                         }}/>
+                         
+                         {/* Header inside the device */}
+                         <Box sx={{ p: 2, borderBottom: '1px solid #eee', textAlign: 'center', flexShrink: 0, mt: '20px' }}>
+                             <Typography variant="subtitle2" fontWeight="bold" noWrap>
+                                 {contentTitle || activityData.title}
+                             </Typography>
+                         </Box>
+                         
+                         {/* Main content area where the activity is rendered */}
+                         <Box sx={{ flexGrow: 1, overflowY: 'auto' }}>
+                            <ActivityRenderer
+                                activityTypeId={activityData.activityTypeId || 0}
+                                contentJson={activityData.contentJson || '{}'}
+                                // Pass the specific question data if it exists
+                                overridePreviewData={overridePreviewData}
+                            />
+                         </Box>
                     </Box>
                 </Paper>
             </Box>

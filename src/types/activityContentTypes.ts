@@ -42,3 +42,21 @@ export interface SimpleEquationContent {
     correctAnswer: string; // e.g., "கா"
     options: string[];     // e.g., ["கா", "கி", "க", "கூ"]
 }
+
+// New MCQ
+export interface MCQOption {
+    id: string;
+    text: string;
+    isCorrect: boolean;
+}
+
+export interface MCQQuestion {
+    id: string;
+    prompt: string;
+    options: MCQOption[];
+}
+
+export interface MCQContent {
+    activityTitle: string;
+    questions: MCQQuestion[];
+}

@@ -1,16 +1,24 @@
 import React from 'react';
 import { Typography } from '@mui/material';
-// Import all your specific preview components here
-// import MCQPreview from './MCQPreview';
-// import MatchingPreview from './MatchingPreview';
 
-// --- Placeholder for now ---
-const Placeholder = ({ data }: { data: any }) => <pre><code>{JSON.stringify(data, null, 2)}</code></pre>;
+// Import your specific activity components
+import MCQActivity from '../activity-types/MCQActivity';
+import MatchingActivity from '../activity-types/MatchingActivity';
+import EquationFillInTheBlank from '../activity-types/EquationFillInTheBlank';
+import FirstLetterMatch from '../activity-types/FirstLetterMatch';
+
+// Import the type definitions
+import {
+    MCQContent,
+    MatchingContent,
+    SimpleEquationContent,
+    FirstLetterMatchContent
+} from '../../../types/activityContentTypes';
 
 interface ActivityRendererProps {
     activityTypeId: number;
-    contentJson: string;
-    currentQuestionIndex?: number; // For paginated activities
+    contentJson: string; // The JSON for a SINGLE exercise
+    currentQuestionIndex?: number; // Optional index for paginated exercises
 }
 
 const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, contentJson, currentQuestionIndex = 0 }) => {
@@ -18,21 +26,35 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
     try {
         content = JSON.parse(contentJson);
     } catch {
-        return <Typography color="error">Invalid JSON</Typography>;
+        return <Typography color="error">Invalid JSON content for this exercise.</Typography>;
     }
     
-    // Determine if we are rendering the whole object or a specific question
-    const dataToRender = Array.isArray(content.questions) ? content.questions[currentQuestionIndex] : content;
+    // --- THIS IS THE KEY LOGIC ---
+    // Check if the content is paginated by looking for a 'questions' array.
+    const isPaginated = Array.isArray(content.questions);
 
+    // If it's paginated, we pass only the current question's data.
+    // If not, we pass the entire content object.
+    const dataToRender = isPaginated ? (content.questions[currentQuestionIndex] || {}) : content;
+    
     switch (activityTypeId) {
-        // case 13: // MCQ
-        //     return <MCQPreview content={dataToRender} />;
+        case 4: // Matching Type
+             // For this type, we always pass the full content object.
+            if ('words' in content) return <FirstLetterMatch content={content as FirstLetterMatchContent} />;
+            if ('columnA' in content) return <MatchingActivity content={content as MatchingContent} />;
+            return <Typography p={2} color="error">Invalid JSON for Matching/FirstLetter activity.</Typography>;
         
-        // case 4: // Matching (not paginated, so it gets the whole `content` object)
-        //     return <MatchingPreview content={content} />;
+        case 7: // FillInTheBlanks (Equation)
+            // This is paginated, so `dataToRender` will be a single question object.
+            return <EquationFillInTheBlank content={dataToRender as SimpleEquationContent} />;
+        
+        case 13: // MultipleChoiceQuestion
+            // This is paginated, so `dataToRender` will be a single question object.
+            // We pass the full `content` so the component can access the `activityTitle`
+            return <MCQActivity content={{ ...content, questions: [dataToRender] }} />;
             
         default:
-            return <Placeholder data={dataToRender} />;
+            return <Typography p={2} color="text.secondary">Preview for activity type ({activityTypeId}) not implemented.</Typography>;
     }
 };
 

@@ -17,6 +17,9 @@ import { SimpleEquationContent } from '../../types/activityContentTypes';
 import FirstLetterMatch from './activity-types/FirstLetterMatch';
 import { FirstLetterMatchContent } from '../../types/activityContentTypes';
 
+import WordBankCompletion from './activity-types/WordBankCompletion';
+import { WordBankCompletionContent } from '../../types/activityContentTypes';
+
 interface DevicePreviewProps {
     activityData: Partial<Activity>;
 }
@@ -52,7 +55,13 @@ const DevicePreview: React.FC<DevicePreviewProps> = ({ activityData }) => {
                  }
                  return <Typography p={2} color="error">Invalid JSON structure for Matching activity.</Typography>;
             case 7: // FillInTheBlanks
-                return <EquationFillInTheBlank content={content as SimpleEquationContent} />;
+                if ('sentences' in content && 'wordBank' in content) {
+                     return <WordBankCompletion content={content as WordBankCompletionContent} />;
+                 }
+                 if ('leftOperand' in content) {
+                     return <EquationFillInTheBlank content={content as SimpleEquationContent} />;
+                 }
+                 return <Typography p={2} color="error">Invalid JSON for FillInTheBlanks activity.</Typography>;
             case 13: // MultipleChoiceQuestion (ID from your DB seeder)
                 // Type assertion tells TypeScript to trust us that the content matches the MCQContent interface
                 return <MCQActivity content={content as MCQContent} />;

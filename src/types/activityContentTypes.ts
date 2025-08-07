@@ -42,3 +42,18 @@ export interface SimpleEquationContent {
     correctAnswer: string; // e.g., "கா"
     options: string[];     // e.g., ["கா", "கி", "க", "கூ"]
 }
+
+// --- NEW: Type for Word Bank Sentence Completion ---
+export interface SentenceWithBlank {
+    id: number; // A unique ID for this sentence
+    // The sentence parts before and after the blank
+    prefix: string; 
+    suffix: string;
+    correctAnswer: string;
+}
+
+export interface WordBankCompletionContent {
+    title: string;
+    sentences: SentenceWithBlank[];
+    wordBank: string[];
+}

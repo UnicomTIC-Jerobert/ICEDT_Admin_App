@@ -1,17 +1,20 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Box, Typography, CircularProgress, Paper, Grid, Button } from '@mui/material';
+import { Box, Typography, CircularProgress, Grid, Button, Container } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import { Activity } from '../types/activity';
 import * as activityApi from '../api/activityApi';
 
-import ActivityForm from '../components/activities/ActivityForm'; // Left Column
-import DevicePreview from '../components/activities/DevicePreview'; // Right Column
+import ActivityForm from '../components/activities/ActivityForm';
+import DevicePreview from '../components/activities/DevicePreview';
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
 }
+
+// A constant for the top offset to easily adjust if your app's header height changes
+const TOP_OFFSET = 100; // in pixels
 
 const ActivityEditorPage: React.FC = () => {
     const query = useQuery();
@@ -20,33 +23,49 @@ const ActivityEditorPage: React.FC = () => {
     const lessonId = query.get('lessonId');
     const isEditMode = !!activityId;
 
-    // The central state for the entire page
     const [activity, setActivity] = useState<Partial<Activity> | null>(null);
+    const [previewContent, setPreviewContent] = useState<Partial<Activity> | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    
+    // State to control which accordion is expanded. `false` means all are closed, a number means that index is open.
+    const [expandedExercise, setExpandedExercise] = useState<number | false>(0);
 
     const backUrl = `/activities?lessonId=${activity?.lessonId || lessonId}`;
 
     const loadData = useCallback(async () => {
         setIsLoading(true);
         try {
+            let loadedActivity: Partial<Activity>;
             if (isEditMode && activityId) {
-                const actData = await activityApi.getActivityById(activityId);
-                // Pretty-print JSON for the editor
-                try {
-                    actData.contentJson = JSON.stringify(JSON.parse(actData.contentJson), null, 2);
-                } catch { /* ignore if not valid json */ }
-                setActivity(actData);
+                loadedActivity = await activityApi.getActivityById(activityId);
             } else {
-                // Default state for a new activity
-                setActivity({
+                loadedActivity = {
                     title: '',
-                    sequenceOrder: 1, // Default to 1
+                    sequenceOrder: 1,
                     mainActivityId: 0,
                     activityTypeId: 0,
-                    contentJson: '{}',
+                    contentJson: '[{}]', 
                     lessonId: parseInt(lessonId || '0', 10)
-                });
+                };
             }
+            
+            let exercises: any[] = [];
+            try {
+                const parsedContent = JSON.parse(loadedActivity.contentJson || '[]');
+                exercises = Array.isArray(parsedContent) ? parsedContent : [parsedContent];
+                if (exercises.length === 0) exercises.push({});
+            } catch {
+                exercises = [{}];
+            }
+
+            loadedActivity.contentJson = JSON.stringify(exercises, null, 2);
+            setActivity(loadedActivity);
+
+            setPreviewContent({
+                ...loadedActivity,
+                contentJson: JSON.stringify(exercises[0], null, 2)
+            });
+
         } catch (error) {
             console.error("Failed to load data", error);
         } finally {
@@ -54,20 +73,26 @@ const ActivityEditorPage: React.FC = () => {
         }
     }, [activityId, isEditMode, lessonId]);
 
-    useEffect(() => {
-        loadData();
-    }, [loadData]);
+    useEffect(() => { loadData(); }, [loadData]);
 
     const handleFormChange = (updatedActivityData: Partial<Activity>) => {
         setActivity(updatedActivityData);
     };
 
-    const handleSave = async () => {
+    const handlePreviewExercise = (exerciseJsonString: string) => {
         if (!activity) return;
+        setPreviewContent({ ...activity, contentJson: exerciseJsonString });
+    };
 
+    const handleSave = async () => {
+        if (!activity || !activity.contentJson) return;
+        try { JSON.parse(activity.contentJson); } catch (error) {
+            alert("An exercise contains invalid JSON. Please fix it before saving.");
+            return;
+        }
         try {
             const payload = { ...activity };
-            // Ensure numbers are numbers
+            // Ensure types are correct
             payload.sequenceOrder = Number(payload.sequenceOrder);
             payload.mainActivityId = Number(payload.mainActivityId);
             payload.activityTypeId = Number(payload.activityTypeId);
@@ -86,12 +111,23 @@ const ActivityEditorPage: React.FC = () => {
         }
     };
 
+    // Handler passed to the form to control accordion expansion from the parent
+    const handleExpansionChange = (panelIndex: number) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+        setExpandedExercise(isExpanded ? panelIndex : false);
+    };
+    
+    // Handler to programmatically set the expanded accordion (e.g., when adding a new one)
+    const handleSetExpanded = (index: number) => {
+        setExpandedExercise(index);
+    };
+
+
     if (isLoading || !activity) {
         return <CircularProgress />;
     }
 
     return (
-        <Box p={3}>
+        <Container maxWidth="xl" sx={{ mt: 3 }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                 <Typography variant="h4" component="h1">
                     {isEditMode ? `Edit Activity #${activityId}` : `Add New Activity`}
@@ -99,26 +135,34 @@ const ActivityEditorPage: React.FC = () => {
                 <Button onClick={() => navigate(backUrl)} startIcon={<ArrowBackIcon />}>Back to List</Button>
             </Box>
 
-            <Paper elevation={3} sx={{ p: 3 }}>
-                <Grid container spacing={4}>
-                    {/* Left Column: The Form */}
-                    <Grid size={{ xs: 12, md: 6 }}>
-                        <ActivityForm
-                            activityData={activity}
-                            onDataChange={handleFormChange}
-                            onSave={handleSave}
-                        />
-                    </Grid>
-
-                    {/* Right Column: The Preview */}
-                    <Grid size={{ xs: 12, md: 6 }}>
-                        <DevicePreview
-                            activityData={activity}
-                        />
-                    </Grid>
+            <Grid container spacing={4}>
+                {/* Left Column: The SCROLLABLE Form */}
+                <Grid size={{ xs: 12, md: 7 }} sx={{
+                    height: `calc(100vh - ${TOP_OFFSET}px)`,
+                    overflowY: 'auto',
+                    pr: 2 // padding-right for scrollbar gap
+                }}>
+                    <ActivityForm
+                        activityData={activity}
+                        onDataChange={handleFormChange}
+                        onSave={handleSave}
+                        onPreviewExercise={handlePreviewExercise}
+                        expandedExercise={expandedExercise}
+                        onExpansionChange={handleExpansionChange}
+                        onSetExpanded={handleSetExpanded}
+                    />
                 </Grid>
-            </Paper>
-        </Box>
+
+                {/* Right Column: The STICKY Preview */}
+                <Grid size={{ xs: 12, md: 5 }} sx={{
+                    position: 'sticky',
+                    top: `24px`,
+                    height: `calc(100vh - ${TOP_OFFSET}px)`,
+                }}>
+                    {previewContent && <DevicePreview activityData={previewContent} />}
+                </Grid>
+            </Grid>
+        </Container>
     );
 };
 

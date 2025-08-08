@@ -18,7 +18,7 @@ export const getLessonsByLevelId = async (levelId: number | string): Promise<Les
 
 // POST a new lesson
 export const create = async (newItem: LessonCreateDto): Promise<Lesson> => {
-    const response = await fetch(`${API_BASE_URL}/lessons`, {
+    const response = await fetch(`${API_BASE_URL}/levels/${newItem.levelId}/lessons`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newItem)

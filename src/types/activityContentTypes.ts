@@ -57,3 +57,19 @@ export interface WordBankCompletionContent {
     sentences: SentenceWithBlank[];
     wordBank: string[];
 }
+
+// ... (existing types)
+
+// --- NEW: Type for Dropdown Sentence Completion ---
+export interface DropdownBlank {
+    id: number; // Unique ID for this sentence
+    prefix: string;
+    suffix: string;
+    options: string[]; // The choices for THIS specific dropdown
+    correctAnswer: string;
+}
+
+export interface DropdownCompletionContent {
+    title: string;
+    sentences: DropdownBlank[];
+}

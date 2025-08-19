@@ -6,12 +6,11 @@ import { ActivityTypeCreateDto } from '../api/activityTypeApi';
 
 const ActivityTypesPage: React.FC = () => {
     
-    // 1. Define the columns for the table.
     const columns = [
         { field: 'activityName' as keyof ActivityType, headerName: 'Activity Type Name', type: 'string' as const }
     ];
 
-    // 2. Define the API service object.
+    // This API service object now correctly points to the apiClient-based functions
     const apiService = {
         getAll: activityTypeApi.getAll,
         create: activityTypeApi.create,
@@ -20,12 +19,11 @@ const ActivityTypesPage: React.FC = () => {
     };
 
     return (
-        // 3. Render the generic table with the specific configuration.
         <InlineCrudTable<ActivityType, ActivityTypeCreateDto>
             entityName="Activity Type"
             apiService={apiService}
             columns={columns}
-            idField="activityTypeId" // Tell the component the unique ID property is 'id'
+            idField="activityTypeId"
         />
     );
 };

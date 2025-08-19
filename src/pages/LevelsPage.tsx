@@ -1,20 +1,47 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Button } from '@mui/material';
-import InlineCrudTable from '../components/common/InlineCrudTable';
+import InlineCrudTable, { ColumnDef } from '../components/common/InlineCrudTable';
+import ImageUploadCell from '../components/common/ImageUploadCell'; // Assuming this exists
 import { Level } from '../types/level';
 import * as levelApi from '../api/levelApi';
 import { LevelCreateDto } from '../api/levelApi';
 
 const LevelsPage: React.FC = () => {
     
-    // 1. Define the columns for the table.
-    const columns = [
-        { field: 'levelName' as keyof Level, headerName: 'Level Name', type: 'string' as const },
-        { field: 'sequenceOrder' as keyof Level, headerName: 'Sequence Order', type: 'number' as const }
+    // Define the columns using the now-generic ColumnDef type
+    const columns: ColumnDef<Level, LevelCreateDto>[] = [
+        { 
+            field: 'levelName', 
+            headerName: 'Level Name', 
+            type: 'string' 
+        },
+        { 
+            field: 'slug', 
+            headerName: 'Slug (for URLs)', 
+            type: 'string' 
+        },
+        { 
+            field: 'sequenceOrder', 
+            headerName: 'Sequence Order', 
+            type: 'number' 
+        },
+        {
+            field: 'imageUrl',
+            headerName: 'Image',
+            // Render an <img> tag in display mode
+            renderCell: (value) => 
+                value ? <img src={value as string} alt="Level" style={{ height: '40px', width: 'auto' }} /> : 'No Image',
+            // Render our custom ImageUploadCell component in edit mode
+            renderEditCell: (value, onChange) => (
+                <ImageUploadCell 
+                    value={value as string | null} 
+                    onUrlChange={(newUrl) => onChange('imageUrl', newUrl)}
+                />
+            )
+        }
     ];
 
-    // 2. Define the API service object.
     const apiService = {
         getAll: levelApi.getAll,
         create: levelApi.create,
@@ -22,29 +49,25 @@ const LevelsPage: React.FC = () => {
         delete: levelApi.deleteItem
     };
 
-    // 3. *** THE CUSTOMIZATION PART ***
-    //    Define a function that returns the custom "Manage Lessons" button.
-    //    This function will be passed as a prop to the generic table.
     const renderCustomLevelActions = (level: Level) => (
         <Button 
             component={RouterLink} 
-            to={`/lessons?levelId=${level.levelId}`} // Link to the lessons page with the levelId
+            to={`/lessons?levelId=${level.levelId}`}
             variant="outlined" 
             size="small"
-            sx={{ mr: 1 }} // Add some margin to the right
+            sx={{ mr: 1 }}
         >
             Manage Lessons
         </Button>
     );
 
     return (
-        // 4. Render the generic table, passing in the specific configuration and the custom action renderer.
         <InlineCrudTable<Level, LevelCreateDto>
             entityName="Level"
             apiService={apiService}
             columns={columns}
-            idField="levelId" // Tell the component the unique ID is 'levelId'
-            renderCustomActions={renderCustomLevelActions} // Pass the custom function here
+            idField="levelId"
+            renderCustomActions={renderCustomLevelActions}
         />
     );
 };

@@ -7,6 +7,7 @@ import { Lesson } from '../types/lesson';
 import * as lessonApi from '../api/lessonApi';
 import { LessonCreateDto } from '../api/lessonApi';
 
+// A custom hook to easily get URL query parameters
 function useQuery() {
     return new URLSearchParams(useLocation().search);
 }
@@ -39,6 +40,7 @@ const LessonsPage: React.FC = () => {
         const numericLevelId = parseInt(levelId, 10);
         return {
             getAllByParentId: () => lessonApi.getLessonsByLevelId(numericLevelId),
+            // Add the required levelId to the payload for the create function
             create: (newItem: LessonCreateDto) => lessonApi.create({ ...newItem, levelId: numericLevelId }),
             update: lessonApi.update,
             delete: lessonApi.deleteItem
@@ -48,6 +50,7 @@ const LessonsPage: React.FC = () => {
     // Define the columns for the table.
     const columns = [
         { field: 'lessonName' as keyof Lesson, headerName: 'Lesson Name', type: 'string' as const },
+        { field: 'slug' as keyof Lesson, headerName: 'Slug', type: 'string' as const },
         { field: 'description' as keyof Lesson, headerName: 'Description', type: 'string' as const },
         { field: 'sequenceOrder' as keyof Lesson, headerName: 'Sequence Order', type: 'number' as const }
     ];
@@ -64,11 +67,9 @@ const LessonsPage: React.FC = () => {
     );
     
     return (
-        // Our DependentInlineCrudTable is now used with a much simpler configuration.
-        // It fetches its own data directly.
         <DependentInlineCrudTable<Lesson, LessonCreateDto>
             entityName="Lesson"
-            parentName={`Level #${levelId}`} // The title is simple and direct.
+            parentName={`Level #${levelId}`} // Simplified title, clean and requires no extra API call
             parentRoute="/levels"
             parentId={levelId}
             apiService={apiService}

@@ -11,16 +11,23 @@ import AddIcon from '@mui/icons-material/Add';
 import { CrudApiService } from '../../api/apiService.types';
 
 // --- Generic Props Definition ---
-interface ColumnDef<T> {
+export interface ColumnDef<T, TCreateDto> {
     field: keyof T;
     headerName: string;
     type?: 'string' | 'number';
+    // Renders the cell in DISPLAY mode (optional)
+    renderCell?: (value: any, row: T) => React.ReactNode;
+    // Renders the cell in EDIT mode (optional)
+    renderEditCell?: (
+        value: any,
+        onChange: (field: keyof TCreateDto, value: any) => void
+    ) => React.ReactNode;
 }
 
 interface InlineCrudTableProps<T, TCreateDto> {
     entityName: string;
     apiService: CrudApiService<T, TCreateDto>;
-    columns: ColumnDef<T>[];
+    columns: ColumnDef<T, TCreateDto>[]; // Use the corrected ColumnDef
     idField: keyof T;
     renderCustomActions?: (item: T) => React.ReactNode;
 }
@@ -55,14 +62,15 @@ const InlineCrudTable = <T extends Record<string, any>, TCreateDto extends objec
         fetchData();
     }, [fetchData]);
 
-    const handleEdit = (item: T) => {
-        setEditRowId(item[idField]);
-        // Dynamically create the initial edit object based on columns
-        const initialEditData: Partial<TCreateDto> = {};
+    const handleBeginAdding = () => {
+        // Create the initial empty state object here, ONCE.
+        const initialAddData: Partial<TCreateDto> = {};
         columns.forEach(col => {
-            (initialEditData as any)[col.field] = item[col.field];
+            // Set default values for the new row's state
+            (initialAddData as any)[col.field] = col.type === 'number' ? 0 : '';
         });
-        setEditedRowData(initialEditData);
+        setEditedRowData(initialAddData); // Set the state for the new row
+        setIsAdding(true); // Go into "adding" mode
     };
 
     const handleCancel = () => {
@@ -104,32 +112,57 @@ const InlineCrudTable = <T extends Record<string, any>, TCreateDto extends objec
         }
     };
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        const column = columns.find(c => c.field === name);
-        const parsedValue = column?.type === 'number' ? parseInt(value, 10) || 0 : value;
-        setEditedRowData(prev => ({ ...prev!, [name]: parsedValue }));
+    const handleEdit = (item: T) => {
+        setEditRowId(item[idField]);
+        const initialEditData: Partial<TCreateDto> = {};
+        columns.forEach(col => {
+            // Note: We cast col.field to keyof TCreateDto. This assumes field names are consistent.
+            (initialEditData as any)[col.field] = item[col.field];
+        });
+        setEditedRowData(initialEditData);
     };
 
-    const renderRow = (item: T) => {
+    const handleInputChange = (field: keyof TCreateDto, value: any) => {
+        const column = columns.find(c => c.field === field);
+        const parsedValue = column?.type === 'number' ? parseInt(value, 10) || 0 : value;
+        setEditedRowData(prev => ({ ...prev!, [field]: parsedValue }));
+    };
+
+   const renderRow = (item: T) => {
         const id = item[idField];
         const isEditing = editRowId === id;
+
         return (
             <TableRow key={id}>
                 <TableCell>{id}</TableCell>
                 {columns.map(col => (
                     <TableCell key={String(col.field)}>
                         {isEditing ? (
-                            <TextField
-                                name={String(col.field)}
-                                type={col.type === 'number' ? 'number' : 'text'}
-                                value={(editedRowData as any)?.[col.field] ?? ''}
-                                onChange={handleInputChange}
-                                size="small"
-                                fullWidth
-                            />
+                            // Use custom edit cell renderer if provided
+                            col.renderEditCell ? (
+                                col.renderEditCell(
+                                    (editedRowData as any)?.[col.field] ?? '',
+                                    handleInputChange
+                                )
+                            ) : (
+                                // Fallback to a standard TextField
+                                <TextField
+                                    name={String(col.field)}
+                                    type={col.type === 'number' ? 'number' : 'text'}
+                                    value={(editedRowData as any)?.[col.field] ?? ''}
+                                    onChange={(e) => handleInputChange(col.field as any, e.target.value)}
+                                    size="small"
+                                    fullWidth
+                                />
+                            )
                         ) : (
-                            item[col.field]
+                            // Use custom display cell renderer if provided
+                            col.renderCell ? (
+                                col.renderCell(item[col.field], item)
+                            ) : (
+                                // Fallback to simple text display
+                                item[col.field]
+                            )
                         )}
                     </TableCell>
                 ))}
@@ -150,29 +183,36 @@ const InlineCrudTable = <T extends Record<string, any>, TCreateDto extends objec
             </TableRow>
         );
     };
+    
 
-    const renderAddRow = () => {
-        // Create an initial empty object for the new row
-        const initialAddData: Partial<TCreateDto> = {};
-        columns.forEach(col => {
-            (initialAddData as any)[col.field] = col.type === 'number' ? 0 : '';
-        });
-
+   const renderAddRow = () => {
+        // This function now just renders the UI. It doesn't set state.
         return (
             <TableRow>
                 <TableCell>(New)</TableCell>
-                {columns.map(col => (
+                {columns.map((col, index) => (
                     <TableCell key={String(col.field)}>
-                        <TextField
-                            name={String(col.field)}
-                            placeholder={col.headerName}
-                            type={col.type === 'number' ? 'number' : 'text'}
-                            value={(editedRowData as any)?.[col.field] ?? ''}
-                            onChange={handleInputChange}
-                            size="small"
-                            fullWidth
-                            autoFocus={columns.indexOf(col) === 0}
-                        />
+                        {/* Check for a custom edit cell renderer first */}
+                        {col.renderEditCell ? (
+                            col.renderEditCell(
+                                (editedRowData as any)?.[col.field] ?? '',
+                                handleInputChange
+                            )
+                        ) : (
+                            // Fallback to the default TextField
+                            <TextField
+                                name={String(col.field)}
+                                placeholder={col.headerName}
+                                type={col.type === 'number' ? 'number' : 'text'}
+                                value={(editedRowData as any)?.[col.field] ?? ''}
+                                // *** THE FIX IS HERE ***
+                                // Wrap the call in an arrow function to pass the correct arguments
+                                onChange={(e) => handleInputChange(col.field as any, e.target.value)}
+                                size="small"
+                                fullWidth
+                                autoFocus={index === 0}
+                            />
+                        )}
                     </TableCell>
                 ))}
                 <TableCell>
@@ -187,7 +227,7 @@ const InlineCrudTable = <T extends Record<string, any>, TCreateDto extends objec
         <Box p={3}>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                 <Typography variant="h4" component="h1">Manage {entityName}s</Typography>
-                <Button variant="contained" startIcon={<AddIcon />} onClick={() => setIsAdding(true)}>
+                  <Button variant="contained" startIcon={<AddIcon />} onClick={handleBeginAdding}>
                     Add New {entityName}
                 </Button>
             </Box>
@@ -201,7 +241,7 @@ const InlineCrudTable = <T extends Record<string, any>, TCreateDto extends objec
                             <TableCell>Actions</TableCell>
                         </TableRow>
                     </TableHead>
-                    <TableBody>
+                   <TableBody>
                         {isLoading ? (
                             <TableRow><TableCell colSpan={columns.length + 2} align="center"><CircularProgress /></TableCell></TableRow>
                         ) : (

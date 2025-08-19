@@ -4,7 +4,7 @@ import { MainActivity } from './mainActivity';
 export interface Activity {
     activityId: number;
     lessonId: number;
-    title: string | null;
+    title: string;
     sequenceOrder: number;
     activityTypeId: number;
     mainActivityId: number;

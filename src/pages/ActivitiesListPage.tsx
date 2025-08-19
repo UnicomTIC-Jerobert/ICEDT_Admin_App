@@ -11,9 +11,10 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
 import { Activity } from '../types/activity';
+import { Lesson } from '../types/lesson';
 import * as activityApi from '../api/activityApi';
 import * as lessonApi from '../api/lessonApi';
-import ActivityPlayerModal from '../components/activities/ActivityPlayerModal'; // <-- IMPORT THE NEW PLAYER
+import ActivityPlayerModal from '../components/activities/ActivityPlayerModal';
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -23,45 +24,60 @@ const ActivitiesListPage: React.FC = () => {
     const query = useQuery();
     const navigate = useNavigate();
     const lessonId = query.get('lessonId');
-
+    
     const [activities, setActivities] = useState<Activity[]>([]);
-    const [lesson, setLesson] = useState<{ id: string, name: string, levelId: number } | null>(null);
+    const [lesson, setLesson] = useState<Lesson | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
 
-    // --- State for the Preview Modal ---
+    // --- State for the Preview Modal (Your logic is perfect) ---
     const [isPreviewOpen, setIsPreviewOpen] = useState<boolean>(false);
     const [activityToPreview, setActivityToPreview] = useState<Activity | null>(null);
 
     useEffect(() => {
-        if (!lessonId) return;
+        if (!lessonId) {
+            setError("Error: No Lesson ID provided.");
+            setIsLoading(false);
+            return;
+        }
+
         const fetchData = async () => {
             setIsLoading(true);
+            setError(null);
             try {
-                const lessonData = await lessonApi.getLessonById(lessonId);
-                const activitiesData = await activityApi.getActivitiesByLessonId(lessonId);
-                setLesson({ id: lessonId, name: lessonData.lessonName, levelId: lessonData.levelId });
+                // Use Promise.all to fetch in parallel, which is very efficient.
+                const lessonPromise = lessonApi.getLessonById(lessonId);
+                const activitiesPromise = activityApi.getActivitiesByLessonId(lessonId);
+
+                const [lessonData, activitiesData] = await Promise.all([lessonPromise, activitiesPromise]);
+
+                setLesson(lessonData);
                 setActivities(activitiesData);
-            } catch (error) {
-                console.error(error);
+            } catch (err) {
+                console.error(err);
+                setError(err instanceof Error ? err.message : "Failed to load data for this lesson.");
             } finally {
                 setIsLoading(false);
             }
         };
+
         fetchData();
     }, [lessonId]);
 
     const handleDelete = async (activityId: number) => {
         if (window.confirm("Are you sure you want to delete this activity?")) {
             try {
-                await activityApi.deleteActivity(activityId);
+                // Use the refactored, apiClient-based delete function
+                await activityApi.deleteItem(activityId);
                 setActivities(prev => prev.filter(act => act.activityId !== activityId));
-            } catch (error) {
-                console.error(error);
-                alert("Failed to delete activity.");
+            } catch (err) {
+                console.error(err);
+                alert(err instanceof Error ? err.message : "Failed to delete activity.");
             }
         }
     };
 
+    // --- Modal Handler Functions (Your logic is perfect) ---
     const handleOpenPreview = (activity: Activity) => {
         setActivityToPreview(activity);
         setIsPreviewOpen(true);
@@ -69,34 +85,38 @@ const ActivitiesListPage: React.FC = () => {
 
     const handleClosePreview = () => {
         setIsPreviewOpen(false);
-        setActivityToPreview(null);
+        setActivityToPreview(null); // Good practice to clear the state
     };
 
-    if (!lessonId) {
-        return <Typography color="error">Error: No Lesson ID provided.</Typography>;
+    if (error) {
+        return <Typography color="error" p={3}>{error}</Typography>;
     }
+
+    // The back link needs the levelId from the lesson object
+    const backToLessonsUrl = lesson ? `/lessons?levelId=${lesson.levelId}` : '/levels';
 
     return (
         <Box p={3}>
-            <IconButton onClick={() => navigate(`/lessons?levelId=${lesson?.levelId || ''}`)} sx={{ mb: 2 }} disabled={isLoading}>
+            <IconButton onClick={() => navigate(backToLessonsUrl)} sx={{ mb: 2 }} disabled={isLoading}>
                 <ArrowBackIcon />
                 <Typography variant="button" sx={{ ml: 1 }}>Back to Lessons</Typography>
             </IconButton>
 
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                 <Typography variant="h4" component="h1">
-                    Activities for: "{lesson?.name}"
+                    {isLoading ? "Loading..." : `Activities for: "${lesson?.lessonName}"`}
                 </Typography>
-                <Button
-                    component={RouterLink}
+                <Button 
+                    component={RouterLink} 
                     to={`/activity-edit?lessonId=${lessonId}`}
-                    variant="contained"
+                    variant="contained" 
                     startIcon={<AddIcon />}
+                    disabled={!lessonId}
                 >
                     Add New Activity
                 </Button>
             </Box>
-
+            
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
@@ -111,43 +131,47 @@ const ActivitiesListPage: React.FC = () => {
                         {isLoading ? (
                             <TableRow><TableCell colSpan={4} align="center"><CircularProgress /></TableCell></TableRow>
                         ) : (
-                            activities.map(activity => (
-                                <TableRow key={activity.activityId}>
-                                    <TableCell>{activity.activityId}</TableCell>
-                                    <TableCell>{activity.title}</TableCell>
-                                    <TableCell>{activity.sequenceOrder}</TableCell>
-                                    <TableCell>
-
-                                        <IconButton onClick={() => handleOpenPreview(activity)} color="info" title="Preview Activity">
-                                            <VisibilityIcon />
-                                        </IconButton>
-                                        <IconButton
-                                            component={RouterLink}
-                                            to={`/activity-edit?activityId=${activity.activityId}`}
-                                            color="primary"
+                           activities.map(activity => (
+                               <TableRow key={activity.activityId}>
+                                   <TableCell>{activity.activityId}</TableCell>
+                                   <TableCell>{activity.title}</TableCell>
+                                   <TableCell>{activity.sequenceOrder}</TableCell>
+                                   <TableCell>
+                                       {/* Preview Button */}
+                                       <IconButton onClick={() => handleOpenPreview(activity)} color="info" title="Preview Activity">
+                                           <VisibilityIcon />
+                                       </IconButton>
+                                       {/* Edit Button */}
+                                       <IconButton 
+                                           component={RouterLink} 
+                                           to={`/activity-edit?activityId=${activity.activityId}`}
+                                           color="primary"
                                         >
-                                            <EditIcon />
-                                        </IconButton>
-                                        <IconButton onClick={() => handleDelete(activity.activityId)} color="error">
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    </TableCell>
-                                </TableRow>
-                            ))
+                                           <EditIcon />
+                                       </IconButton>
+                                       {/* Delete Button */}
+                                       <IconButton onClick={() => handleDelete(activity.activityId)} color="error">
+                                           <DeleteIcon />
+                                       </IconButton>
+                                   </TableCell>
+                               </TableRow>
+                           ))
                         )}
+                         { !isLoading && activities.length === 0 && (
+                            <TableRow>
+                                <TableCell colSpan={4} align="center">No activities found for this lesson.</TableCell>
+                            </TableRow>
+                         )}
                     </TableBody>
                 </Table>
             </TableContainer>
 
-
             {/* --- The Preview Modal --- */}
-            {activityToPreview && (
-                <ActivityPlayerModal
-                    isOpen={isPreviewOpen}
-                    onClose={handleClosePreview}
-                    activity={activityToPreview}
-                />
-            )}
+            <ActivityPlayerModal
+                isOpen={isPreviewOpen}
+                onClose={handleClosePreview}
+                activity={activityToPreview}
+            />
         </Box>
     );
 };

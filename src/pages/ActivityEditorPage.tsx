@@ -26,7 +26,7 @@ const ActivityEditorPage: React.FC = () => {
     const [activity, setActivity] = useState<Partial<Activity> | null>(null);
     const [previewContent, setPreviewContent] = useState<Partial<Activity> | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    
+
     // State to control which accordion is expanded. `false` means all are closed, a number means that index is open.
     const [expandedExercise, setExpandedExercise] = useState<number | false>(0);
 
@@ -44,11 +44,11 @@ const ActivityEditorPage: React.FC = () => {
                     sequenceOrder: 1,
                     mainActivityId: 0,
                     activityTypeId: 0,
-                    contentJson: '[{}]', 
+                    contentJson: '[{}]',
                     lessonId: parseInt(lessonId || '0', 10)
                 };
             }
-            
+
             let exercises: any[] = [];
             try {
                 const parsedContent = JSON.parse(loadedActivity.contentJson || '[]');
@@ -86,22 +86,43 @@ const ActivityEditorPage: React.FC = () => {
 
     const handleSave = async () => {
         if (!activity || !activity.contentJson) return;
-        try { JSON.parse(activity.contentJson); } catch (error) {
+        // 1. Validate the JSON content before proceeding.
+        try {
+            // This ensures the string is valid JSON, but we use the string itself in the payload.
+            JSON.parse(activity.contentJson);
+        } catch (error) {
             alert("An exercise contains invalid JSON. Please fix it before saving.");
             return;
         }
+
+        // 2. Construct the payload with the exact shape the API expects (ActivityCreateDto/UpdateDto).
+        const payload = {
+            title: activity.title || null, // Ensure title is not undefined
+            sequenceOrder: Number(activity.sequenceOrder),
+            contentJson: activity.contentJson,
+            lessonId: Number(activity.lessonId),
+            activityTypeId: Number(activity.activityTypeId),
+            mainActivityId: Number(activity.mainActivityId)
+        };
+
+        // 3. Validate that required IDs are present.
+        if (!payload.lessonId || !payload.activityTypeId || !payload.mainActivityId) {
+            alert("Lesson, Activity Type, and Main Activity must be selected.");
+            return;
+        }
+
         try {
-            const payload = { ...activity };
-            // Ensure types are correct
-            payload.sequenceOrder = Number(payload.sequenceOrder);
-            payload.mainActivityId = Number(payload.mainActivityId);
-            payload.activityTypeId = Number(payload.activityTypeId);
-            payload.lessonId = Number(payload.lessonId);
+            // const payload = { ...activity };
+            // // Ensure types are correct
+            // payload.sequenceOrder = Number(payload.sequenceOrder);
+            // payload.mainActivityId = Number(payload.mainActivityId);
+            // payload.activityTypeId = Number(payload.activityTypeId);
+            // payload.lessonId = Number(payload.lessonId);
 
             if (isEditMode && activityId) {
-                await activityApi.updateActivity(activityId, payload as any);
+                await activityApi.update(activityId, payload as any);
             } else {
-                await activityApi.createActivity(payload as any);
+                await activityApi.create(payload as any);
             }
             alert('Activity saved successfully!');
             navigate(backUrl);
@@ -115,7 +136,7 @@ const ActivityEditorPage: React.FC = () => {
     const handleExpansionChange = (panelIndex: number) => (event: React.SyntheticEvent, isExpanded: boolean) => {
         setExpandedExercise(isExpanded ? panelIndex : false);
     };
-    
+
     // Handler to programmatically set the expanded accordion (e.g., when adding a new one)
     const handleSetExpanded = (index: number) => {
         setExpandedExercise(index);

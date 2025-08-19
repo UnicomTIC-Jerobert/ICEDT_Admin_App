@@ -12,7 +12,7 @@ import ActivityRenderer from './previews/ActivityRenderer';
 interface ActivityPlayerModalProps {
     isOpen: boolean;
     onClose: () => void;
-    activity: Activity;
+    activity: Activity | null;
 }
 
 const ActivityPlayerModal: React.FC<ActivityPlayerModalProps> = ({ isOpen, onClose, activity }) => {
@@ -21,6 +21,13 @@ const ActivityPlayerModal: React.FC<ActivityPlayerModalProps> = ({ isOpen, onClo
     const [currentExerciseIndex, setCurrentExerciseIndex] = useState<number>(0);
     // State for navigating between QUESTIONS (if applicable)
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
+
+    // *** FIX #1: Add the main safeguard ***
+    // If the modal is open but has no activity, don't render anything.
+    // This makes the 'activity' variable safe to use below this point.
+    if (!activity) {
+        return null;
+    }
 
     // --- Data Parsing and Logic ---
     let exercises: any[] = [];
@@ -45,7 +52,7 @@ const ActivityPlayerModal: React.FC<ActivityPlayerModalProps> = ({ isOpen, onClo
             setCurrentExerciseIndex(0);
             setCurrentQuestionIndex(0);
         }
-    }, [isOpen, activity.activityId]);
+    }, [isOpen, activity?.activityId]);
 
     // When the exercise changes, reset the question index
     useEffect(() => {
@@ -85,6 +92,8 @@ const ActivityPlayerModal: React.FC<ActivityPlayerModalProps> = ({ isOpen, onClo
                     <Box sx={{ p: 2, borderBottom: '1px solid #eee', textAlign: 'center', flexShrink: 0 }}>
                         <Typography variant="subtitle1" fontWeight="bold">{currentExerciseData.activityTitle || activity.title}</Typography>
                         {isActivityPaginated && <Typography variant="caption" color="text.secondary">Exercise {currentExerciseIndex + 1} of {exercises.length}</Typography>}
+
+                   
                     </Box>
 
                     {/* Content Area */}

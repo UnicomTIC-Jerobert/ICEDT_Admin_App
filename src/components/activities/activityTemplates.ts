@@ -2,6 +2,28 @@
 
 export const getActivityTemplate = (activityTypeId: number): string => {
     const templates: Record<number, object> = {
+        2: { // AudioImageRecognition (ID 2)
+
+            "spotlightLetter": "க்",
+            "words": [
+                {
+                    "text": "கொக்கு"
+                },
+                {
+                    "text": "பாக்கு"
+                },
+                {
+                    "text": "நாக்கு"
+                },
+                {
+                    "text": "தக்காளி"
+                },
+                {
+                    "text": "சக்கரம்"
+                }
+            ]
+
+        },
         4: { // Matching
             title: "Match the pairs",
             columnA: [
@@ -31,7 +53,7 @@ export const getActivityTemplate = (activityTypeId: number): string => {
     };
 
     const template = templates[activityTypeId] || { note: "No template defined for this activity type yet." };
-    
+
     // Return as a nicely formatted string
     return JSON.stringify(template, null, 2);
 };

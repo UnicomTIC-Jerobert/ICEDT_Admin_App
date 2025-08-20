@@ -73,3 +73,30 @@ export interface DropdownCompletionContent {
     title: string;
     sentences: DropdownBlank[];
 }
+
+
+// --- NEW: Type for Letter Spotlight Activity ---
+export interface SpotlightWord {
+    text: string;
+    imageUrl?: string; // Optional image for the word
+    audioUrl?: string; // Optional audio for pronunciation
+}
+
+export interface LetterSpotlightContent {
+    spotlightLetter: string; // The letter to highlight, e.g., "அ"
+    words: SpotlightWord[];
+}
+
+// ... (existing types)
+
+// --- NEW: Type for Media Spotlight Activity (Carousel) ---
+export interface MediaSpotlightItem {
+    text: string;
+    imageUrl: string;
+    audioUrl?: string; // Optional audio
+}
+
+export interface MediaSpotlightContent {
+    spotlightLetter: string;
+    items: MediaSpotlightItem[];
+}

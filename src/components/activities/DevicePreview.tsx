@@ -5,7 +5,7 @@ import TabletMacIcon from '@mui/icons-material/TabletMac';
 import { Activity } from '../../types/activity';
 
 import MCQActivity from './activity-types/MCQActivity';
-import { MCQContent } from '../../types/activityContentTypes';
+import { LetterSpotlightContent, MCQContent, MediaSpotlightContent } from '../../types/activityContentTypes';
 
 import MatchingActivity from './activity-types/MatchingActivity';
 import { MatchingContent } from '../../types/activityContentTypes';
@@ -22,6 +22,8 @@ import { WordBankCompletionContent } from '../../types/activityContentTypes';
 
 import DropdownCompletion from './activity-types/DropdownCompletion';
 import { DropdownCompletionContent } from '../../types/activityContentTypes';
+import LetterSpotlight from './activity-types/LetterSpotlight';
+import MediaSpotlight from './activity-types/MediaSpotlight';
 
 interface DevicePreviewProps {
     activityData: Partial<Activity>;
@@ -49,6 +51,17 @@ const DevicePreview: React.FC<DevicePreviewProps> = ({ activityData }) => {
         }
 
         switch (activityData.activityTypeId) {
+             case 2:  // Can be LetterSpotlight OR MediaSpotlight
+                         if ('spotlightLetter' in content && 'items' in content) {
+                             // This structure matches MediaSpotlight
+                             return <MediaSpotlight content={content as MediaSpotlightContent} />;
+                         }
+                         if ('spotlightLetter' in content && 'words' in content) {
+                             // This structure matches LetterSpotlight
+                             return <LetterSpotlight content={content as LetterSpotlightContent} />;
+                         }
+                         return <Typography p={2} color="error">Invalid JSON for Activity Type 2.</Typography>;
+            
             case 4: // Matching (Assuming ID from your DB)
                 if ('words' in content) {
                     return <FirstLetterMatch content={content as FirstLetterMatchContent} />;

@@ -91,7 +91,51 @@ const ActivityEditorPage: React.FC = () => {
         setPreviewContent({ ...activity, contentJson: exerciseJsonString });
     };
 
-    const handleSave = async () => { /* ... (This function remains unchanged) ... */ };
+    const handleSave = async () => {
+        if (!activity || !activity.contentJson) return;
+        // 1. Validate the JSON content before proceeding.
+        try {
+            // This ensures the string is valid JSON, but we use the string itself in the payload.
+            JSON.parse(activity.contentJson);
+        } catch (error) {
+            alert("An exercise contains invalid JSON. Please fix it before saving.");
+            return;
+        }
+
+        // 2. Construct the payload with the exact shape the API expects (ActivityCreateDto/UpdateDto).
+        const payload = {
+            title: activity.title || null, // Ensure title is not undefined
+            sequenceOrder: Number(activity.sequenceOrder),
+            contentJson: activity.contentJson,
+            lessonId: Number(activity.lessonId),
+            activityTypeId: Number(activity.activityTypeId),
+            mainActivityId: Number(activity.mainActivityId)
+        };
+
+        // 3. Validate that required IDs are present.
+        if (!payload.lessonId || !payload.activityTypeId || !payload.mainActivityId) {
+            alert("Lesson, Activity Type, and Main Activity must be selected.");
+            return;
+        }
+
+        try {
+
+            if (isEditMode && activityId) {
+                await activityApi.update(activityId, payload as any);
+                await activityApi.update(activityId, payload as any);
+            } else {
+                await activityApi.create(payload as any);
+                await activityApi.create(payload as any);
+            }
+            alert('Activity saved successfully!');
+            navigate(backUrl);
+
+        } catch (error) {
+            console.error("Failed to save activity", error);
+            alert("An error occurred while saving.");
+        }
+    };
+
     const handleExpansionChange = (panelIndex: number) => (_: React.SyntheticEvent, isExpanded: boolean) => {
         setExpandedExercise(isExpanded ? panelIndex : false);
     };

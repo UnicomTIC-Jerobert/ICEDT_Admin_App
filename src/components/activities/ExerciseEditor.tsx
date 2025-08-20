@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, IconButton, Accordion, AccordionSummary, AccordionDetails, TextField, Button,Paper } from '@mui/material';
+import { Box, Typography, IconButton, Accordion, AccordionSummary, AccordionDetails, TextField, Button, Paper } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PreviewIcon from '@mui/icons-material/Preview';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -46,12 +46,12 @@ const ExerciseEditor: React.FC<ExerciseEditorProps> = ({
             onDataChange({ ...activityData, contentJson: rawCombined });
         }
     };
-    
+
     const handleExerciseChange = (index: number, value: string) => {
         const updatedExercises = [...exercises];
         updatedExercises[index] = value;
         setExercises(updatedExercises);
-        
+
         const updatedErrors = [...jsonErrors];
         try {
             JSON.parse(value);
@@ -82,16 +82,16 @@ const ExerciseEditor: React.FC<ExerciseEditorProps> = ({
         setJsonErrors(newErrors);
         triggerParentUpdate(newExercises);
     };
-    
+
     return (
         <Paper sx={{ p: 2 }}>
             <Typography variant="h6" sx={{ mb: 1 }}>Exercises</Typography>
             {exercises.map((exerciseJson, index) => (
                 <Accordion key={index} expanded={expandedExercise === index} onChange={onExpansionChange(index)}>
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} component="div">
                         <Box display="flex" justifyContent="space-between" alignItems="center" width="100%">
                             <Typography fontWeight="bold">Exercise #{index + 1}</Typography>
-                            <div>
+                            <Box>
                                 <Button
                                     variant="outlined" size="small" startIcon={<PreviewIcon />}
                                     onClick={(e) => { e.stopPropagation(); onPreviewExercise(exerciseJson); }}
@@ -105,9 +105,10 @@ const ExerciseEditor: React.FC<ExerciseEditorProps> = ({
                                 >
                                     <DeleteIcon />
                                 </IconButton>
-                            </div>
+                            </Box>
                         </Box>
                     </AccordionSummary>
+
                     <AccordionDetails>
                         <TextField
                             fullWidth multiline rows={15}

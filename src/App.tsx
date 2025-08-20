@@ -36,7 +36,7 @@ function App() {
                 </AppBar>
 
                 {/* Main Content Area */}
-                <Container component="main" sx={{ mt: 4 }}>
+                 <Container component="main" maxWidth={false} sx={{ mt: 4, px: 2 }}>
                     <Routes>
                         {/* Define the route for each page */}
                         <Route path="/" element={<Typography variant="h5">Welcome to the Admin Panel!</Typography>} />

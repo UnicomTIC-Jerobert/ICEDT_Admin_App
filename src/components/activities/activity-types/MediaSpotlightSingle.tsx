@@ -1,9 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Box, Typography, Paper, IconButton, Card, CardMedia, CardContent } from '@mui/material';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
-import { MediaSpotlightContent } from '../../../types/activityContentTypes';
+import { MediaSpotlightSingleContent } from '../../../types/activityContentTypes';
 
 // The HighlightedWord helper can be reused from LetterSpotlight.tsx
 // Or copied here if you prefer to keep components fully separate.
@@ -25,46 +23,42 @@ const HighlightedWord: React.FC<{ word: string; letter: string }> = ({ word, let
 };
 
 interface MediaSpotlightProps {
-    content: MediaSpotlightContent;
+    content: MediaSpotlightSingleContent;
 }
 
-const MediaSpotlight: React.FC<MediaSpotlightProps> = ({ content }) => {
-    const [currentIndex, setCurrentIndex] = useState(0);
+const MediaSpotlightSingle: React.FC<MediaSpotlightProps> = ({ content }) => {
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
-    const currentItem = content.items[currentIndex];
-
-    const goToNext = () => {
-        setCurrentIndex(prev => (prev + 1) % content.items.length); // Loop back to start
-    };
-
-    const goToPrev = () => {
-        setCurrentIndex(prev => (prev - 1 + content.items.length) % content.items.length); // Loop back to end
-    };
+    // Automatically play audio when the component is shown
+    useEffect(() => {
+        const timer = setTimeout(() => playAudio(), 300);
+        return () => clearTimeout(timer);
+    }, [content]); // Rerun if the content object changes
 
     const playAudio = () => {
-        if (currentItem.audioUrl) {
-            if (audioRef.current) {
-                audioRef.current.src = currentItem.audioUrl;
-                audioRef.current.play();
-            }
+        if (content.item.audioUrl && audioRef.current) {
+            audioRef.current.src = content.item.audioUrl;
+            audioRef.current.play().catch(e => console.error("Audio playback failed:", e));
         }
     };
+    
+    if (!content || !content.item) {
+        return <Typography color="error">Invalid MediaSpotlight content.</Typography>;
+    }
 
     return (
         <Box p={2} sx={{ fontFamily: 'sans-serif', textAlign: 'center' }}>
-             {/* Top section: The spotlight letter */}
             <Paper
                 elevation={4}
                 sx={{
-                    display: 'inline-flex', // Use inline-flex to size to content
+                    display: 'inline-flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     width: '120px',
                     height: '120px',
                     backgroundColor: 'primary.main',
                     color: 'white',
-                    borderRadius: '50%', // Make it a circle
+                    borderRadius: '50%',
                     mb: 3
                 }}
             >
@@ -73,44 +67,34 @@ const MediaSpotlight: React.FC<MediaSpotlightProps> = ({ content }) => {
                 </Typography>
             </Paper>
 
-            {/* Middle section: The Image/Word Card */}
+            {/* --- REMOVED NAVIGATION BUTTONS --- */}
+            {/* The component now renders only the single 'item' it receives */}
             <Box display="flex" alignItems="center" justifyContent="center">
-                 <IconButton onClick={goToPrev} aria-label="previous item">
-                    <ArrowBackIosNewIcon />
-                </IconButton>
-
                 <Card sx={{ minWidth: 250, mx: 1 }}>
                     <CardMedia
                         component="img"
                         height="180"
-                        image={currentItem.imageUrl}
-                        alt={currentItem.text}
+                        image={`${process.env.REACT_APP_MEDIA_URL}/${content.item.imageUrl}`}
+                        alt={content.item.text}
                         sx={{ objectFit: 'contain', p: 1 }}
                     />
                     <CardContent sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                         <HighlightedWord word={currentItem.text} letter={content.spotlightLetter} />
-                         {currentItem.audioUrl && (
+                         <HighlightedWord word={content.item.text} letter={content.spotlightLetter} />
+                         {content.item.audioUrl && (
                              <IconButton onClick={playAudio} color="primary" sx={{ ml: 1 }}>
                                  <VolumeUpIcon />
                              </IconButton>
                          )}
                     </CardContent>
                 </Card>
-
-                <IconButton onClick={goToNext} aria-label="next item">
-                    <ArrowForwardIosIcon />
-                </IconButton>
             </Box>
 
-            {/* Bottom section: Progress indicator */}
-            <Typography variant="body2" color="text.secondary" mt={2}>
-                {currentIndex + 1} / {content.items.length}
-            </Typography>
+            {/* --- REMOVED PROGRESS INDICATOR --- */}
+            {/* The parent (ActivityPlayerModal) is responsible for showing progress */}
 
-            {/* Hidden audio element for playback */}
             <audio ref={audioRef} style={{ display: 'none' }} />
         </Box>
     );
 };
 
-export default MediaSpotlight;
+export default MediaSpotlightSingle;

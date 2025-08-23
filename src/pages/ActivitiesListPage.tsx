@@ -14,6 +14,7 @@ import { Activity } from '../types/activity';
 import { Lesson } from '../types/lesson';
 import * as activityApi from '../api/activityApi';
 import * as lessonApi from '../api/lessonApi';
+
 import ActivityPlayerModal from '../components/activities/ActivityPlayerModal';
 
 function useQuery() {
@@ -30,9 +31,10 @@ const ActivitiesListPage: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
-    // --- State for the Preview Modal (Your logic is perfect) ---
+    // State for the Preview Modal
     const [isPreviewOpen, setIsPreviewOpen] = useState<boolean>(false);
     const [activityToPreview, setActivityToPreview] = useState<Activity | null>(null);
+    const [isPreviewLoading, setIsPreviewLoading] = useState<boolean>(false);
 
     useEffect(() => {
         if (!lessonId) {
@@ -45,10 +47,8 @@ const ActivitiesListPage: React.FC = () => {
             setIsLoading(true);
             setError(null);
             try {
-                // Use Promise.all to fetch in parallel, which is very efficient.
                 const lessonPromise = lessonApi.getLessonById(lessonId);
                 const activitiesPromise = activityApi.getActivitiesByLessonId(lessonId);
-
                 const [lessonData, activitiesData] = await Promise.all([lessonPromise, activitiesPromise]);
 
                 setLesson(lessonData);
@@ -67,7 +67,6 @@ const ActivitiesListPage: React.FC = () => {
     const handleDelete = async (activityId: number) => {
         if (window.confirm("Are you sure you want to delete this activity?")) {
             try {
-                // Use the refactored, apiClient-based delete function
                 await activityApi.deleteItem(activityId);
                 setActivities(prev => prev.filter(act => act.activityId !== activityId));
             } catch (err) {
@@ -77,22 +76,31 @@ const ActivitiesListPage: React.FC = () => {
         }
     };
 
-    // --- Modal Handler Functions (Your logic is perfect) ---
-    const handleOpenPreview = (activity: Activity) => {
-        setActivityToPreview(activity);
+    // --- ON-DEMAND FETCH FOR PREVIEW ---
+    const handleOpenPreview = async (activityId: number) => {
         setIsPreviewOpen(true);
+        setIsPreviewLoading(true);
+        try {
+            const fullActivityData = await activityApi.getActivityById(activityId);
+            setActivityToPreview(fullActivityData);
+        } catch (err) {
+            console.error("Failed to fetch activity details for preview", err);
+            alert("Could not load activity preview.");
+            setIsPreviewOpen(false); // Close modal on error
+        } finally {
+            setIsPreviewLoading(false);
+        }
     };
 
     const handleClosePreview = () => {
         setIsPreviewOpen(false);
-        setActivityToPreview(null); // Good practice to clear the state
+        setActivityToPreview(null);
     };
 
     if (error) {
         return <Typography color="error" p={3}>{error}</Typography>;
     }
 
-    // The back link needs the levelId from the lesson object
     const backToLessonsUrl = lesson ? `/lessons?levelId=${lesson.levelId}` : '/levels';
 
     return (
@@ -111,7 +119,7 @@ const ActivitiesListPage: React.FC = () => {
                     to={`/activity-edit?lessonId=${lessonId}`}
                     variant="contained" 
                     startIcon={<AddIcon />}
-                    disabled={!lessonId}
+                    disabled={!lessonId || isLoading}
                 >
                     Add New Activity
                 </Button>
@@ -137,11 +145,9 @@ const ActivitiesListPage: React.FC = () => {
                                    <TableCell>{activity.title}</TableCell>
                                    <TableCell>{activity.sequenceOrder}</TableCell>
                                    <TableCell>
-                                       {/* Preview Button */}
-                                       <IconButton onClick={() => handleOpenPreview(activity)} color="info" title="Preview Activity">
+                                       <IconButton onClick={() => handleOpenPreview(activity.activityId)} color="info" title="Preview Activity">
                                            <VisibilityIcon />
                                        </IconButton>
-                                       {/* Edit Button */}
                                        <IconButton 
                                            component={RouterLink} 
                                            to={`/activity-edit?activityId=${activity.activityId}`}
@@ -149,7 +155,6 @@ const ActivitiesListPage: React.FC = () => {
                                         >
                                            <EditIcon />
                                        </IconButton>
-                                       {/* Delete Button */}
                                        <IconButton onClick={() => handleDelete(activity.activityId)} color="error">
                                            <DeleteIcon />
                                        </IconButton>
@@ -166,11 +171,11 @@ const ActivitiesListPage: React.FC = () => {
                 </Table>
             </TableContainer>
 
-            {/* --- The Preview Modal --- */}
             <ActivityPlayerModal
                 isOpen={isPreviewOpen}
                 onClose={handleClosePreview}
                 activity={activityToPreview}
+                isLoading={isPreviewLoading}
             />
         </Box>
     );

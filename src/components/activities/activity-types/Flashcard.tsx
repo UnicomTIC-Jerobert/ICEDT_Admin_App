@@ -22,7 +22,7 @@ const Flashcard: React.FC<FlashcardProps> = ({ content }) => {
 
     const playAudio = () => {
         if (content?.audioUrl && audioRef.current) {
-            audioRef.current.src = `https://icedt-tamilapp-media.s3.eu-north-1.amazonaws.com/${content.audioUrl}`;
+            audioRef.current.src = `${process.env.REACT_APP_MEDIA_URL}/${content.audioUrl}`;
             audioRef.current.play().catch(e => console.error("Audio playback failed:", e));
         }
     };
@@ -39,7 +39,7 @@ const Flashcard: React.FC<FlashcardProps> = ({ content }) => {
                 <CardMedia
                     component="img"
                     height="240"
-                    image={`https://icedt-tamilapp-media.s3.eu-north-1.amazonaws.com/${content.imageUrl}`}
+                    image={`${process.env.REACT_APP_MEDIA_URL}/${content.imageUrl}`}
                     alt={content.word}
                     sx={{ objectFit: 'cover' }}
                 />

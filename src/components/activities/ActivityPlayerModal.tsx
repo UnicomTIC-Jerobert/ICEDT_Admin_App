@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Modal, Paper, Typography, ToggleButtonGroup, ToggleButton, IconButton, Button } from '@mui/material';
+import React, { useState, useEffect, useMemo } from 'react';
+import {
+    Modal, Box, Paper, Typography, ToggleButtonGroup, ToggleButton, IconButton,
+    Button, CircularProgress, Backdrop, Fade
+} from '@mui/material';
 import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
 import TabletMacIcon from '@mui/icons-material/TabletMac';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
@@ -7,123 +10,119 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { Activity } from '../../types/activity';
-import ActivityRenderer from './previews/ActivityRenderer';
+import ActivityRenderer from './ActivityRenderer';
+
+
 
 interface ActivityPlayerModalProps {
     isOpen: boolean;
     onClose: () => void;
     activity: Activity | null;
+    isLoading: boolean;
 }
 
-const ActivityPlayerModal: React.FC<ActivityPlayerModalProps> = ({ isOpen, onClose, activity }) => {
+const modalStyle = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 'auto',
+    bgcolor: 'transparent',
+    border: 'none',
+    boxShadow: 24,
+};
+
+const ActivityPlayerModal: React.FC<ActivityPlayerModalProps> = ({ isOpen, onClose, activity, isLoading }) => {
+
     const [device, setDevice] = useState<'phone' | 'tablet'>('phone');
-    // State for navigating between EXERCISES
     const [currentExerciseIndex, setCurrentExerciseIndex] = useState<number>(0);
-    // State for navigating between QUESTIONS (if applicable)
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
 
-    // *** FIX #1: Add the main safeguard ***
-    // If the modal is open but has no activity, don't render anything.
-    // This makes the 'activity' variable safe to use below this point.
-    if (!activity) {
-        return null;
-    }
+    const exercises = useMemo(() => {
+        if (!activity?.contentJson) return [];
+        try {
+            const parsedContent = JSON.parse(activity.contentJson);
+            return Array.isArray(parsedContent) ? parsedContent : [parsedContent];
+        } catch {
+            return [{ error: "Invalid Activity JSON format." }];
+        }
+    }, [activity?.contentJson]);
 
-    // --- Data Parsing and Logic ---
-    let exercises: any[] = [];
-    try {
-        const parsedContent = JSON.parse(activity.contentJson);
-        exercises = Array.isArray(parsedContent) ? parsedContent : [parsedContent];
-    } catch {
-        exercises = [{ error: "Invalid Activity JSON format." }];
-    }
-
-    const currentExerciseData = exercises[currentExerciseIndex] || {};
-    const questions = Array.isArray(currentExerciseData.questions) ? currentExerciseData.questions : [];
-    
-    // Determine if the CURRENT exercise has inner pagination
-    const isExercisePaginated = questions.length > 1;
-    // Determine if the WHOLE activity has outer pagination
-    const isActivityPaginated = exercises.length > 1;
-
-    // --- State Resets and Navigation ---
+    // Reset index when the modal opens or the activity itself changes
     useEffect(() => {
         if (isOpen) {
             setCurrentExerciseIndex(0);
-            setCurrentQuestionIndex(0);
         }
     }, [isOpen, activity?.activityId]);
 
-    // When the exercise changes, reset the question index
-    useEffect(() => {
-        setCurrentQuestionIndex(0);
-    }, [currentExerciseIndex]);
-    
-    // Outer navigation (Exercises)
+    if (!isOpen) {
+        return null;
+    }
+
+    console.log(exercises);
+    const currentExerciseData = exercises[currentExerciseIndex] || {};
+    const isActivityPaginated = exercises.length > 1;
+
     const goToNextExercise = () => setCurrentExerciseIndex(prev => Math.min(prev + 1, exercises.length - 1));
     const goToPrevExercise = () => setCurrentExerciseIndex(prev => Math.max(prev - 1, 0));
-    
-    // Inner navigation (Questions)
-    const goToNextQuestion = () => setCurrentQuestionIndex(prev => Math.min(prev + 1, questions.length - 1));
-    const goToPrevQuestion = () => setCurrentQuestionIndex(prev => Math.max(prev - 1, 0));
-
 
     const deviceStyles = {
         phone: { width: '375px', height: '667px' },
         tablet: { width: '540px', height: '720px' }
     };
-    const currentExerciseJson = JSON.stringify(currentExerciseData);
 
     return (
-        <Modal open={isOpen} onClose={onClose} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Box>
-                {/* ... Device Toggle Buttons ... */}
-                <Box display="flex" justifyContent="center" mb={2}>
-                    <ToggleButtonGroup value={device} exclusive onChange={(e, newDevice) => newDevice && setDevice(newDevice)} sx={{ bgcolor: 'background.paper' }}>
-                        <ToggleButton value="phone" aria-label="phone"><PhoneIphoneIcon /></ToggleButton>
-                        <ToggleButton value="tablet" aria-label="tablet"><TabletMacIcon /></ToggleButton>
-                    </ToggleButtonGroup>
-                </Box>
-                
-                <Paper elevation={8} sx={{...deviceStyles[device], borderRadius: '40px', border: '12px solid #333', bgcolor: 'white', overflow: 'hidden', position: 'relative', display: 'flex', flexDirection: 'column', transition: 'width 0.3s, height 0.3s'}}>
-                    <IconButton onClick={onClose} sx={{ position: 'absolute', top: 10, right: 10, zIndex: 10, color: '#aaa', background: 'rgba(0,0,0,0.2)' }}><CloseIcon /></IconButton>
-                    
-                    {/* Header */}
-                    <Box sx={{ p: 2, borderBottom: '1px solid #eee', textAlign: 'center', flexShrink: 0 }}>
-                        <Typography variant="subtitle1" fontWeight="bold">{currentExerciseData.activityTitle || activity.title}</Typography>
-                        {isActivityPaginated && <Typography variant="caption" color="text.secondary">Exercise {currentExerciseIndex + 1} of {exercises.length}</Typography>}
-
-                   
+        <Modal
+            open={isOpen}
+            onClose={onClose}
+            closeAfterTransition
+            BackdropComponent={Backdrop}
+            BackdropProps={{ timeout: 500 }}
+        >
+            <Fade in={isOpen}>
+                <Box sx={modalStyle}>
+                    <Box display="flex" justifyContent="center" mb={2}>
+                        <ToggleButtonGroup value={device} exclusive onChange={(e, newDevice) => newDevice && setDevice(newDevice)} sx={{ bgcolor: 'background.paper', borderRadius: '20px' }}>
+                            <ToggleButton value="phone" aria-label="phone"><PhoneIphoneIcon /></ToggleButton>
+                            <ToggleButton value="tablet" aria-label="tablet"><TabletMacIcon /></ToggleButton>
+                        </ToggleButtonGroup>
                     </Box>
 
-                    {/* Content Area */}
-                    <Box sx={{ flexGrow: 1, overflowY: 'auto', p: 2, display: 'flex', flexDirection: 'column' }}>
-                        <Box sx={{ flexGrow: 1 }}>
-                            <ActivityRenderer
-                                activityTypeId={activity.activityTypeId}
-                                contentJson={currentExerciseJson}
-                                currentQuestionIndex={currentQuestionIndex}
-                            />
+                    <Paper elevation={8} sx={{ ...deviceStyles[device], borderRadius: '40px', border: '12px solid #333', bgcolor: 'white', overflow: 'hidden', position: 'relative', display: 'flex', flexDirection: 'column', transition: 'width 0.3s, height 0.3s' }}>
+                        <IconButton onClick={onClose} sx={{ position: 'absolute', top: 10, right: 10, zIndex: 10, color: '#aaa', backgroundColor: 'rgba(0,0,0,0.1)' }}><CloseIcon /></IconButton>
+
+                        <Box sx={{ p: 2, borderBottom: '1px solid #eee', textAlign: 'center', flexShrink: 0 }}>
+                            <Typography variant="subtitle1" fontWeight="bold">{activity?.title}</Typography>
                         </Box>
-                        {/* Inner Pagination for QUESTIONS (only shown if needed) */}
-                        {isExercisePaginated && (
-                            <Box sx={{ mt: 2, p: 1, borderTop: '1px solid #eee', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0 }}>
-                                <Button onClick={goToPrevQuestion} disabled={currentQuestionIndex === 0} startIcon={<ArrowBackIosNewIcon />}>Prev</Button>
-                                <Typography variant="caption">Question {currentQuestionIndex + 1} of {questions.length}</Typography>
-                                <Button onClick={goToNextQuestion} disabled={currentQuestionIndex >= questions.length - 1} endIcon={<ArrowForwardIosIcon />}>Next</Button>
+
+                        {isActivityPaginated && (
+                            <Box sx={{ p: 1, borderTop: '1px solid #eee', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0, bgcolor: '#f9f9f9' }}>
+
+                                <Typography variant="caption">Exercise {currentExerciseIndex + 1} of {exercises.length}</Typography>
+
                             </Box>
                         )}
-                    </Box>
-                    
-                    {/* Footer with OUTER pagination for EXERCISES (only shown if needed) */}
-                    {isActivityPaginated && (
-                        <Box sx={{ p: 1, borderTop: '1px solid #eee', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0, bgcolor: '#f9f9f9' }}>
-                            <Button onClick={goToPrevExercise} disabled={currentExerciseIndex === 0} startIcon={<ArrowBackIosNewIcon />}>Prev Exercise</Button>
-                            <Button onClick={goToNextExercise} disabled={currentExerciseIndex >= exercises.length - 1} endIcon={<ArrowForwardIosIcon />}>Next Exercise</Button>
+                        <Box sx={{ flexGrow: 1, overflowY: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            {isLoading ? (
+                                <CircularProgress />
+                            ) : activity ? (
+                                <ActivityRenderer
+                                    activityTypeId={activity.activityTypeId}
+                                    content={currentExerciseData}
+                                />
+                            ) : (
+                                <Typography color="error">Could not load activity.</Typography>
+                            )}
                         </Box>
-                    )}
-                </Paper>
-            </Box>
+
+                        {isActivityPaginated && (
+                            <Box sx={{ p: 1, borderTop: '1px solid #eee', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0, bgcolor: '#f9f9f9' }}>
+                                <Button onClick={goToPrevExercise} disabled={currentExerciseIndex === 0} startIcon={<ArrowBackIosNewIcon />}>Prev Exercise</Button>
+                                <Button onClick={goToNextExercise} disabled={currentExerciseIndex >= exercises.length - 1} endIcon={<ArrowForwardIosIcon />}>Next Exercise</Button>
+                            </Box>
+                        )}
+                    </Paper>
+                </Box>
+            </Fade>
         </Modal>
     );
 };

@@ -3,23 +3,33 @@ import { Box, Typography, Paper, Button, Chip } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ReplayIcon from '@mui/icons-material/Replay';
-// Import the REFINED type
-import { SimpleEquationContent } from '../../../types/activityContentTypes';
+import { Equation } from '../../../types/activityContentTypes'; // The type for a SINGLE equation
 
+// --- CORRECTED PROPS INTERFACE ---
+// It now correctly expects a SINGLE Equation object, NOT an array.
 interface EquationProps {
-    content: SimpleEquationContent;
+    content: Equation;
 }
 
-const EquationFillInTheBlank: React.FC<EquationProps> = ({ content }) => {
+const Equations: React.FC<EquationProps> = ({ content }) => {
+    // --- STATE IS NOW SIMPLE ---
+    // It only tracks the state for this single, displayed equation.
     const [userAnswer, setUserAnswer] = useState<string | null>(null);
     const [isAnswered, setIsAnswered] = useState<boolean>(false);
+
+    // No useEffect is needed as there's no complex state to reset.
+
+    if (!content) {
+        return <Typography color="error">Invalid exercise content.</Typography>;
+    }
 
     const handleOptionClick = (option: string) => {
         if (isAnswered) return;
         setUserAnswer(option);
         setIsAnswered(true);
     };
-
+    
+    // This now resets the state for this single component instance.
     const handleReset = () => {
         setUserAnswer(null);
         setIsAnswered(false);
@@ -27,8 +37,7 @@ const EquationFillInTheBlank: React.FC<EquationProps> = ({ content }) => {
 
     const isCorrect = userAnswer === content.correctAnswer;
 
-    // --- The Component is now smarter ---
-    // It builds the display from the simple JSON parts.
+    // The rendering logic is the same, but it uses the top-level 'content' prop directly.
     const equationDisplay = (
         <>
             <Typography variant="h3">{content.leftOperand}</Typography>
@@ -37,13 +46,9 @@ const EquationFillInTheBlank: React.FC<EquationProps> = ({ content }) => {
             <Typography variant="h3">=</Typography>
             <Box
                 sx={{
-                    width: 60, height: 60,
-                    border: `2px dashed ${isAnswered ? 'transparent' : 'grey'}`,
-                    borderRadius: 1,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundColor: '#f5f5f5'
+                    width: 60, height: 60, border: `2px dashed ${isAnswered ? 'transparent' : 'grey'}`,
+                    borderRadius: 1, display: 'flex', alignItems: 'center',
+                    justifyContent: 'center', backgroundColor: '#f5f5f5'
                 }}
             >
                 <Typography variant="h3" color={isAnswered ? (isCorrect ? 'success.main' : 'error.main') : 'text.primary'}>
@@ -60,23 +65,10 @@ const EquationFillInTheBlank: React.FC<EquationProps> = ({ content }) => {
                 சரியான விடையைத் தெரிவு செய்க
             </Typography>
 
-            <Paper
-                elevation={3}
-                sx={{
-                    p: 3,
-                    mb: 4,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '16px',
-                    backgroundColor: isAnswered ? (isCorrect ? '#e8f5e9' : '#ffebee') : '#fff'
-                }}
-            >
+            <Paper elevation={3} sx={{ p: 3, mb: 4, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', backgroundColor: isAnswered ? (isCorrect ? '#e8f5e9' : '#ffebee') : '#fff' }}>
                 {equationDisplay}
             </Paper>
 
-            {/* The Options section remains the same */}
-            <Typography variant="body1" mb={2}>Possible Answers:</Typography>
             <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, flexWrap: 'wrap' }}>
                 {content.options.map(option => (
                     <Chip
@@ -84,7 +76,7 @@ const EquationFillInTheBlank: React.FC<EquationProps> = ({ content }) => {
                         label={option}
                         onClick={() => handleOptionClick(option)}
                         disabled={isAnswered}
-                        sx={{ fontSize: '1.5rem', padding: '20px 10px' }}
+                        sx={{ fontSize: '1.5rem', padding: '20px 10px', cursor: 'pointer' }}
                         color="primary"
                         variant={isAnswered ? 'outlined' : 'filled'}
                     />
@@ -98,8 +90,11 @@ const EquationFillInTheBlank: React.FC<EquationProps> = ({ content }) => {
                     </Button>
                 </Box>
             )}
+            
+            {/* --- NAVIGATION FOOTER IS REMOVED --- */}
+            {/* The ActivityPlayerModal is responsible for Next/Previous buttons. */}
         </Box>
     );
 };
 
-export default EquationFillInTheBlank;
+export default Equations;

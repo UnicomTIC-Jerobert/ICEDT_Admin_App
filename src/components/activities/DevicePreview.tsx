@@ -1,29 +1,14 @@
 import React, { useState } from 'react';
-import { Box, Paper, Typography, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { Box, Paper, ToggleButtonGroup, ToggleButton, Typography } from '@mui/material';
 import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
 import TabletMacIcon from '@mui/icons-material/TabletMac';
+import StayCurrentPortraitIcon from '@mui/icons-material/StayCurrentPortrait';
+import StayCurrentLandscapeIcon from '@mui/icons-material/StayCurrentLandscape';
+
 import { Activity } from '../../types/activity';
+import ActivityRenderer from './ActivityRenderer';
 
-import MCQActivity from './activity-types/MCQActivity';
-import { LetterSpotlightContent, MCQContent, MediaSpotlightContent } from '../../types/activityContentTypes';
 
-import MatchingActivity from './activity-types/MatchingActivity';
-import { MatchingContent } from '../../types/activityContentTypes';
-
-import EquationFillInTheBlank from './activity-types/EquationFillInTheBlank';
-// Import the REFINED type
-import { SimpleEquationContent } from '../../types/activityContentTypes';
-
-import FirstLetterMatch from './activity-types/FirstLetterMatch';
-import { FirstLetterMatchContent } from '../../types/activityContentTypes';
-
-import WordBankCompletion from './activity-types/WordBankCompletion';
-import { WordBankCompletionContent } from '../../types/activityContentTypes';
-
-import DropdownCompletion from './activity-types/DropdownCompletion';
-import { DropdownCompletionContent } from '../../types/activityContentTypes';
-import LetterSpotlight from './activity-types/LetterSpotlight';
-import MediaSpotlight from './activity-types/MediaSpotlight';
 
 interface DevicePreviewProps {
     activityData: Partial<Activity>;
@@ -31,120 +16,57 @@ interface DevicePreviewProps {
 
 const DevicePreview: React.FC<DevicePreviewProps> = ({ activityData }) => {
     const [device, setDevice] = useState<'phone' | 'tablet'>('phone');
+    const [orientation, setOrientation] = useState<'portrait' | 'landscape'>('portrait');
 
-    const handleDeviceChange = (event: React.MouseEvent<HTMLElement>, newDevice: 'phone' | 'tablet' | null) => {
-        if (newDevice !== null) {
-            setDevice(newDevice);
-        }
+    // --- NEW: Calculate styles based on state ---
+    const deviceDimensions = {
+        phone: { width: 375, height: 667 },
+        tablet: { width: 540, height: 720 }
     };
 
-    const renderActivityComponent = () => {
-        if (!activityData.activityTypeId || !activityData.contentJson) {
-            return <Typography p={2} color="text.secondary">Please select an activity type and provide JSON content.</Typography>;
-        }
+    const currentDimensions = deviceDimensions[device];
+    const isLandscape = orientation === 'landscape';
 
-        let content;
+    const frameStyle = {
+        width: `${isLandscape ? currentDimensions.height : currentDimensions.width}px`,
+        height: `${isLandscape ? currentDimensions.width : currentDimensions.height}px`,
+        // ... other frame styles (border, borderRadius, etc.)
+        transition: 'width 0.4s ease, height 0.4s ease',
+    };
+    
+    let content: any;
+    if (activityData.contentJson) {
         try {
             content = JSON.parse(activityData.contentJson);
         } catch (e) {
-            return <Typography p={2} color="error">Invalid JSON format. Preview is paused.</Typography>;
+            content = { error: 'Invalid JSON' };
         }
-
-        switch (activityData.activityTypeId) {
-             case 2:  // Can be LetterSpotlight OR MediaSpotlight
-                         if ('spotlightLetter' in content && 'items' in content) {
-                             // This structure matches MediaSpotlight
-                             return <MediaSpotlight content={content as MediaSpotlightContent} />;
-                         }
-                         if ('spotlightLetter' in content && 'words' in content) {
-                             // This structure matches LetterSpotlight
-                             return <LetterSpotlight content={content as LetterSpotlightContent} />;
-                         }
-                         return <Typography p={2} color="error">Invalid JSON for Activity Type 2.</Typography>;
-            
-            case 4: // Matching (Assuming ID from your DB)
-                if ('words' in content) {
-                    return <FirstLetterMatch content={content as FirstLetterMatchContent} />;
-                }
-                if ('columnA' in content) {
-                    return <MatchingActivity content={content as MatchingContent} />;
-                }
-                return <Typography p={2} color="error">Invalid JSON structure for Matching activity.</Typography>;
-            case 7: // FillInTheBlanks
-                if ('sentences' in content && 'wordBank' in content) {
-                    return <WordBankCompletion content={content as WordBankCompletionContent} />;
-                }
-                if ('sentences' in content && !('wordBank' in content)) {
-                    // This condition matches our new dropdown structure
-                    return <DropdownCompletion content={content as DropdownCompletionContent} />;
-                }
-                if ('leftOperand' in content) {
-                    return <EquationFillInTheBlank content={content as SimpleEquationContent} />;
-                }
-
-                return <Typography p={2} color="error">Invalid JSON for FillInTheBlanks activity.</Typography>;
-            case 13: // MultipleChoiceQuestion (ID from your DB seeder)
-                // Type assertion tells TypeScript to trust us that the content matches the MCQContent interface
-                return <MCQActivity content={content as MCQContent} />;
-            // Add cases for all 18 activity types here
-            default:
-                return <Typography p={2} color="text.secondary">Preview for this activity type is not yet implemented.</Typography>;
-        }
-    };
-
-    const deviceStyles = {
-        phone: { width: '375px', height: '667px' },
-        tablet: { width: '768px', height: '1024px' }
-    };
+    }
 
     return (
         <Box>
-            <Box display="flex" justifyContent="center" mb={2}>
-                <ToggleButtonGroup
-                    value={device}
-                    exclusive
-                    onChange={handleDeviceChange}
-                    aria-label="device orientation"
-                >
-                    <ToggleButton value="phone" aria-label="phone">
-                        <PhoneIphoneIcon />
-                    </ToggleButton>
-                    <ToggleButton value="tablet" aria-label="tablet">
-                        <TabletMacIcon />
-                    </ToggleButton>
+            <Box display="flex" justifyContent="center" mb={2} gap={2}>
+                <ToggleButtonGroup value={device} exclusive onChange={(e, v) => v && setDevice(v)}>
+                    <ToggleButton value="phone"><PhoneIphoneIcon /></ToggleButton>
+                    <ToggleButton value="tablet"><TabletMacIcon /></ToggleButton>
+                </ToggleButtonGroup>
+                <ToggleButtonGroup value={orientation} exclusive onChange={(e, v) => v && setOrientation(v)}>
+                    <ToggleButton value="portrait"><StayCurrentPortraitIcon /></ToggleButton>
+                    <ToggleButton value="landscape"><StayCurrentLandscapeIcon /></ToggleButton>
                 </ToggleButtonGroup>
             </Box>
-
+            
             <Box display="flex" justifyContent="center">
-                <Paper
-                    elevation={6}
-                    sx={{
-                        width: deviceStyles[device].width,
-                        height: deviceStyles[device].height,
-                        borderRadius: '36px',
-                        border: '10px solid black',
-                        boxSizing: 'border-box',
-                        overflow: 'hidden',
-                        transition: 'width 0.3s, height 0.3s',
-                        position: 'relative',
-                        backgroundColor: '#fff'
-                    }}
-                >
-                    <Box
-                        sx={{
-                            position: 'absolute', top: 0, left: 0, right: 0,
-                            height: '25px', background: 'black',
-                            borderTopLeftRadius: '25px', borderTopRightRadius: '25px'
-                        }}
-                    >
-                        <Box sx={{
-                            width: '40%', height: '5px', background: '#333',
-                            borderRadius: '5px', position: 'absolute',
-                            top: '10px', left: '50%', transform: 'translateX(-50%)'
-                        }} />
-                    </Box>
-                    <Box sx={{ paddingTop: '25px', height: '100%', overflowY: 'auto' }}>
-                        {renderActivityComponent()}
+                <Paper elevation={6} sx={frameStyle}>
+                    <Box sx={{ width: '100%', height: '100%', overflow: 'auto' }}>
+                        {activityData.activityTypeId && content ? (
+                            <ActivityRenderer
+                                activityTypeId={activityData.activityTypeId}
+                                content={content}
+                            />
+                        ) : (
+                            <Typography p={2}>Select an activity type and provide JSON.</Typography>
+                        )}
                     </Box>
                 </Paper>
             </Box>

@@ -21,8 +21,12 @@ import {
     DropdownCompletionContent,
     Equation,
     FlashcardContent,
-    MediaSpotlightMultipleContent
+    MediaSpotlightMultipleContent,
+    ConversationContent,
+    SongContent
 } from '../../types/activityContentTypes';
+import ConversationPlayer from './activity-types/ConversationPlayer';
+import SongPlayer from './activity-types/SongPlayer';
 
 interface ActivityRendererProps {
     activityTypeId: number;
@@ -42,16 +46,13 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
         case 4: // Letter Spotlight
               return <EquationFillInTheBlank content={content as Equation} />;
 
-        case 5: // Pair Matching or First Letter Match
-            if ('words' in content) {
-                return <FirstLetterMatch content={content as FirstLetterMatchContent} />;
-            }
-            if ('columnA' in content) {
-                return <MatchingActivity content={content as MatchingContent} />;
-            }
-            return <Typography p={2} color="error">Invalid JSON structure for Matching Activity.</Typography>;
+        case 5: // ConversationPlayer
+            return <ConversationPlayer content={content as ConversationContent} />;
 
-        case 6: // All FillInTheBlanks variations
+        case 6: // SongPlayer
+            return <SongPlayer content={content as SongContent} />;
+
+        case 7: // All FillInTheBlanks variations
             if ('sentences' in content && 'wordBank' in content) {
                 return <WordBankCompletion content={content as WordBankCompletionContent} />;
             }

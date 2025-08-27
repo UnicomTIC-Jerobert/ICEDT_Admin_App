@@ -1,3 +1,18 @@
-
+{
+  "title": "ஓடி விளையாடு பாப்பா",
+  "artist": "சுப்பிரமணிய பாரதியார்",
+  "albumArtUrl": "https://your-bucket.s3.region.amazonaws.com/path/to/bharathiyar_art.jpg",
+  "audioUrl": "https://icedt-tamilapp-media.s3.eu-north-1.amazonaws.com/malaiyar/paadal/odi_villaiyaddu_pappa.wav",
+  "lyrics": [
+    { "text": "ஓடி விளையாடு பாப்பா, - நீ", "timestamp": 0.5 },
+    { "text": "ஓய்ந்திருக்க லாகாது பாப்பா,", "timestamp": 3.2 },
+    { "text": "கூடி விளையாடு பாப்பா, - ஒரு", "timestamp": 5.8 },
+    { "text": "குழந்தையை வையாதே பாப்பா.", "timestamp": 8.5 },
+    { "text": "சின்னஞ் சிறுகுருவி போலே - நீ", "timestamp": 12.2 },
+    { "text": "திரிந்து பறந்துவா பாப்பா,", "timestamp": 14.8 },
+    { "text": "வண்ணப் பறவைகளைக் கண்டு - நீ", "timestamp": 17.5 },
+    { "text": "மனதில் மகிழ்ச்சிகொள்ளு பாப்பா.", "timestamp": 20.3 }
+  ]
+}
 
 

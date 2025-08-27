@@ -47,7 +47,7 @@ export interface Equation {
 export interface SentenceWithBlank {
     id: number; // A unique ID for this sentence
     // The sentence parts before and after the blank
-    prefix: string; 
+    prefix: string;
     suffix: string;
     correctAnswer: string;
 }
@@ -116,5 +116,32 @@ export interface FlashcardContent {
     audioUrl?: string;
 }
 
+// --- NEW: Type for Conversation Activity ---
+export interface ChatMessage {
+    speaker: string;      // e.g., "Mani", "Vani"
+    avatar?: string;     // Optional URL for a speaker's avatar image
+    text: string;         // The dialogue text
+    timestamp: number;    // The start time of this line in the audio file (in seconds)
+}
+
+export interface ConversationContent {
+    title: string;
+    audioUrl: string;     // The URL of the full conversation audio file
+    messages: ChatMessage[];
+}
+
+// --- NEW: Type for Song Player Activity ---
+export interface LyricLine {
+    text: string;       // The lyric line
+    timestamp: number;  // The time in seconds when this line starts
+}
+
+export interface SongContent {
+    title: string;
+    artist?: string;    // Optional artist name
+    albumArtUrl?: string; // Optional URL for album art
+    audioUrl: string;   // The URL of the full song audio file
+    lyrics: LyricLine[];
+}
 
 

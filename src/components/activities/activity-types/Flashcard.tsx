@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react'; // 1. Import useCallback
 import { Box, Typography, IconButton, Card, CardMedia, CardContent } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import { FlashcardContent } from '../../../types/activityContentTypes';
@@ -11,25 +11,31 @@ interface FlashcardProps {
 const Flashcard: React.FC<FlashcardProps> = ({ content }) => {
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
-    // Automatically play the sound when the component is displayed
+    // 2. Wrap the playAudio function in useCallback.
+    //    This function now depends on 'content', so we list it in the dependency array.
+    const playAudio = useCallback(() => {
+        if (content?.audioUrl && audioRef.current) {
+            // Assuming REACT_APP_MEDIA_URL is a base URL for your S3 content
+            const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL || '';
+            audioRef.current.src = `${mediaBaseUrl}${content.audioUrl}`;
+            audioRef.current.play().catch(e => console.error("Audio playback failed:", e));
+        }
+    }, [content]); // This function will only be recreated if 'content' changes.
+
+    // 3. Add the now-stable 'playAudio' function to the useEffect dependency array.
     useEffect(() => {
         // Add a small delay to allow the card to render before playing
         const timer = setTimeout(() => {
             playAudio();
         }, 300);
         return () => clearTimeout(timer);
-    }, [content]); // Rerun effect if the content (the specific card) changes
-
-    const playAudio = () => {
-        if (content?.audioUrl && audioRef.current) {
-            audioRef.current.src = `${process.env.REACT_APP_MEDIA_URL}/${content.audioUrl}`;
-            audioRef.current.play().catch(e => console.error("Audio playback failed:", e));
-        }
-    };
+    }, [content, playAudio]); // The dependency array is now complete and correct.
 
     if (!content) {
         return <Typography color="error">No flashcard content to display.</Typography>;
     }
+    
+    const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL || '';
 
     return (
         <Box p={3} sx={{ fontFamily: 'sans-serif', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -39,7 +45,8 @@ const Flashcard: React.FC<FlashcardProps> = ({ content }) => {
                 <CardMedia
                     component="img"
                     height="240"
-                    image={`${process.env.REACT_APP_MEDIA_URL}/${content.imageUrl}`}
+                    // Construct the full image URL
+                    image={`${mediaBaseUrl}${content.imageUrl}`}
                     alt={content.word}
                     sx={{ objectFit: 'cover' }}
                 />
@@ -57,7 +64,6 @@ const Flashcard: React.FC<FlashcardProps> = ({ content }) => {
                 </CardContent>
             </Card>
 
-            {/* Hidden audio element for playback */}
             <audio ref={audioRef} style={{ display: 'none' }} />
         </Box>
     );

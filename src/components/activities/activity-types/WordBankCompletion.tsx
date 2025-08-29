@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Paper, Chip, Button } from '@mui/material';
 import ReplayIcon from '@mui/icons-material/Replay';
-import { WordBankCompletionContent, SentenceWithBlank } from '../../../types/activityContentTypes';
+import { WordBankCompletionContent} from '../../../types/activityContentTypes';
 
 interface WordBankProps {
     content: WordBankCompletionContent;

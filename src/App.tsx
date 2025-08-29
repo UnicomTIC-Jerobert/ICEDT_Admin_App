@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link as RouterLink } from 'react-router-dom';
-import { CssBaseline, ThemeProvider, createTheme, AppBar, Toolbar, Typography, Container, Box, Button } from '@mui/material';
+import { CssBaseline, ThemeProvider, createTheme, AppBar, Toolbar, Typography, Container, Button } from '@mui/material';
 
 // Import your page components
 import LevelsPage from './pages/LevelsPage';
@@ -36,7 +36,7 @@ function App() {
                 </AppBar>
 
                 {/* Main Content Area */}
-                 <Container component="main" maxWidth={false} sx={{ mt: 4, px: 2 }}>
+                <Container component="main" maxWidth={false} sx={{ mt: 4, px: 2 }}>
                     <Routes>
                         {/* Define the route for each page */}
                         <Route path="/" element={<Typography variant="h5">Welcome to the Admin Panel!</Typography>} />

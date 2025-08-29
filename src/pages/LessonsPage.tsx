@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useLocation, useNavigate, Link as RouterLink } from 'react-router-dom';
-import { Button, IconButton, Typography } from '@mui/material';
+import { Box, Button, IconButton, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DependentInlineCrudTable from '../components/common/DependentInlineCrudTable';
 import { Lesson } from '../types/lesson';
@@ -17,10 +17,24 @@ const LessonsPage: React.FC = () => {
     const navigate = useNavigate();
     const levelId = query.get('levelId');
 
-    // Handle the error case where levelId is missing from the URL
-    if (!levelId) {
+    const apiService = useMemo(() => {
+        // If levelId is null, we can return a "dummy" or null service.
+        if (!levelId) return null;
+        
+        const numericLevelId = parseInt(levelId, 10);
+        return {
+            getAllByParentId: () => lessonApi.getLessonsByLevelId(numericLevelId),
+            create: (newItem: LessonCreateDto) => lessonApi.create({ ...newItem, levelId: numericLevelId }),
+            update: lessonApi.update,
+            delete: lessonApi.deleteItem
+        };
+    }, [levelId]); // The dependency array is correct.
+
+     // --- STEP 2: PERFORM THE CONDITIONAL RETURN AFTER ALL HOOKS ---
+    // Handle the error case where levelId or the apiService is missing.
+    if (!levelId || !apiService) {
         return (
-            <div style={{ padding: '20px' }}>
+            <Box p={3}>
                 <Typography variant="h5" color="error">Error: No Level ID provided.</Typography>
                 <Button 
                     startIcon={<ArrowBackIcon />} 
@@ -30,22 +44,9 @@ const LessonsPage: React.FC = () => {
                 >
                     Back to Levels
                 </Button>
-            </div>
+            </Box>
         );
     }
-    
-    // Define the API service with the levelId baked in for the create method.
-    // useMemo prevents this object from being recreated on every render.
-    const apiService = useMemo(() => {
-        const numericLevelId = parseInt(levelId, 10);
-        return {
-            getAllByParentId: () => lessonApi.getLessonsByLevelId(numericLevelId),
-            // Add the required levelId to the payload for the create function
-            create: (newItem: LessonCreateDto) => lessonApi.create({ ...newItem, levelId: numericLevelId }),
-            update: lessonApi.update,
-            delete: lessonApi.deleteItem
-        };
-    }, [levelId]);
 
     // Define the columns for the table.
     const columns = [
@@ -57,15 +58,15 @@ const LessonsPage: React.FC = () => {
 
     // Define the custom "Manage Activities" link.
     const renderCustomLessonActions = (lesson: Lesson) => (
-        <Button 
-            component={RouterLink} 
+        <Button
+            component={RouterLink}
             to={`/activities?lessonId=${lesson.lessonId}`}
             variant="outlined" size="small" sx={{ mr: 1 }}
         >
             Manage Activities
         </Button>
     );
-    
+
     return (
         <DependentInlineCrudTable<Lesson, LessonCreateDto>
             entityName="Lesson"

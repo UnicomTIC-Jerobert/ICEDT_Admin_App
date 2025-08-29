@@ -12,17 +12,15 @@ const API_BASE_URL = '/api/media';
  */
 export const uploadSingleFile = async (
     file: File, 
-    levelId: number, 
-    lessonId: number, 
-    mediaType: 'images' | 'audio' | 'videos'
+    folderName: string, 
 ): Promise<MediaUploadResponse> => {
 
     // FormData is the standard way to send files and form data
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('levelId', levelId.toString());
-    formData.append('lessonId', lessonId.toString());
-    formData.append('mediaType', mediaType);
+    formData.append('levels',folderName);
+    // formData.append('lessonId', lessonId.toString());
+    // formData.append('mediaType', mediaType);
 
     const response = await fetch(`${API_BASE_URL}/upload-single`, {
         method: 'POST',

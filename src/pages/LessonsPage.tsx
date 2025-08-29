@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useLocation, useNavigate, Link as RouterLink } from 'react-router-dom';
-import { Box, Button, IconButton, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DependentInlineCrudTable from '../components/common/DependentInlineCrudTable';
 import { Lesson } from '../types/lesson';
@@ -20,7 +20,7 @@ const LessonsPage: React.FC = () => {
     const apiService = useMemo(() => {
         // If levelId is null, we can return a "dummy" or null service.
         if (!levelId) return null;
-        
+
         const numericLevelId = parseInt(levelId, 10);
         return {
             getAllByParentId: () => lessonApi.getLessonsByLevelId(numericLevelId),
@@ -30,14 +30,14 @@ const LessonsPage: React.FC = () => {
         };
     }, [levelId]); // The dependency array is correct.
 
-     // --- STEP 2: PERFORM THE CONDITIONAL RETURN AFTER ALL HOOKS ---
+    // --- STEP 2: PERFORM THE CONDITIONAL RETURN AFTER ALL HOOKS ---
     // Handle the error case where levelId or the apiService is missing.
     if (!levelId || !apiService) {
         return (
             <Box p={3}>
                 <Typography variant="h5" color="error">Error: No Level ID provided.</Typography>
-                <Button 
-                    startIcon={<ArrowBackIcon />} 
+                <Button
+                    startIcon={<ArrowBackIcon />}
                     sx={{ mt: 2 }}
                     variant="contained"
                     onClick={() => navigate('/levels')}

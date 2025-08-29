@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Box, Typography } from '@mui/material';
+import { Button, Box } from '@mui/material';
 import * as mediaApi from '../../api/mediaApi'; // You will create this
 
 interface ImageUploadCellProps {
@@ -13,11 +13,11 @@ const ImageUploadCell: React.FC<ImageUploadCellProps> = ({ value, onUrlChange })
         if (!file) return;
 
         try {
-            // Step A: Upload the file to the media controller
-          //  const response = await mediaApi.uploadSingleFile(file, 'levels'); // Folder name
-            
+            //Step A: Upload the file to the media controller
+            const response = await mediaApi.uploadSingleFile(file, 'levels'); // Folder name
+
             // Step B: Use the returned URL to update the parent form's state
-          //  onUrlChange(response.url);
+            onUrlChange(response.url);
 
         } catch (error) {
             console.error("Upload failed", error);

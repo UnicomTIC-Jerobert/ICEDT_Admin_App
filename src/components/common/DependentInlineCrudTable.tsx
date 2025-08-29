@@ -80,20 +80,7 @@ const DependentInlineCrudTable = <T extends Record<string, any>, TCreateDto exte
         });
         setEditedRowData(initialEditData);
     };
-    const handleCreate = async () => {
-        if (!editedRowData) return;
-        try {
-            // The service implementation will need to add the parentId to the payload
-            await apiService.create(editedRowData as TCreateDto);
-            handleCancel();
-            await fetchData();
-        } catch (error) {
-            console.error(error);
-        }
-    };
 
-    // handleEdit, handleSave, handleDelete, handleInputChange, renderRow, renderAddRow are IDENTICAL to InlineCrudTable
-    // ... (copy those functions from the previous component) ...
 
     const handleCancel = () => {
         setEditRowId(null);

@@ -3,9 +3,7 @@ import { Typography } from '@mui/material';
 
 // --- Step 1: Import ALL activity components and their content types ---
 import MCQActivity from './activity-types/MCQActivity';
-import MatchingActivity from './activity-types/MatchingActivity';
 import EquationFillInTheBlank from './activity-types/Equations';
-import FirstLetterMatch from './activity-types/FirstLetterMatch';
 import MediaSpotlightSingle from './activity-types/MediaSpotlightSingle';
 import WordBankCompletion from './activity-types/WordBankCompletion';
 import DropdownCompletion from './activity-types/DropdownCompletion';
@@ -14,8 +12,6 @@ import MediaSpotlightMultiple from './activity-types/MediaSpotlightMultiple';
 
 import {
     MCQContent,
-    MatchingContent,
-    FirstLetterMatchContent,
     MediaSpotlightSingleContent,
     WordBankCompletionContent,
     DropdownCompletionContent,

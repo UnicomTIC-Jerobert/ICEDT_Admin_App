@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Paper, Chip, Button } from '@mui/material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ReplayIcon from '@mui/icons-material/Replay';
 import { WordBankCompletionContent, SentenceWithBlank } from '../../../types/activityContentTypes';
 
@@ -27,44 +26,12 @@ const WordBankCompletion: React.FC<WordBankProps> = ({ content }) => {
         setIsComplete(false);
     };
 
-    const handleDrop = (sentenceId: number, word: string) => {
-        // Simple click-based drop for now
-        setAnswers(prev => ({ ...prev, [sentenceId]: word }));
-    };
-
     const handleCheckAnswers = () => {
         setIsComplete(true);
     };
 
     const isAllCorrect = content.sentences.every(s => answers[s.id] === s.correctAnswer);
 
-    const renderSentence = (sentence: SentenceWithBlank) => {
-        const userAnswer = answers[sentence.id];
-        const isCorrect = userAnswer === sentence.correctAnswer;
-        
-        let blankStyle = {
-            border: '1px dashed grey',
-            backgroundColor: '#eee',
-            color: 'blue',
-        };
-        
-        if (isComplete) {
-            blankStyle.border = `2px solid ${isCorrect ? 'green' : 'red'}`;
-            blankStyle.backgroundColor = isCorrect ? '#e8f5e9' : '#ffebee';
-            blankStyle.color = isCorrect ? 'green' : 'red';
-        }
-
-        return (
-            <Box key={sentence.id} display="flex" alignItems="center" my={2} flexWrap="wrap">
-                <Typography variant="body1" component="span">{sentence.prefix}&nbsp;</Typography>
-                <Chip
-                    label={userAnswer || '...........'}
-                    sx={{ ...blankStyle, minWidth: '120px', height: '40px', fontSize: '1rem' }}
-                />
-                <Typography variant="body1" component="span">&nbsp;{sentence.suffix}</Typography>
-            </Box>
-        );
-    };
     
     // For a simple click-to-fill interaction:
     const [selectedWord, setSelectedWord] = useState<string | null>(null);

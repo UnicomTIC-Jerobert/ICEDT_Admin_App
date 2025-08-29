@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react'; // 1. Import useCallback
 import { Box, Typography, Paper, Chip, Button } from '@mui/material';
 import ReplayIcon from '@mui/icons-material/Replay';
-import { WordBankCompletionContent} from '../../../types/activityContentTypes';
+import { WordBankCompletionContent } from '../../../types/activityContentTypes';
 
 interface WordBankProps {
     content: WordBankCompletionContent;
@@ -15,40 +15,41 @@ const WordBankCompletion: React.FC<WordBankProps> = ({ content }) => {
     const [answers, setAnswers] = useState<Record<number, string>>({});
     const [shuffledWordBank, setShuffledWordBank] = useState<string[]>([]);
     const [isComplete, setIsComplete] = useState<boolean>(false);
+    const [selectedWord, setSelectedWord] = useState<string | null>(null);
 
-    useEffect(() => {
-        handleReset();
-    }, [content]);
-
-    const handleReset = () => {
+    // 2. Wrap the handleReset function in useCallback.
+    //    It depends on the 'content' prop because it uses 'content.wordBank'.
+    const handleReset = useCallback(() => {
         setAnswers({});
         setShuffledWordBank(shuffleArray(content.wordBank));
         setIsComplete(false);
-    };
+        setSelectedWord(null); // Also reset the selected word
+    }, [content]); // Dependency is 'content'
+
+    // 3. Add the now-stable 'handleReset' function to the useEffect dependency array.
+    useEffect(() => {
+        handleReset();
+    }, [content, handleReset]); // The dependency array is now complete.
 
     const handleCheckAnswers = () => {
         setIsComplete(true);
     };
 
     const isAllCorrect = content.sentences.every(s => answers[s.id] === s.correctAnswer);
-
     
-    // For a simple click-to-fill interaction:
-    const [selectedWord, setSelectedWord] = useState<string | null>(null);
+    const isWordUsed = (word: string) => Object.values(answers).includes(word);
 
     const handleWordBankClick = (word: string) => {
-        if(isWordUsed(word)) return;
+        if (isWordUsed(word) || isComplete) return;
         setSelectedWord(word);
     };
 
     const handleBlankClick = (sentenceId: number) => {
-        if (selectedWord) {
+        if (selectedWord && !isComplete) {
             setAnswers(prev => ({...prev, [sentenceId]: selectedWord}));
             setSelectedWord(null);
         }
     };
-    
-    const isWordUsed = (word: string) => Object.values(answers).includes(word);
 
     return (
         <Box p={3} sx={{ fontFamily: 'sans-serif' }}>

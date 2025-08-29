@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 import { Box, Typography, Paper, IconButton, Card, CardMedia, CardContent } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import { MediaSpotlightSingleContent } from '../../../types/activityContentTypes';
@@ -29,22 +29,27 @@ interface MediaSpotlightProps {
 const MediaSpotlightSingle: React.FC<MediaSpotlightProps> = ({ content }) => {
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
-    // Automatically play audio when the component is shown
+    // 2. Wrap the playAudio function in useCallback.
+    //    Its behavior depends on the 'content' prop, so 'content' is its dependency.
+    const playAudio = useCallback(() => {
+        if (content?.item?.audioUrl && audioRef.current) {
+            const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL || '';
+            audioRef.current.src = `${mediaBaseUrl}${content.item.audioUrl}`;
+            audioRef.current.play().catch(e => console.error("Audio playback failed:", e));
+        }
+    }, [content]); // This function will be recreated only when the 'content' prop changes.
+
+    // 3. Add the now-stable 'playAudio' function to the useEffect dependency array.
     useEffect(() => {
         const timer = setTimeout(() => playAudio(), 300);
         return () => clearTimeout(timer);
-    }, [content]); // Rerun if the content object changes
-
-    const playAudio = () => {
-        if (content.item.audioUrl && audioRef.current) {
-            audioRef.current.src = content.item.audioUrl;
-            audioRef.current.play().catch(e => console.error("Audio playback failed:", e));
-        }
-    };
+    }, [content, playAudio]); // The dependency array is now complete. The warning will disappear.
     
     if (!content || !content.item) {
         return <Typography color="error">Invalid MediaSpotlight content.</Typography>;
     }
+
+    const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL || '';
 
     return (
         <Box p={2} sx={{ fontFamily: 'sans-serif', textAlign: 'center' }}>
@@ -67,14 +72,12 @@ const MediaSpotlightSingle: React.FC<MediaSpotlightProps> = ({ content }) => {
                 </Typography>
             </Paper>
 
-            {/* --- REMOVED NAVIGATION BUTTONS --- */}
-            {/* The component now renders only the single 'item' it receives */}
             <Box display="flex" alignItems="center" justifyContent="center">
                 <Card sx={{ minWidth: 250, mx: 1 }}>
                     <CardMedia
                         component="img"
                         height="180"
-                        image={`${process.env.REACT_APP_MEDIA_URL}/${content.item.imageUrl}`}
+                        image={`${mediaBaseUrl}${content.item.imageUrl}`}
                         alt={content.item.text}
                         sx={{ objectFit: 'contain', p: 1 }}
                     />
@@ -88,9 +91,6 @@ const MediaSpotlightSingle: React.FC<MediaSpotlightProps> = ({ content }) => {
                     </CardContent>
                 </Card>
             </Box>
-
-            {/* --- REMOVED PROGRESS INDICATOR --- */}
-            {/* The parent (ActivityPlayerModal) is responsible for showing progress */}
 
             <audio ref={audioRef} style={{ display: 'none' }} />
         </Box>

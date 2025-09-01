@@ -84,7 +84,61 @@ export const getActivityTemplate = (activityTypeId: number): string => {
         { "text": "மலை மேலே ஏறி வா", "timestamp": 7.8 },
         { "text": "மல்லிகைப் பூ கொண்டு வா", "timestamp": 10.5 }
       ]
+    },
+    7: {  // RecognitionGrid
+      "title": "Find the picture that matches the sound",
+      "pages":
+      {
+        "gridItems": [
+          { "id": 1, "imageUrl": "...", "audioUrl": ".../pal.mp3" },      // பல்
+          { "id": 2, "imageUrl": "...", "audioUrl": ".../kal.mp3" },      // கல்
+          { "id": 3, "imageUrl": "...", "audioUrl": ".../kan.mp3" },      // கண்
+          { "id": 4, "imageUrl": "...", "audioUrl": ".../maram.mp3" },    // மரம்
+          { "id": 5, "imageUrl": "...", "audioUrl": ".../vattam.mp3" },   // வட்டம்
+          { "id": 6, "imageUrl": "...", "audioUrl": ".../naram.mp3" }     // நகரம்
+        ],
+        "correctItemIds": [1, 2, 3] // The user must find பல், கல், and கண் on this page
+      }
+    },
+    8: { // CharacterGrid
+      "title": "Find the letter that matches the sound",
+      "pages":
+      {
+        "gridItems": [
+          { "id": 1, "character": "க", "audioUrl": ".../ka.mp3" },
+          { "id": 2, "character": "ங", "audioUrl": ".../nga.mp3" },
+          { "id": 3, "character": "ச", "audioUrl": ".../sa.mp3" },
+          // ... and so on for all 18 letters
+        ],
+        "correctItemIds": [1, 2, 3] // The user must find all of them
+      }
+
+    },
+    9: {// WordPairMCQ
+      "title": "Listen to the sound and choose the correct word",
+      "questions": [
+        {
+          "id": 1,
+          "promptAudioUrl": ".../paal_sound.mp3",
+          "choices": ["பல்", "பால்"],
+          "correctAnswer": "பால்"
+        },
+        {
+          "id": 2,
+          "promptAudioUrl": ".../aram_sound.mp3",
+          "choices": ["அரம்", "ஆரம்"],
+          "correctAnswer": "அரம்"
+        },
+        {
+          "id": 3,
+          "promptAudioUrl": ".../kaal_sound.mp3",
+          "choices": ["கல்", "கால்"],
+          "correctAnswer": "கால்"
+        }
+        // ... and so on for all word pairs
+      ]
     }
+
 
     // Add templates for all 18 activity types here...
   };

@@ -5,8 +5,6 @@ import { Typography } from '@mui/material';
 import MCQActivity from './activity-types/MCQActivity';
 import EquationFillInTheBlank from './activity-types/Equations';
 import MediaSpotlightSingle from './activity-types/MediaSpotlightSingle';
-import WordBankCompletion from './activity-types/WordBankCompletion';
-import DropdownCompletion from './activity-types/DropdownCompletion';
 import Flashcard from './activity-types/Flashcard';
 import MediaSpotlightMultiple from './activity-types/MediaSpotlightMultiple';
 
@@ -19,10 +17,16 @@ import {
     FlashcardContent,
     MediaSpotlightMultipleContent,
     ConversationContent,
-    SongContent
+    SongContent,
+    RecognitionGridContent,
+    CharacterGridContent,
+    WordPairQuestion
 } from '../../types/activityContentTypes';
 import ConversationPlayer from './activity-types/ConversationPlayer';
 import SongPlayer from './activity-types/SongPlayer';
+import RecognitionGrid from './activity-types/RecognitionGrid';
+import CharacterGrid from './activity-types/CharacterGrid';
+import WordPairMCQ from './activity-types/WordPairMCQ';
 
 interface ActivityRendererProps {
     activityTypeId: number;
@@ -40,7 +44,7 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
         case 3:
             return <MediaSpotlightSingle content={content as MediaSpotlightSingleContent} />;
         case 4: // Letter Spotlight
-              return <EquationFillInTheBlank content={content as Equation} />;
+            return <EquationFillInTheBlank content={content as Equation} />;
 
         case 5: // ConversationPlayer
             return <ConversationPlayer content={content as ConversationContent} />;
@@ -49,16 +53,12 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
             return <SongPlayer content={content as SongContent} />;
 
         case 7: // All FillInTheBlanks variations
-            if ('sentences' in content && 'wordBank' in content) {
-                return <WordBankCompletion content={content as WordBankCompletionContent} />;
-            }
-            if ('sentences' in content) { // No wordBank, so it must be Dropdown
-                return <DropdownCompletion content={content as DropdownCompletionContent} />;
-            }
-            
+            return <RecognitionGrid content={content as RecognitionGridContent} />;
 
-            return <Typography p={2} color="error">Invalid JSON structure for FillInTheBlanks Activity.</Typography>;
-
+        case 8: // All FillInTheBlanks variations
+            return <CharacterGrid content={content as CharacterGridContent} />;
+        case 9:
+            return <WordPairMCQ question={content as WordPairQuestion} />;
         case 13: // MultipleChoiceQuestion
             // The MCQ component is smart enough to handle a single object or an array of questions.
             return <MCQActivity content={content as MCQContent} />;

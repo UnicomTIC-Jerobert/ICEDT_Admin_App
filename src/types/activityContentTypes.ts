@@ -144,4 +144,73 @@ export interface SongContent {
     lyrics: LyricLine[];
 }
 
+// --- NEW: Type for Recognition Grid Activity ---
+export interface GridItem {
+    id: number;         // Unique ID for this item
+    imageUrl: string;
+    audioUrl: string;   // The sound that identifies this as the correct answer
+}
 
+export interface RecognitionGridPage {
+    // All possible items to display in the grid for this page (e.g., 6 images)
+    gridItems: GridItem[]; 
+    // The list of correct item IDs that the user must find on this page
+    correctItemIds: number[]; 
+}
+
+export interface RecognitionGridContent {
+    title: string;
+    pages: RecognitionGridPage[];
+}
+
+// --- NEW: Type for Character Grid Activity ---
+export interface CharacterGridItem {
+    id: number;
+    character: string; // The letter to display, e.g., "க"
+    audioUrl: string;  // The audio of that letter's sound
+}
+
+export interface CharacterGridPage {
+    gridItems: CharacterGridItem[];
+    correctItemIds: number[];
+}
+
+export interface CharacterGridContent {
+    title: string;
+    pages: CharacterGridPage[];
+}
+
+// --- NEW: Type for Word Pair MCQ Activity ---
+export interface WordPairQuestion {
+    id: number;
+    // The audio prompt to play for this question
+    promptAudioUrl: string; 
+    // The two words to display as choices
+    choices: [string, string];
+    // The correct word
+    correctAnswer: string;
+}
+
+export interface WordPairMCQContent {
+    title: string;
+    questions: WordPairQuestion[];
+}
+
+// --- NEW: Type for Interactive Scene Finder Activity ---
+export interface Hotspot {
+    id: number;           // Unique ID for this object in the scene
+    name: string;         // The name of the object, e.g., "ஆடு"
+    audioUrl: string;     // The audio prompt that asks the user to find this object
+    // Coordinates are percentages (0-100) for responsive design
+    x: number;            // X-coordinate of the top-left corner
+    y: number;            // Y-coordinate of the top-left corner
+    width: number;        // Width of the tappable area
+    height: number;       // Height of the tappable area
+}
+
+export interface SceneFinderContent {
+    title: string;
+    sceneImageUrl: string; // The main background image
+    sceneAudioUrl?: string; // Optional ambient sound for the scene
+    hotspots: Hotspot[];    // The list of all interactive objects in the scene
+}

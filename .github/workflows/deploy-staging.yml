@@ -26,7 +26,7 @@ jobs:
         run: npm run build
         env:
           # Set the production API URL for the build
-          REACT_APP_API_BASE_URL: http://13.51.194.17/api
+          REACT_APP_API_BASE_URL: https://api-icedt.test123unicomtic.work/api
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2

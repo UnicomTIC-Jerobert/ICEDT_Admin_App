@@ -3,7 +3,7 @@ import { Box, Typography, Paper, Button, IconButton } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { WordPairMCQContent, WordPairQuestion } from '../../../types/activityContentTypes';
+import { WordPairQuestion } from '../../../types/activityContentTypes';
 
 // interface WordPairProps {
 //     content: WordPairMCQContent;

@@ -137,6 +137,21 @@ export const getActivityTemplate = (activityTypeId: number): string => {
         }
         // ... and so on for all word pairs
       ]
+    },
+    10: { // word finder
+      "title": "Find the words containing the letter",
+      "challenges": [
+        {
+          "targetLetter": "ல்",
+          "wordGrid": ["பல்", "கல்", "கண்", "மண்", "வயல்", "மரம்", "படம்", "தடம்", "அப்பம்", "வள்ளம்"],
+          "correctWords": ["பல்", "கல்", "வயல்", "வள்ளம்"]
+        },
+        {
+          "targetLetter": "ட்",
+          "wordGrid": ["பம்பரம்", "பட்டம்", "வட்டம்", "நகரம்", "படம்", "தடம்", "கல்", "கண்", "மண்", "அப்பம்"],
+          "correctWords": ["பட்டம்", "வட்டம்"]
+        }
+      ]
     }
 
 

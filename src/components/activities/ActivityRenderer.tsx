@@ -20,13 +20,15 @@ import {
     SongContent,
     RecognitionGridContent,
     CharacterGridContent,
-    WordPairQuestion
+    WordPairQuestion,
+    WordFinderChallenge
 } from '../../types/activityContentTypes';
 import ConversationPlayer from './activity-types/ConversationPlayer';
 import SongPlayer from './activity-types/SongPlayer';
 import RecognitionGrid from './activity-types/RecognitionGrid';
 import CharacterGrid from './activity-types/CharacterGrid';
 import WordPairMCQ from './activity-types/WordPairMCQ';
+import WordFinder from './activity-types/WordFinder';
 
 interface ActivityRendererProps {
     activityTypeId: number;
@@ -59,6 +61,9 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
             return <CharacterGrid content={content as CharacterGridContent} />;
         case 9:
             return <WordPairMCQ question={content as WordPairQuestion} />;
+
+        case 10:
+            return <WordFinder content={content as WordFinderChallenge} />;
         case 13: // MultipleChoiceQuestion
             // The MCQ component is smart enough to handle a single object or an array of questions.
             return <MCQActivity content={content as MCQContent} />;

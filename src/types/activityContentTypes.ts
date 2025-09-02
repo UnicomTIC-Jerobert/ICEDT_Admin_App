@@ -214,3 +214,15 @@ export interface SceneFinderContent {
     sceneAudioUrl?: string; // Optional ambient sound for the scene
     hotspots: Hotspot[];    // The list of all interactive objects in the scene
 }
+
+// --- NEW: Type for Word Finder Activity ---
+export interface WordFinderChallenge {
+    targetLetter: string;
+    wordGrid: string[];     // All words to display in the grid for this challenge
+    correctWords: string[]; // The subset of words that are the correct answers
+}
+
+export interface WordFinderContent {
+    title: string;
+    challenges: WordFinderChallenge[];
+}

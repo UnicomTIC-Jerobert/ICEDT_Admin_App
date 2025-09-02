@@ -11,8 +11,6 @@ import MediaSpotlightMultiple from './activity-types/MediaSpotlightMultiple';
 import {
     MCQContent,
     MediaSpotlightSingleContent,
-    WordBankCompletionContent,
-    DropdownCompletionContent,
     Equation,
     FlashcardContent,
     MediaSpotlightMultipleContent,

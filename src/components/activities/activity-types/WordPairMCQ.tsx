@@ -3,12 +3,11 @@ import { Box, Typography, Paper, Button, IconButton } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import ReplayIcon from '@mui/icons-material/Replay';
 import { WordPairMCQContent, WordPairQuestion } from '../../../types/activityContentTypes';
 
-interface WordPairProps {
-    content: WordPairMCQContent;
-}
+// interface WordPairProps {
+//     content: WordPairMCQContent;
+// }
 
 // This is a "mini-player" that will be managed by the parent ActivityPlayerModal
 const WordPairMCQ: React.FC<{ question: WordPairQuestion }> = ({ question }) => {

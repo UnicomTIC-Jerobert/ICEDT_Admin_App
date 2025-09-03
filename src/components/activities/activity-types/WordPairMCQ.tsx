@@ -3,7 +3,6 @@ import { Box, Typography, Paper, Button, IconButton } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import ReplayIcon from '@mui/icons-material/Replay';
 
 // --- COLOCATED TYPES ---
 export interface WordPairQuestion {

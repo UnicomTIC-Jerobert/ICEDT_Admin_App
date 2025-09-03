@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Box, Typography, Paper, Grid, IconButton, Button } from '@mui/material';
+import { Box, Typography, Paper, Grid, IconButton} from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 
 // --- COLOCATED TYPES ---

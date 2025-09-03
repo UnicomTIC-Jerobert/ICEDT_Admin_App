@@ -3,22 +3,37 @@ import { Box, Typography, Paper, Button, IconButton } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { WordPairQuestion } from '../../../types/activityContentTypes';
+import ReplayIcon from '@mui/icons-material/Replay';
 
-// interface WordPairProps {
-//     content: WordPairMCQContent;
-// }
+// --- COLOCATED TYPES ---
+export interface WordPairQuestion {
+    id: number;
+    promptAudioUrl: string; 
+    choices: [string, string];
+    correctAnswer: string;
+}
 
-// This is a "mini-player" that will be managed by the parent ActivityPlayerModal
-const WordPairMCQ: React.FC<{ question: WordPairQuestion }> = ({ question }) => {
+// This is the top-level structure.
+// The ActivityPlayerModal will loop through the 'questions' array.
+export interface WordPairMCQContent {
+    title: string;
+    questions: WordPairQuestion[];
+}
+
+// --- PROPS INTERFACE ---
+// The component receives a SINGLE question object.
+interface WordPairProps {
+    content: WordPairQuestion;
+}
+
+const WordPairMCQ: React.FC<WordPairProps> = ({ content: question }) => {
     const [userAnswer, setUserAnswer] = useState<string | null>(null);
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
+    // Reset state and autoplay sound when the question prop changes
     useEffect(() => {
-        // Reset state when the question changes
         setUserAnswer(null);
-        // Autoplay the prompt sound
-        const timer = setTimeout(() => playAudio(), 500);
+        const timer = setTimeout(() => playAudio(), 300);
         return () => clearTimeout(timer);
     }, [question]);
 
@@ -36,8 +51,8 @@ const WordPairMCQ: React.FC<{ question: WordPairQuestion }> = ({ question }) => 
     return (
         <Box p={2} textAlign="center">
             <audio ref={audioRef} src={question.promptAudioUrl} />
-            <Paper elevation={2} sx={{ p: 2, mb: 3 }}>
-                <Typography variant="h6">Listen to the sound and choose the correct word:</Typography>
+            <Paper elevation={2} sx={{ p: 2, mb: 4 }}>
+                <Typography variant="h6">Listen and choose the correct word:</Typography>
                 <IconButton onClick={playAudio}><VolumeUpIcon fontSize="large" color="primary" /></IconButton>
             </Paper>
 
@@ -46,8 +61,9 @@ const WordPairMCQ: React.FC<{ question: WordPairQuestion }> = ({ question }) => 
                     const isSelected = userAnswer === choice;
                     const isCorrect = choice === question.correctAnswer;
                     let color: "success" | "error" | "primary" = "primary";
-                    if (isSelected && isCorrect) color = "success";
-                    if (isSelected && !isCorrect) color = "error";
+                    if (isSelected) {
+                        color = isCorrect ? "success" : "error";
+                    }
 
                     return (
                         <Button
@@ -56,26 +72,23 @@ const WordPairMCQ: React.FC<{ question: WordPairQuestion }> = ({ question }) => 
                             color={color}
                             onClick={() => handleAnswer(choice)}
                             disabled={!!userAnswer && !isSelected}
-                            sx={{ fontSize: '2rem', padding: '20px 40px', textTransform: 'none' }}
+                            sx={{ fontSize: '2rem', padding: '20px 40px', textTransform: 'none', minWidth: '180px' }}
                         >
                             {choice}
-                            {isSelected && isCorrect && <CheckCircleIcon sx={{ ml: 1 }} />}
-                            {isSelected && !isCorrect && <CancelIcon sx={{ ml: 1 }} />}
+                            {isSelected && isCorrect && <CheckCircleIcon sx={{ ml: 2 }} />}
+                            {isSelected && !isCorrect && <CancelIcon sx={{ ml: 2 }} />}
                         </Button>
                     );
                 })}
             </Box>
 
-             {userAnswer && ! (userAnswer === question.correctAnswer) && (
-                <Typography variant="h6" color="success.main" mt={2}>
+            {userAnswer && !(userAnswer === question.correctAnswer) && (
+                <Typography variant="h6" color="success.main" mt={3}>
                     Correct Answer: {question.correctAnswer}
                 </Typography>
             )}
         </Box>
     );
 };
-
-// You can then use this inside the ActivityPlayerModal's flow if your ContentJson
-// is an array of questions.
 
 export default WordPairMCQ;

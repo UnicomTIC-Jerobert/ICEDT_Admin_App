@@ -16,17 +16,13 @@ import {
     MediaSpotlightMultipleContent,
     ConversationContent,
     SongContent,
-    RecognitionGridContent,
-    CharacterGridContent,
-    WordPairQuestion,
-    WordFinderChallenge
 } from '../../types/activityContentTypes';
 import ConversationPlayer from './activity-types/ConversationPlayer';
 import SongPlayer from './activity-types/SongPlayer';
-import RecognitionGrid from './activity-types/RecognitionGrid';
-import CharacterGrid from './activity-types/CharacterGrid';
-import WordPairMCQ from './activity-types/WordPairMCQ';
-import WordFinder from './activity-types/WordFinder';
+import RecognitionGrid, { RecognitionGridContent } from './activity-types/RecognitionGrid';
+import CharacterGrid, { CharacterGridContent } from './activity-types/CharacterGrid';
+import WordFinder, { WordFinderChallenge } from './activity-types/WordFinder';
+import WordPairMCQ, { WordPairQuestion } from './activity-types/WordPairMCQ';
 
 interface ActivityRendererProps {
     activityTypeId: number;
@@ -58,10 +54,10 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
         case 8: // All FillInTheBlanks variations
             return <CharacterGrid content={content as CharacterGridContent} />;
         case 9:
-            return <WordPairMCQ question={content as WordPairQuestion} />;
+            return <WordPairMCQ content={content as WordPairQuestion} />;
 
         case 10:
-            return <WordFinder content={content as WordFinderChallenge} />;
+             return <WordFinder content={content as WordFinderChallenge} />;
         case 13: // MultipleChoiceQuestion
             // The MCQ component is smart enough to handle a single object or an array of questions.
             return <MCQActivity content={content as MCQContent} />;

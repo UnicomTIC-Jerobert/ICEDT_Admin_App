@@ -1,6 +1,17 @@
 import React from 'react';
 import { Box, Typography, Paper, Card, CardContent } from '@mui/material';
-import { LetterSpotlightContent } from '../../../types/activityContentTypes';
+
+// --- NEW: Type for Letter Spotlight Activity ---
+export interface SpotlightWord {
+    text: string;
+    imageUrl?: string; // Optional image for the word
+    audioUrl?: string; // Optional audio for pronunciation
+}
+
+export interface LetterSpotlightContent {
+    spotlightLetter: string; // The letter to highlight, e.g., "அ"
+    words: SpotlightWord[];
+}
 
 interface LetterSpotlightProps {
     content: LetterSpotlightContent;

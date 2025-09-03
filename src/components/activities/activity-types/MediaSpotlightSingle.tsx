@@ -1,7 +1,20 @@
 import React, { useRef, useEffect, useCallback } from 'react';
 import { Box, Typography, Paper, IconButton, Card, CardMedia, CardContent } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
-import { MediaSpotlightSingleContent } from '../../../types/activityContentTypes';
+
+// --- NEW: Type for Media Spotlight Activity (Carousel) ---
+interface MediaSpotlightItem {
+    text: string;
+    imageUrl: string;
+    audioUrl?: string;
+}
+
+// --- The content for a SINGLE MediaSpotlight exercise ---
+export interface MediaSpotlightSingleContent {
+    title: string;
+    spotlightLetter: string;
+    item: MediaSpotlightItem; // It now contains a single 'item', not an array 'items'
+}
 
 // The HighlightedWord helper can be reused from LetterSpotlight.tsx
 // Or copied here if you prefer to keep components fully separate.

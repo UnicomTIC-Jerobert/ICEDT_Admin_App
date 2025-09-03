@@ -3,7 +3,20 @@ import { Box, Typography, Paper, IconButton, Slider, Stack, Grid } from '@mui/ma
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import ReplayIcon from '@mui/icons-material/Replay';
-import { ConversationContent } from '../../../types/activityContentTypes';
+
+// --- NEW: Type for Conversation Activity ---
+export interface ChatMessage {
+    speaker: string;      // e.g., "Mani", "Vani"
+    avatar?: string;     // Optional URL for a speaker's avatar image
+    text: string;         // The dialogue text
+    timestamp: number;    // The start time of this line in the audio file (in seconds)
+}
+
+export interface ConversationContent {
+    title: string;
+    audioUrl: string;     // The URL of the full conversation audio file
+    messages: ChatMessage[];
+}
 
 interface ConversationPlayerProps {
     content: ConversationContent;

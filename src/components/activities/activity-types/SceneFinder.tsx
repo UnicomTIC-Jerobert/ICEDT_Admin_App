@@ -3,7 +3,25 @@ import { Box, Typography, Paper, Fab, IconButton, Button } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ReplayIcon from '@mui/icons-material/Replay';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
-import { SceneFinderContent } from '../../../types/activityContentTypes';
+
+// --- NEW: Type for Interactive Scene Finder Activity ---
+export interface Hotspot {
+    id: number;           // Unique ID for this object in the scene
+    name: string;         // The name of the object, e.g., "ஆடு"
+    audioUrl: string;     // The audio prompt that asks the user to find this object
+    // Coordinates are percentages (0-100) for responsive design
+    x: number;            // X-coordinate of the top-left corner
+    y: number;            // Y-coordinate of the top-left corner
+    width: number;        // Width of the tappable area
+    height: number;       // Height of the tappable area
+}
+
+export interface SceneFinderContent {
+    title: string;
+    sceneImageUrl: string; // The main background image
+    sceneAudioUrl?: string; // Optional ambient sound for the scene
+    hotspots: Hotspot[];    // The list of all interactive objects in the scene
+}
 
 interface SceneFinderProps {
     content: SceneFinderContent;

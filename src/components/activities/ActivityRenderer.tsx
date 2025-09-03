@@ -3,26 +3,21 @@ import { Typography } from '@mui/material';
 
 // --- Step 1: Import ALL activity components and their content types ---
 import MCQActivity from './activity-types/MCQActivity';
-import EquationFillInTheBlank from './activity-types/Equations';
-import MediaSpotlightSingle from './activity-types/MediaSpotlightSingle';
-import Flashcard from './activity-types/Flashcard';
-import MediaSpotlightMultiple from './activity-types/MediaSpotlightMultiple';
+import EquationFillInTheBlank, { Equation } from './activity-types/Equations';
+import MediaSpotlightSingle, { MediaSpotlightSingleContent } from './activity-types/MediaSpotlightSingle';
+import Flashcard, { FlashcardContent } from './activity-types/Flashcard';
+import MediaSpotlightMultiple, { MediaSpotlightMultipleContent } from './activity-types/MediaSpotlightMultiple';
 
 import {
     MCQContent,
-    MediaSpotlightSingleContent,
-    Equation,
-    FlashcardContent,
-    MediaSpotlightMultipleContent,
-    ConversationContent,
-    SongContent,
 } from '../../types/activityContentTypes';
-import ConversationPlayer from './activity-types/ConversationPlayer';
-import SongPlayer from './activity-types/SongPlayer';
+import ConversationPlayer, { ConversationContent } from './activity-types/ConversationPlayer';
+import SongPlayer, { SongContent } from './activity-types/SongPlayer';
 import RecognitionGrid, { RecognitionGridContent } from './activity-types/RecognitionGrid';
 import CharacterGrid, { CharacterGridContent } from './activity-types/CharacterGrid';
 import WordFinder, { WordFinderChallenge } from './activity-types/WordFinder';
 import WordPairMCQ, { WordPairQuestion } from './activity-types/WordPairMCQ';
+import SceneFinder, { SceneFinderContent } from './activity-types/SceneFinder';
 
 interface ActivityRendererProps {
     activityTypeId: number;
@@ -41,23 +36,20 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
             return <MediaSpotlightSingle content={content as MediaSpotlightSingleContent} />;
         case 4: // Letter Spotlight
             return <EquationFillInTheBlank content={content as Equation} />;
-
         case 5: // ConversationPlayer
             return <ConversationPlayer content={content as ConversationContent} />;
-
         case 6: // SongPlayer
             return <SongPlayer content={content as SongContent} />;
-
         case 7: // All FillInTheBlanks variations
             return <RecognitionGrid content={content as RecognitionGridContent} />;
-
         case 8: // All FillInTheBlanks variations
             return <CharacterGrid content={content as CharacterGridContent} />;
         case 9:
             return <WordPairMCQ content={content as WordPairQuestion} />;
-
         case 10:
-             return <WordFinder content={content as WordFinderChallenge} />;
+            return <WordFinder content={content as WordFinderChallenge} />;
+        case 11:
+            return <SceneFinder content={content as SceneFinderContent} />;
         case 13: // MultipleChoiceQuestion
             // The MCQ component is smart enough to handle a single object or an array of questions.
             return <MCQActivity content={content as MCQContent} />;

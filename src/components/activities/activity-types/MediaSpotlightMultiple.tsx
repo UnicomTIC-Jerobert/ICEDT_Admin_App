@@ -1,7 +1,18 @@
 import React, { useRef } from 'react';
 import { Box, Typography, Paper, Grid, Card, CardMedia, CardContent, IconButton } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
-import { MediaSpotlightMultipleContent } from '../../../types/activityContentTypes';
+
+interface MediaSpotlightItem {
+    text: string;
+    imageUrl: string;
+    audioUrl?: string;
+}
+export interface MediaSpotlightMultipleContent {
+    title: string; // e.g., "உயிர் எழுத்து"
+    spotlightLetter: string;
+    items: MediaSpotlightItem[];
+}
+
 
 // We can reuse the HighlightedWord helper component
 const HighlightedWord: React.FC<{ word: string; letter: string }> = ({ word, letter }) => {

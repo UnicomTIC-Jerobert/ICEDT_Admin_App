@@ -1,7 +1,13 @@
 import React, { useRef, useEffect, useCallback } from 'react'; // 1. Import useCallback
 import { Box, Typography, IconButton, Card, CardMedia, CardContent } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
-import { FlashcardContent } from '../../../types/activityContentTypes';
+
+export interface FlashcardContent {
+    title: string;
+    word: string;
+    imageUrl: string;
+    audioUrl?: string;
+}
 
 // The component now expects props for a SINGLE flashcard.
 interface FlashcardProps {

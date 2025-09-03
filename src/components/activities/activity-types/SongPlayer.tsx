@@ -3,7 +3,20 @@ import { Box, Typography, Paper, IconButton, Slider, Avatar } from '@mui/materia
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import ReplayIcon from '@mui/icons-material/Replay';
-import { SongContent } from '../../../types/activityContentTypes';
+
+// --- NEW: Type for Song Player Activity ---
+export interface LyricLine {
+    text: string;       // The lyric line
+    timestamp: number;  // The time in seconds when this line starts
+}
+
+export interface SongContent {
+    title: string;
+    artist?: string;    // Optional artist name
+    albumArtUrl?: string; // Optional URL for album art
+    audioUrl: string;   // The URL of the full song audio file
+    lyrics: LyricLine[];
+}
 
 interface SongPlayerProps {
     content: SongContent;

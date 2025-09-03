@@ -3,7 +3,13 @@ import { Box, Typography, Paper, Button, Chip } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ReplayIcon from '@mui/icons-material/Replay';
-import { Equation } from '../../../types/activityContentTypes'; // The type for a SINGLE equation
+
+export interface Equation {
+    leftOperand: string;  // e.g., "க்"
+    rightOperand: string; // e.g., "ஆ"
+    correctAnswer: string; // e.g., "கா"
+    options: string[];     // e.g., ["கா", "கி", "க", "கூ"]
+}
 
 // --- CORRECTED PROPS INTERFACE ---
 // It now correctly expects a SINGLE Equation object, NOT an array.

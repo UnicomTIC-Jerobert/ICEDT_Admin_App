@@ -25,7 +25,6 @@ interface ActivityRendererProps {
 }
 
 const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, content }) => {
-    console.log(content)
     // --- Step 3: Use the detailed, working switch statement logic ---
     switch (activityTypeId) {
         case 1:
@@ -40,15 +39,15 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
             return <ConversationPlayer content={content as ConversationContent} />;
         case 6: // SongPlayer
             return <SongPlayer content={content as SongContent} />;
-        case 7: // All FillInTheBlanks variations
+        case 7: // RecognitionGrid
             return <RecognitionGrid content={content as RecognitionGridContent} />;
-        case 8: // All FillInTheBlanks variations
+        case 8: // CharacterGrid
             return <CharacterGrid content={content as CharacterGridContent} />;
-        case 9:
+        case 9: // WordPairMCQ
             return <WordPairMCQ content={content as WordPairQuestion} />;
-        case 10:
+        case 10: // WordFinder
             return <WordFinder content={content as WordFinderChallenge} />;
-        case 11:
+        case 11: // SceneFinder
             return <SceneFinder content={content as SceneFinderContent} />;
         case 13: // MultipleChoiceQuestion
             // The MCQ component is smart enough to handle a single object or an array of questions.

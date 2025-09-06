@@ -1,6 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link as RouterLink } from 'react-router-dom';
-import { CssBaseline, ThemeProvider, createTheme, AppBar, Toolbar, Typography, Container, Button } from '@mui/material';
+import { BrowserRouter as Router, Routes, Route, Link as RouterLink, Navigate } from 'react-router-dom';
+import { CssBaseline, ThemeProvider, createTheme, AppBar, Toolbar, Typography, Container, Button, Box, CircularProgress } from '@mui/material';
+import { AuthProvider, useAuth } from './context/AuthContext';
 
 // Import your page components
 import LevelsPage from './pages/LevelsPage';
@@ -9,6 +10,8 @@ import ActivityTypesPage from './pages/ActivityTypesPage';
 import LessonsPage from './pages/LessonsPage';
 import ActivitiesListPage from './pages/ActivitiesListPage';
 import ActivityEditorPage from './pages/ActivityEditorPage';
+import LoginPage from './pages/LoginPage';
+import PrivateRoute from './components/common/PrivateRoute';
 
 const theme = createTheme({
     palette: {
@@ -22,8 +25,25 @@ function App() {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Router>
-                {/* Simple Navigation Header */}
+            <AuthProvider>
+                <Router>
+                    <AppContent />
+                </Router>
+            </AuthProvider>
+        </ThemeProvider>
+    );
+}
+
+const AppContent: React.FC = () => {
+    const { isAuthenticated, isLoading, logout } = useAuth();
+
+    if (isLoading) {
+        return <Box display="flex" justifyContent="center" alignItems="center" height="100vh"><CircularProgress /></Box>;
+    }
+
+    return (
+        <>
+            {isAuthenticated && (
                 <AppBar position="static">
                     <Toolbar>
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -31,25 +51,44 @@ function App() {
                         </Typography>
                         <Button component={RouterLink} to="/levels" color="inherit">Levels</Button>
                         <Button component={RouterLink} to="/main-activities" color="inherit">Main Activities</Button>
-                        <Button component={RouterLink} to="/activity-types" color="inherit">Activity Types</Button> {/* <-- ADD NEW LINK */}
+                        <Button component={RouterLink} to="/activity-types" color="inherit">Activity Types</Button>
+                        <Button onClick={logout} color="inherit">Logout</Button> {/* <-- Added Logout Button */}
+
                     </Toolbar>
                 </AppBar>
-
-                {/* Main Content Area */}
-                <Container component="main" maxWidth={false} sx={{ mt: 4, px: 2 }}>
-                    <Routes>
-                        {/* Define the route for each page */}
-                        <Route path="/" element={<Typography variant="h5">Welcome to the Admin Panel!</Typography>} />
-                        <Route path="/levels" element={<LevelsPage />} />
-                        <Route path="/lessons" element={<LessonsPage />} />
-                        <Route path="/main-activities" element={<MainActivityPage />} />
-                        <Route path="/activity-types" element={<ActivityTypesPage />} />
-                        <Route path="/activities" element={<ActivitiesListPage />} />
-                        <Route path="/activity-edit" element={<ActivityEditorPage />} />
-                    </Routes>
-                </Container>
-            </Router>
-        </ThemeProvider>
+            )}
+            <Container component="main" sx={{ mt: 4 }}>
+                <Routes>
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/levels" element={<LevelsPage />} />
+                    <Route
+                        path="/levels"
+                        element={<PrivateRoute><LevelsPage /></PrivateRoute>}
+                    />
+                    <Route
+                        path="/lessons"
+                        element={<PrivateRoute><LessonsPage /></PrivateRoute>}
+                    />
+                    <Route
+                        path="/main-activities"
+                        element={<PrivateRoute><MainActivityPage /></PrivateRoute>}
+                    />
+                    <Route
+                        path="/activity-types"
+                        element={<PrivateRoute><ActivityTypesPage /></PrivateRoute>}
+                    />
+                    <Route
+                        path="/activities"
+                        element={<PrivateRoute><ActivitiesListPage /></PrivateRoute>}
+                    />
+                    <Route
+                        path="/activity-edit"
+                        element={<PrivateRoute><ActivityEditorPage /></PrivateRoute>}
+                    />
+                    <Route path="/" element={<Navigate to={isAuthenticated ? "/levels" : "/login"} />} />
+                </Routes>
+            </Container>
+        </>
     );
 }
 

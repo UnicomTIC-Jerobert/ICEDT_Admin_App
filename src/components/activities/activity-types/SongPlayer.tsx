@@ -40,14 +40,14 @@ const SongPlayer: React.FC<SongPlayerProps> = ({ content }) => {
         const handleTimeUpdate = () => {
             const time = audio.currentTime;
             setCurrentTime(time);
-            
+
             const currentLineIndex = content.lyrics.findIndex((line, index) => {
                 const nextLine = content.lyrics[index + 1];
                 return time >= line.timestamp && (!nextLine || time < nextLine.timestamp);
             });
             setActiveLineIndex(currentLineIndex);
         };
-        
+
         // ... (other event listeners: loadedmetadata, ended) ...
         const handleLoadedMetadata = () => setDuration(audio.duration);
         const handleEnded = () => setIsPlaying(false);
@@ -58,7 +58,7 @@ const SongPlayer: React.FC<SongPlayerProps> = ({ content }) => {
 
         return () => { /* ... cleanup listeners ... */ };
     }, [content.lyrics]);
-    
+
     // Effect to auto-scroll the active lyric into view
     useEffect(() => {
         if (activeLyricRef.current && lyricsContainerRef.current) {
@@ -95,7 +95,7 @@ const SongPlayer: React.FC<SongPlayerProps> = ({ content }) => {
             setIsPlaying(true);
         }
     };
-      const formatTime = (time: number) => {
+    const formatTime = (time: number) => {
         const minutes = Math.floor(time / 60);
         const seconds = Math.floor(time % 60);
         return `${minutes}:${seconds.toString().padStart(2, '0')}`;
@@ -105,10 +105,10 @@ const SongPlayer: React.FC<SongPlayerProps> = ({ content }) => {
         <Paper elevation={4} sx={{ p: 3, m: 'auto', maxWidth: '450px', borderRadius: '16px', display: 'flex', flexDirection: 'column', height: '95%' }}>
             {/* Album Art and Song Info */}
             <Box textAlign="center" mb={2}>
-                <Avatar 
+                <Avatar
                     variant="rounded"
-                    src={content.albumArtUrl || 'default_album_art.png'} 
-                    sx={{ width: 150, height: 150, m: 'auto', mb: 2, boxShadow: 3 }} 
+                    src={content.albumArtUrl || 'default_album_art.png'}
+                    sx={{ width: 150, height: 150, m: 'auto', mb: 2, boxShadow: 3 }}
                 />
                 <Typography variant="h5" component="h1" fontWeight="bold">{content.title}</Typography>
                 <Typography variant="subtitle1" color="text.secondary">{content.artist}</Typography>

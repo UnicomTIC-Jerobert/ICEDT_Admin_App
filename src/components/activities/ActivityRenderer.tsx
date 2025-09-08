@@ -18,6 +18,7 @@ import CharacterGrid, { CharacterGridContent } from './activity-types/CharacterG
 import WordFinder, { WordFinderChallenge } from './activity-types/WordFinder';
 import WordPairMCQ, { WordPairQuestion } from './activity-types/WordPairMCQ';
 import SceneFinder, { SceneFinderContent } from './activity-types/SceneFinder';
+import StoryPlayer, { StoryContent } from './activity-types/StoryPlayer';
 
 interface ActivityRendererProps {
     activityTypeId: number;
@@ -49,6 +50,8 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
             return <WordFinder content={content as WordFinderChallenge} />;
         case 11: // SceneFinder
             return <SceneFinder content={content as SceneFinderContent} />;
+        case 12: // StoryPlayer
+            return <StoryPlayer content={content as StoryContent} />;
         case 13: // MultipleChoiceQuestion
             // The MCQ component is smart enough to handle a single object or an array of questions.
             return <MCQActivity content={content as MCQContent} />;

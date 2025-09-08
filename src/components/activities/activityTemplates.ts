@@ -152,6 +152,54 @@ export const getActivityTemplate = (activityTypeId: number): string => {
           "correctWords": ["பட்டம்", "வட்டம்"]
         }
       ]
+    },
+    11: { // Scene Finder
+      "title": "Find the items on the farm",
+      "sceneImageUrl": "https://your-bucket.../farm_scene.jpg",
+      "hotspots": [
+        {
+          "id": 1, "name": "ஆடு", "audioUrl": ".../aadu_find.mp3",
+          "x": 60, "y": 70, "width": 15, "height": 15
+        },
+        {
+          "id": 2, "name": "குதிரை", "audioUrl": ".../kuthirai_find.mp3",
+          "x": 20, "y": 55, "width": 25, "height": 30
+        },
+        {
+          "id": 3, "name": "சேவல்", "audioUrl": ".../seval_find.mp3",
+          "x": 80, "y": 40, "width": 10, "height": 10
+        },
+        {
+          "id": 4, "name": "வைக்கோல்", "audioUrl": ".../vaikkol_find.mp3",
+          "x": 5, "y": 75, "width": 20, "height": 15
+        }
+      ]
+    },
+    12: { // story player
+      "title": "The Thirsty Crow",
+      "audioUrl": "https://your-bucket.../thirsty_crow_narration.mp3",
+      "scenes": [
+        {
+          "imageUrl": "https://your-bucket.../crow_sees_pot.jpg",
+          "text": "ஒரு காகம் மிகவும் தாகமாக இருந்தது. அது தண்ணீரைத் தேடி எல்லா இடங்களிலும் பறந்தது.",
+          "timestamp": 0.5
+        },
+        {
+          "imageUrl": "https://your-bucket.../crow_finds_pebbles.jpg",
+          "text": "திடீரென்று, அது ஒரு பானையைக் கண்டது. ஆனால் பானையில் தண்ணீர் குறைவாகவே இருந்தது.",
+          "timestamp": 8.2
+        },
+        {
+          "imageUrl": "https://your-bucket.../crow_drops_pebbles.jpg",
+          "text": "காகம் யோசித்தது. அது அருகிலிருந்த கூழாங்கற்களை எடுத்து பானையில் போட்டது.",
+          "timestamp": 15.6
+        },
+        {
+          "imageUrl": "https://your-bucket.../crow_drinks_water.jpg",
+          "text": "தண்ணீர் மட்டம் உயர்ந்தது. காகம் மகிழ்ச்சியுடன் தண்ணீரைக் குடித்தது.",
+          "timestamp": 23.0
+        }
+      ]
     }
 
 

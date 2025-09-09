@@ -200,8 +200,29 @@ export const getActivityTemplate = (activityTypeId: number): string => {
           "timestamp": 23.0
         }
       ]
+    },
+    13: {
+      "id": 1,
+      "title": "Select the Dog",
+      "audioUrl": "https://your-bucket.../dog_sound.mp3",
+      "options": [
+        {
+          "id": "1",
+          "imageUrl": "https://your-bucket.../dog_image.jpg",
+          "isCorrect": true
+        },
+        {
+          "id": "2",
+          "imageUrl": "https://your-bucket.../cat_image.jpg",
+          "isCorrect": false
+        },
+        {
+          "id": "3",
+          "imageUrl": "https://your-bucket.../rabbit_image.jpg",
+          "isCorrect": false
+        }
+      ]
     }
-
 
     // Add templates for all 18 activity types here...
   };

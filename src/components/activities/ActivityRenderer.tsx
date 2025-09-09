@@ -19,6 +19,8 @@ import WordFinder, { WordFinderChallenge } from './activity-types/WordFinder';
 import WordPairMCQ, { WordPairQuestion } from './activity-types/WordPairMCQ';
 import SceneFinder, { SceneFinderContent } from './activity-types/SceneFinder';
 import StoryPlayer, { StoryContent } from './activity-types/StoryPlayer';
+import MatchingActivity from './activity-types/MatchingActivity';
+import ImageChoiceActivity from './activity-types/Matching';
 
 interface ActivityRendererProps {
     activityTypeId: number;
@@ -54,8 +56,7 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
             return <StoryPlayer content={content as StoryContent} />;
         case 13: // MultipleChoiceQuestion
             // The MCQ component is smart enough to handle a single object or an array of questions.
-            return <MCQActivity content={content as MCQContent} />;
-
+            return <ImageChoiceActivity title={content.title}  options={content.options} />;
         default:
             return <Typography p={2} color="text.secondary">Preview for Activity Type ID #{activityTypeId} is not implemented.</Typography>;
     }

@@ -1,4 +1,7 @@
-// This is the TypeScript interface for your API's wrapped response
+import axiosClient from './axiosClient'; // Import our new internal client
+import { AxiosError } from 'axios';
+
+// The interfaces remain the same as they define your backend's contract.
 interface ApiResponse<T> {
     result: T;
     isError: boolean;
@@ -9,7 +12,6 @@ interface ApiResponse<T> {
     } | null;
 }
 
-// A custom error class for better error handling
 export class ApiError extends Error {
     constructor(public title: string, public details: string, public statusCode: number) {
         super(details);
@@ -17,63 +19,55 @@ export class ApiError extends Error {
     }
 }
 
-const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+// This function will handle unwrapping and error standardization.
+async function handleRequest<T>(requestPromise: Promise<any>): Promise<T> {
+    try {
+        const response = await requestPromise;
+        const apiResponse = response.data as ApiResponse<T>;
 
+        if (apiResponse.isError) {
+            if (apiResponse.error) {
+                throw new ApiError(apiResponse.error.title, apiResponse.error.details, apiResponse.error.statusCode);
+            }
+            throw new Error('An unknown API error occurred.');
+        }
+
+        return apiResponse.result;
+
+    } catch (error) {
+        if (error instanceof ApiError) {
+            throw error; // Re-throw our custom error
+        }
+        
+        if (error instanceof AxiosError && error.response) {
+            // Handle errors that might not have been wrapped by our middleware (e.g., 500 from server crash)
+            const apiResponse = error.response.data as ApiResponse<T>;
+            if (apiResponse?.isError && apiResponse.error) {
+                throw new ApiError(apiResponse.error.title, apiResponse.error.details, apiResponse.error.statusCode);
+            }
+        }
+
+        // Fallback for network errors etc.
+        throw new Error('A network or unknown error occurred.');
+    }
+}
+
+// Your public apiClient now delegates to the internal axiosClient.
 export const apiClient = {
-    async get<T>(endpoint: string): Promise<T> {
-        const response = await fetch(`${BASE_URL}${endpoint}`);
-        const data: ApiResponse<T> = await response.json();
-
-        if (!response.ok || data.isError) {
-            if (data.error) {
-                throw new ApiError(data.error.title, data.error.details, data.error.statusCode);
-            }
-            throw new Error('An unknown API error occurred.');
-        }
-        return data.result;
+    get<T>(endpoint: string): Promise<T> {
+        return handleRequest<T>(axiosClient.get(endpoint));
     },
     
-    async post<T, TBody>(endpoint: string, body: TBody): Promise<T> {
-        const response = await fetch(`${BASE_URL}${endpoint}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body),
-        });
-        const data: ApiResponse<T> = await response.json();
-
-        if (!response.ok || data.isError) {
-            if (data.error) {
-                throw new ApiError(data.error.title, data.error.details, data.error.statusCode);
-            }
-            throw new Error('An unknown API error occurred.');
-        }
-        return data.result;
+    post<T, TBody>(endpoint: string, body: TBody): Promise<T> {
+        return handleRequest<T>(axiosClient.post(endpoint, body));
     },
     
-    // You can add put, delete methods here following the same pattern
-    async put<TBody>(endpoint: string, body: TBody): Promise<void> {
-         const response = await fetch(`${BASE_URL}${endpoint}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body),
-        });
-         const data: ApiResponse<null> = await response.json(); // PUT/DELETE often have null result
-         if (!response.ok || data.isError) {
-            if (data.error) {
-                throw new ApiError(data.error.title, data.error.details, data.error.statusCode);
-            }
-            throw new Error('An unknown API error occurred.');
-        }
+    put<TBody>(endpoint: string, body: TBody): Promise<void> {
+        // For void promises, we can adjust the return type.
+        return handleRequest<void>(axiosClient.put(endpoint, body));
     },
 
-     async delete(endpoint: string): Promise<void> {
-        const response = await fetch(`${BASE_URL}${endpoint}`, { method: 'DELETE' });
-         const data: ApiResponse<null> = await response.json();
-         if (!response.ok || data.isError) {
-            if (data.error) {
-                throw new ApiError(data.error.title, data.error.details, data.error.statusCode);
-            }
-            throw new Error('An unknown API error occurred.');
-        }
+    delete(endpoint: string): Promise<void> {
+        return handleRequest<void>(axiosClient.delete(endpoint));
     },
 };

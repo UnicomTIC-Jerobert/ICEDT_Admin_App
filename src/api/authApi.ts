@@ -9,6 +9,6 @@ import { LoginRequest } from "../types/auth";
  */
 export const login = (credentials: LoginRequest): Promise<AuthResponse> => {
   // The apiClient will automatically handle the response wrapping and error handling
-  return apiClient.post<AuthResponse, typeof credentials>('/login', credentials);
+  return apiClient.post<AuthResponse, typeof credentials>('/auth/login', credentials);
 
 };

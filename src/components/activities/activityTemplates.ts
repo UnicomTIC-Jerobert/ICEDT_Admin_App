@@ -200,7 +200,68 @@ export const getActivityTemplate = (activityTypeId: number): string => {
           "timestamp": 23.0
         }
       ]
+    },
+    13: {
+      "id": 1,
+      "title": "Select the Dog",
+      "audioUrl": "https://your-bucket.../dog_sound.mp3",
+      "options": [
+        {
+          "id": "1",
+          "imageUrl": "https://your-bucket.../dog_image.jpg",
+          "isCorrect": true
+        },
+        {
+          "id": "2",
+          "imageUrl": "https://your-bucket.../cat_image.jpg",
+          "isCorrect": false
+        },
+        {
+          "id": "3",
+          "imageUrl": "https://your-bucket.../rabbit_image.jpg",
+          "isCorrect": false
+        }
+      ]
+    },
+    14: {
+      "id": 2,
+      "title": "உறைவிடங்கள்",
+      "audioUrl": "",
+      "options": [
+    {
+      "id": "1",
+      "imageUrl": "house.jpg",
+      "text": "வீடு",
+      "solliyangal": "மாற்றியின் வீடு என்பது பாடசாலைக்குப் பக்கத்தில் உள்ளது.",
+      "vinaakkal": "உமது பாடசாலைக்குப் பக்கத்தில் என்ன உள்ளது?",
+      "isCorrect": true
+    },
+    {
+      "id": "2",
+      "imageUrl": "palace.jpg",
+      "text": "அரண்மனை",
+      "solliyangal": "மன்னர்கள் அரண்மனையில் வசிப்பார்கள்.",
+      "vinaakkal": "மன்னர்கள் எங்கே வசிப்பார்கள்?",
+      "isCorrect": true
+    },
+    {
+      "id": "3",
+      "imageUrl": "fort.jpg",
+      "text": "கோட்டை",
+      "solliyangal": "யாழ்ப்பாணத்தில் உள்ள கோட்டைகள் ஒல்லாந்தரால் கட்டப்பட்டது.",
+      "vinaakkal": "யாழ்ப்பாணத்தில் ஒல்லாந்தரால் கட்டப்பட்டது எது?",
+      "isCorrect": true
+    },
+    {
+      "id": "4",
+      "imageUrl": "apartment.jpg",
+      "text": "அடுக்குமாடி வீடுகள்",
+      "solliyangal": "நகரங்களில் அடுக்குமாடி வீடுகளை காணலாம்.",
+      "vinaakkal": "நகரங்களில் எவ்வாறு காணலாம்?",
+      "isCorrect": true
     }
+  ]
+}
 
 
     // Add templates for all 18 activity types here...

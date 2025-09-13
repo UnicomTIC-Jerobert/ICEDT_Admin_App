@@ -17,6 +17,7 @@
     "@types/react-dom": "^19.1.7",
     "axios": "^1.11.0",
     "react": "^19.1.1",
+    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.7.1",
     "react-scripts": "5.0.1",
@@ -47,5 +48,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://13.51.194.17"
+  "proxy": "http://13.51.194.17",
+  "devDependencies": {
+    "@types/react-beautiful-dnd": "^13.1.8"
+  }
 }

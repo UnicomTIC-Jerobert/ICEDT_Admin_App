@@ -21,6 +21,9 @@ import SceneFinder, { SceneFinderContent } from './activity-types/SceneFinder';
 import StoryPlayer, { StoryContent } from './activity-types/StoryPlayer';
 import MatchingActivity from './activity-types/MatchingActivity';
 import ImageChoiceActivity from './activity-types/Matching';
+import ListenMatchActivity, { ListenMatchContent } from './activity-types/Listen&match';
+import KeddalContent from './activity-types/keddal';
+
 
 interface ActivityRendererProps {
     activityTypeId: number;
@@ -59,6 +62,10 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
             return <ImageChoiceActivity title={content.title}  options={content.options} />;
         default:
             return <Typography p={2} color="text.secondary">Preview for Activity Type ID #{activityTypeId} is not implemented.</Typography>;
+        case 14: // Listen & Match
+            return <ListenMatchActivity content={content as ListenMatchContent} />;
+        case 15: // Keddal
+            return <KeddalActivity content={content as KeddalContent} />;
     }
 };
 

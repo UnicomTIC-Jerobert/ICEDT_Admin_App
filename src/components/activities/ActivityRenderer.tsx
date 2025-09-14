@@ -22,7 +22,7 @@ import StoryPlayer, { StoryContent } from './activity-types/StoryPlayer';
 import MatchingActivity from './activity-types/MatchingActivity';
 import ImageChoiceActivity from './activity-types/Matching';
 import ListenMatchActivity, { ListenMatchContent } from './activity-types/Listen&match';
-import KeddalContent from './activity-types/keddal';
+import Keddal, { KeddalContent } from './activity-types/Keddal';
 
 
 interface ActivityRendererProps {
@@ -65,7 +65,7 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
         case 14: // Listen & Match
             return <ListenMatchActivity content={content as ListenMatchContent} />;
         case 15: // Keddal
-            return <KeddalActivity content={content as KeddalContent} />;
+            return <Keddal content={content as KeddalContent} />;
     }
 };
 

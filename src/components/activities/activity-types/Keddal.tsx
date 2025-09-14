@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Box, Typography, Paper, Grid, Card, CardMedia, CardContent, IconButton } from '@mui/material';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
-import { ListenMatchContent } from './Listen&match';
 
 export interface KeddalItem {
   text: string;
@@ -17,7 +16,7 @@ export interface KeddalContent {
   items: KeddalItem[];
 }
 
-const KeddalDragDrop: React.FC<{ content: KeddalContent }> = ({ content }) => {
+const Keddal: React.FC<{ content: KeddalContent }> = ({ content }) => {
   const [questions, setQuestions] = useState<{ id: string; text: string; answer: string | null }[]>(
     content.vinaakkal.map((q, index) => ({ id: `q-${index}`, text: q, answer: null }))
   );
@@ -125,4 +124,4 @@ const KeddalDragDrop: React.FC<{ content: KeddalContent }> = ({ content }) => {
   );
 };
 
-export default KeddalContent;
+export default Keddal;

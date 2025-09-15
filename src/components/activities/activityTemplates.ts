@@ -200,8 +200,24 @@ export const getActivityTemplate = (activityTypeId: number): string => {
           "timestamp": 23.0
         }
       ]
+    },
+    14: { // AudioTextImageSelection
+      "title": "சரியான படத்தைத் தேர்ந்தெடுக்கவும்",
+      "text": "பூனை",
+      "audioUrl": "animals/cat_sound.mp3",
+      "images": [
+        {
+          "id": 1,
+          "imageUrl": "/level/lesson/image1.jpg",
+          "isCorrect": true
+        },
+        {
+          "id": 2,
+          "imageUrl": "/level/lesson/image2.jpg",
+          "isCorrect": false
+        }
+      ]
     }
-
 
     // Add templates for all 18 activity types here...
   };

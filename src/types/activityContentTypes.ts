@@ -148,3 +148,15 @@ export interface WordFinderContent {
     title: string;
     challenges: WordFinderChallenge[];
 }
+
+// --- NEW: Type for Audio Text Image Selection Activity ---
+export interface AudioTextImageSelectionContent {
+    title: string;
+    text: string;           // The text to display at the top center
+    audioUrl: string;       // The audio file to play the text
+    images: {
+        id: number;
+        imageUrl: string;
+        isCorrect: boolean;
+    }[];                    // Array of two images, one correct and one incorrect
+}

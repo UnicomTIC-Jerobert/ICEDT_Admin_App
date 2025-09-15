@@ -10,6 +10,7 @@ import MediaSpotlightMultiple, { MediaSpotlightMultipleContent } from './activit
 
 import {
     MCQContent,
+    AudioTextImageSelectionContent,
 } from '../../types/activityContentTypes';
 import ConversationPlayer, { ConversationContent } from './activity-types/ConversationPlayer';
 import SongPlayer, { SongContent } from './activity-types/SongPlayer';
@@ -19,6 +20,7 @@ import WordFinder, { WordFinderChallenge } from './activity-types/WordFinder';
 import WordPairMCQ, { WordPairQuestion } from './activity-types/WordPairMCQ';
 import SceneFinder, { SceneFinderContent } from './activity-types/SceneFinder';
 import StoryPlayer, { StoryContent } from './activity-types/StoryPlayer';
+import AudioTextImageSelection from './activity-types/AudioTextImageSelection';
 
 interface ActivityRendererProps {
     activityTypeId: number;
@@ -55,7 +57,8 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
         case 13: // MultipleChoiceQuestion
             // The MCQ component is smart enough to handle a single object or an array of questions.
             return <MCQActivity content={content as MCQContent} />;
-
+        case 14: // AudioTextImageSelection
+            return <AudioTextImageSelection content={content as AudioTextImageSelectionContent} />;
         default:
             return <Typography p={2} color="text.secondary">Preview for Activity Type ID #{activityTypeId} is not implemented.</Typography>;
     }

@@ -5,8 +5,8 @@ export const getActivityTemplate = (activityTypeId: number): string => {
     1: { // FlashCards
       title: "உடல் உறுப்புகள் (Body Parts)",
       word: "காது",
-      imageUrl: "https://.../kaathu.jpg",
-      audioUrl: "https://.../kaathu_sound.mp3"
+      imageUrl: "/malaiyar/lesson1/kan.png",
+      audioUrl: "/malaiyar/lesson1/kan.mp3"
     },
     2: {
       "title": "'க்' சொற்கள்",
@@ -200,9 +200,24 @@ export const getActivityTemplate = (activityTypeId: number): string => {
           "timestamp": 23.0
         }
       ]
+    },
+    14: { // AudioTextImageSelection
+      "title": "சரியான படத்தைத் தேர்ந்தெடுக்கவும்",
+      "text": "பூனை",
+      "audioUrl": "https://icedt-tamilapp-media.s3.dualstack.eu-north-1.amazonaws.com/malaiyar/lesson4/eetti.mp3",
+      "images": [
+        {
+          "id": 1,
+          "imageUrl": "https://icedt-tamilapp-media.s3.dualstack.eu-north-1.amazonaws.com/malaiyar/lesson4/eetti.jpg",
+          "isCorrect": true
+        },
+        {
+          "id": 2,
+          "imageUrl": "https://icedt-tamilapp-media.s3.dualstack.eu-north-1.amazonaws.com/malaiyar/lesson4/eetti.jpg",
+          "isCorrect": false
+        }
+      ]
     }
-
-
     // Add templates for all 18 activity types here...
   };
 

@@ -160,3 +160,16 @@ export interface AudioTextImageSelectionContent {
         isCorrect: boolean;
     }[];   
 }
+
+// --- NEW: Type for Drag Drop Image Matching Activity ---
+export interface DragDropImageItem {
+    id: number;
+    imageUrl: string;
+    audioUrl: string;       // Audio to play when image is clicked
+    matchId: number;        // ID of the image it should match with
+}
+
+export interface DragDropImageMatchingContent {
+    title: string;
+    images: DragDropImageItem[];       // Single set of images - component will duplicate and shuffle
+}

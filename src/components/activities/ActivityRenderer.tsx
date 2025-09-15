@@ -11,6 +11,7 @@ import MediaSpotlightMultiple, { MediaSpotlightMultipleContent } from './activit
 import {
     MCQContent,
     AudioTextImageSelectionContent,
+    DragDropImageMatchingContent,
 } from '../../types/activityContentTypes';
 import ConversationPlayer, { ConversationContent } from './activity-types/ConversationPlayer';
 import SongPlayer, { SongContent } from './activity-types/SongPlayer';
@@ -21,6 +22,7 @@ import WordPairMCQ, { WordPairQuestion } from './activity-types/WordPairMCQ';
 import SceneFinder, { SceneFinderContent } from './activity-types/SceneFinder';
 import StoryPlayer, { StoryContent } from './activity-types/StoryPlayer';
 import AudioTextImageSelection from './activity-types/AudioTextImageSelection';
+import DragDropImageMatching from './activity-types/DragDropImageMatching';
 
 interface ActivityRendererProps {
     activityTypeId: number;
@@ -59,6 +61,8 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
             return <MCQActivity content={content as MCQContent} />;
         case 14: // AudioTextImageSelection
             return <AudioTextImageSelection content={content as AudioTextImageSelectionContent} />;
+        case 15: // DragDropImageMatching
+            return <DragDropImageMatching content={content as DragDropImageMatchingContent} />;
 
         default:
             return <Typography p={2} color="text.secondary">Preview for Activity Type ID #{activityTypeId} is not implemented.</Typography>;

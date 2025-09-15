@@ -217,6 +217,29 @@ export const getActivityTemplate = (activityTypeId: number): string => {
           "isCorrect": false
         }
       ]
+    },
+    15: { // DragDropImageMatching
+      "title": "படங்களை பொருத்துக (Match the Images)",
+      "images": [
+        {
+          "id": 1,
+          "imageUrl": "https://icedt-tamilapp-media.s3.dualstack.eu-north-1.amazonaws.com/animals/cat.jpg",
+          "audioUrl": "https://icedt-tamilapp-media.s3.dualstack.eu-north-1.amazonaws.com/animals/cat_sound.mp3",
+          "matchId": 1
+        },
+        {
+          "id": 2,
+          "imageUrl": "https://icedt-tamilapp-media.s3.dualstack.eu-north-1.amazonaws.com/animals/dog.jpg",
+          "audioUrl": "https://icedt-tamilapp-media.s3.dualstack.eu-north-1.amazonaws.com/animals/dog_sound.mp3",
+          "matchId": 2
+        },
+        {
+          "id": 3,
+          "imageUrl": "https://icedt-tamilapp-media.s3.dualstack.eu-north-1.amazonaws.com/animals/bird.jpg",
+          "audioUrl": "https://icedt-tamilapp-media.s3.dualstack.eu-north-1.amazonaws.com/animals/bird_sound.mp3",
+          "matchId": 3
+        }
+      ]
     }
     // Add templates for all 18 activity types here...
   };

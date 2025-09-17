@@ -236,7 +236,296 @@ export const getActivityTemplate = (activityTypeId: number): string => {
         "vinaakkal": "உமது பாடசாலைக்குப் பக்கத்தில் என்ன உள்ளது?",
         "isCorrect": true
       }
+    },
+    16:
+    {
+      "title": "பாடம் 1: விலங்குகள்",
+      "description": "இந்த காணொளியில் விலங்குகளைப் பற்றி கற்போம்.",
+      "videoUrl": "https://example.com/media/animals_lesson.mp4"
+    },
+    17:
+    {
+      "title": "பயிற்சி",
+      "activityTitle": "செயல் 01",
+      "instruction": "எழுத்துகளை அறிந்து சொற்களை உருவாக்குதல். கீழே கொடுக்கப்பட்டுள்ள எழுத்துகளிலிருந்து சரியானதை தேர்ந்தெடுத்து இடைவெளியை நிரப்புக.",
+      "sentences": [
+        "மூக்____",
+        "சங்____",
+        "பச்____",
+        "குட____",
+        "வண்____"
+      ],
+      "options": [
+        "கு",
+        "சை",
+        "ம்",
+        "டு",
+        "லை",
+        "பம்",
+        "டம்",
+        "சு"
+      ],
+      "solutions": [
+        "கு",
+        "கு",
+        "சை",
+        "ம்",
+        "டு"
+      ]
+    },
+    19:
+    {
+      "title": "பயிற்சி",
+      "activityTitle": "செயல் 02",
+      "instruction": "ஒரு/ஓர் வேறுபாட்டைக் காணக்கூடியவாறு சொற்களை ஒழுங்குபடுத்தல். கொடுக்கப்பட்டுள்ள சொற்களை சரியான வட்டத்தில் இழுத்துவிடவும்.",
+      "categories": [
+        {
+          "id": "or",
+          "title": "ஓர்"
+        },
+        {
+          "id": "oru",
+          "title": "ஒரு"
+        }
+      ],
+      "words": [
+        {
+          "id": "word1",
+          "text": "ஏணி",
+          "category": "or"
+        },
+        {
+          "id": "word2",
+          "text": "எறும்பு",
+          "category": "or"
+        },
+        {
+          "id": "word3",
+          "text": "ஆடு",
+          "category": "or"
+        },
+        {
+          "id": "word4",
+          "text": "அன்னம்",
+          "category": "or"
+        },
+        {
+          "id": "word5",
+          "text": "குழந்தை",
+          "category": "oru"
+        },
+        {
+          "id": "word6",
+          "text": "வீடு",
+          "category": "oru"
+        },
+        {
+          "id": "word7",
+          "text": "பூ",
+          "category": "oru"
+        },
+        {
+          "id": "word8",
+          "text": "தாமரை",
+          "category": "oru"
+        },
+        {
+          "id": "word9",
+          "text": "முயல்",
+          "category": "oru"
+        },
+        {
+          "id": "word10",
+          "text": "கரடி",
+          "category": "oru"
+        },
+        {
+          "id": "word11",
+          "text": "தவளை",
+          "category": "oru"
+        }
+      ]
+    },
+    21:
+    {
+      "title": "பயிற்சி",
+      "activityTitle": "செயல் 03",
+      "instruction": "திரையில் தோன்றும் வடிவங்களை சரியான எழுத்துகளுடன் கோடிட்டு இணைக்கவும்.",
+      "leftItems": [
+        {
+          "id": "left-a",
+          "content": "அ"
+        },
+        {
+          "id": "left-aa",
+          "content": "ஆ"
+        },
+        {
+          "id": "left-i",
+          "content": "இ"
+        },
+        {
+          "id": "left-ii",
+          "content": "ஈ"
+        },
+        {
+          "id": "left-u",
+          "content": "உ"
+        }
+      ],
+      "rightItems": [
+        {
+          "id": "right-a",
+          "content": "அ"
+        },
+        {
+          "id": "right-aa",
+          "content": "ஆ"
+        },
+        {
+          "id": "right-i",
+          "content": "இ"
+        },
+        {
+          "id": "right-ii",
+          "content": "ஈ"
+        },
+        {
+          "id": "right-u",
+          "content": "உ"
+        }
+      ],
+      "solutions": {
+        "left-a": "right-a",
+        "left-aa": "right-aa",
+        "left-i": "right-i",
+        "left-ii": "right-ii",
+        "left-u": "right-u"
+      }
+
+
+
+
+    },
+    22:
+    {
+      "title": "பயிற்சி",
+      "activityTitle": "செயல் 04",
+      "instruction": "கீழே கொடுக்கப்பட்டுள்ள எழுத்துக்களை சரியான முறையில் வரிசைப்படுத்தி சொற்களை உருவாக்கவும்.",
+      "words": [
+        {
+          "id": "word1",
+          "scrambled": ["மி", "ழ்", "த"],
+          "solution": "தமிழ்"
+        },
+        {
+          "id": "word2",
+          "scrambled": ["ழி", "மொ"],
+          "solution": "மொழி"
+        },
+        {
+          "id": "word3",
+          "scrambled": ["மை", "னி", "இ"],
+          "solution": "இனிமை"
+        },
+        {
+          "id": "word4",
+          "scrambled": ["வ", "பு", "ல", "ர்"],
+          "solution": "புலவர்"
+        },
+        {
+          "id": "word5",
+          "scrambled": ["டு", "வீ"],
+          "solution": "வீடு"
+        },
+        {
+          "id": "word6",
+          "scrambled": ["டு", "ஆ"],
+          "solution": "ஆடு"
+        },
+        {
+          "id": "word7",
+          "scrambled": ["வு", "உ", "ண"],
+          "solution": "உணவு"
+        },
+        {
+          "id": "word8",
+          "scrambled": ["ய்", "தா"],
+          "solution": "தாய்"
+        },
+        {
+          "id": "word9",
+          "scrambled": ["மை", "ழை", "ப"],
+          "solution": "பழைமை"
+        },
+        {
+          "id": "word10",
+          "scrambled": ["வு", "அ", "றி"],
+          "solution": "அறிவு"
+        }
+      ]
+    },
+25:
+{
+  "title": "சொற்களை ஒழுங்குபடுத்துதல்",
+  "activityTitle": "செயல் 05",
+  "instruction": "கீழே கொடுக்கப்பட்டுள்ள சொற்களை சரியான முறையில் வரிசைப்படுத்தி வாக்கியங்களை உருவாக்கவும்.",
+  "sentences": [
+    {
+      "id": "sent1",
+      "scrambled": [
+        "எங்கள்",
+        "தமிழ்",
+        "தாய்மொழி"
+      ],
+      "solution": "தமிழ் எங்கள் தாய்மொழி."
+    },
+    {
+      "id": "sent2",
+      "scrambled": [
+        "தமிழர்",
+        "நாங்கள்"
+      ],
+      "solution": "நாங்கள் தமிழர்."
+    },
+    {
+      "id": "sent3",
+      "scrambled": [
+        "ஓர்",
+        "மொழி",
+        "தமிழ்",
+        "இனிய"
+      ],
+      "solution": "தமிழ் ஓர் இனிய மொழி."
+    },
+    {
+      "id": "sent4",
+      "scrambled": [
+        "தந்த",
+        "மொழி",
+        "சொல்லித்",
+        "அன்னை"
+      ],
+      "solution": "அன்னை சொல்லித் தந்த மொழி."
+    },
+    {
+      "id": "sent5",
+      "scrambled": [
+        "கற்ற",
+        "பள்ளி",
+        "மொழி",
+        "சென்று"
+      ],
+      "solution": "பள்ளி சென்று கற்ற மொழி."
     }
+  ]
+}
+
+
+
+
+
+
 
 
     // Add templates for all 18 activity types here...

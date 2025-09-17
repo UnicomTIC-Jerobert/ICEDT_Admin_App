@@ -20,7 +20,6 @@
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.7.1",
-    "react-scripts": "5.0.1",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
@@ -50,6 +49,9 @@
   },
   "proxy": "http://13.51.194.17",
   "devDependencies": {
-    "@types/react-beautiful-dnd": "^13.1.8"
+    "@types/react-beautiful-dnd": "^13.1.8",
+    "ajv": "^6.12.6",
+    "ajv-keywords": "^3.5.2",
+    "react-scripts": "^5.0.1"
   }
 }

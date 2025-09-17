@@ -23,6 +23,12 @@ import MatchingActivity from './activity-types/MatchingActivity';
 import ImageChoiceActivity from './activity-types/Matching';
 import ListenMatchActivity, { ListenMatchContent } from './activity-types/Listen&match';
 import Keddal, { KeddalContent } from './activity-types/Keddal';
+import VideoPlayerActivity from './activity-types/VideoPlayer';
+import LetterFillActivity, { LetterFillContent } from './activity-types/LetterFill';
+import DragAndDropActivity, { DragDropContent } from './activity-types/DragandDropActivity';
+import LetterShapeActivity, { LetterShapeContent } from './activity-types/LetterShapeMatching';
+import WordScrambleActivity, { WordScrambleContent } from './activity-types/WordScrambleExercise';
+import SentenceScrambleActivity, { SentenceScrambleContent } from './activity-types/SentenceScrambleExercise';
 
 
 interface ActivityRendererProps {
@@ -59,13 +65,25 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
             return <StoryPlayer content={content as StoryContent} />;
         case 13: // MultipleChoiceQuestion
             // The MCQ component is smart enough to handle a single object or an array of questions.
-            return <ImageChoiceActivity title={content.title}  options={content.options} />;
+            return <ImageChoiceActivity title={content.title} options={content.options} />;
         default:
             return <Typography p={2} color="text.secondary">Preview for Activity Type ID #{activityTypeId} is not implemented.</Typography>;
         case 14: // Listen & Match
             return <ListenMatchActivity content={content as ListenMatchContent} />;
         case 15: // Keddal
             return <Keddal content={content as KeddalContent} />;
+        case 16: // Video Player
+            return <VideoPlayerActivity content={content as any} />;
+        case 17: // LetterFill
+            return <LetterFillActivity content={content as LetterFillContent} />;
+        case 19: // Drag and Drop Activity 
+            return <DragAndDropActivity content={content as DragDropContent} />;
+        case 21 : // Letter Shape Matching
+            return <LetterShapeActivity content={content as LetterShapeContent} />;
+        case 22: // wordScrambleExercise
+            return <WordScrambleActivity content={content as WordScrambleContent} />;
+        case 25: // sentenceScrambleExercise
+            return <SentenceScrambleActivity content={content as SentenceScrambleContent} />;
     }
 };
 

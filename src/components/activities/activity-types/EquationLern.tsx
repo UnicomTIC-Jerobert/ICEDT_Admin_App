@@ -89,7 +89,7 @@ const EquationLern: React.FC<EquationLernProps> = ({ content }) => {
 
             return () => clearTimeout(timer);
         }
-    }, [currentStep, currentEquationIndex]);
+    }, [currentStep, currentEquationIndex, currentEquation, playAudio]);
 
     const handleNext = () => {
         // Only handle navigation between equation IDs

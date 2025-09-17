@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Box, Typography, Paper, Button, Card, CardContent } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import ReplayIcon from '@mui/icons-material/Replay';
@@ -37,12 +37,12 @@ const EquationLern: React.FC<EquationLernProps> = ({ content }) => {
     const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL || '';
     const currentEquation = content.equations[currentEquationIndex];
 
-    const getFullUrl = (url: string) => {
+    const getFullUrl = useCallback((url: string) => {
         if (url.startsWith('http')) return url;
         return `${mediaBaseUrl}/${url}`;
-    };
+    }, [mediaBaseUrl]);
 
-    const playAudio = (audioUrl: string) => {
+    const playAudio = useCallback((audioUrl: string) => {
         if (audioRef.current) {
             audioRef.current.src = getFullUrl(audioUrl);
             setIsPlaying(true);
@@ -60,7 +60,7 @@ const EquationLern: React.FC<EquationLernProps> = ({ content }) => {
                 setIsPlaying(false);
             };
         }
-    };
+    }, [getFullUrl]);
 
     // Auto-play audio and auto-progress through steps
     useEffect(() => {

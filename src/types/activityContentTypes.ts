@@ -192,3 +192,37 @@ export interface InteractiveImageLearningContent {
     backgroundAudioUrl?: string; // Optional background/ambient audio
     objects: InteractiveObject[]; // All clickable objects in the image
 }
+
+// --- NEW: Type for Letters Display Activity ---
+export interface TamilVowel {
+    id: number;
+    letter: string;        // The Tamil vowel character, e.g., "அ"
+    romanization: string;  // Roman equivalent, e.g., "a"
+    audioUrl: string;      // Audio file for pronunciation
+}
+
+export interface LettersDisplayContent {
+    title: string;
+    description?: string;
+    vowels: TamilVowel[];  // Should contain all 12 vowels
+    introAudioUrl?: string; // Optional intro audio
+}
+
+// --- NEW: Type for Equation Learn Activity ---
+export interface UyirMeiEquation {
+    id: number;
+    consonant: string;          // The consonant, e.g., "க்"
+    consonantAudioUrl: string;  // Audio for consonant
+    vowel: string;              // The vowel, e.g., "அ"
+    vowelAudioUrl: string;      // Audio for vowel
+    result: string;             // The combined result, e.g., "க"
+    resultAudioUrl: string;     // Audio for the result
+    romanization?: string;      // Optional romanization, e.g., "ka"
+}
+
+export interface EquationLernContent {
+    title: string;
+    description?: string;
+    equations: UyirMeiEquation[]; // Array of consonant + vowel combinations
+    introAudioUrl?: string;       // Optional intro audio
+}

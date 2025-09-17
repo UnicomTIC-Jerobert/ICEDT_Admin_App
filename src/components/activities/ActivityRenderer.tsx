@@ -24,6 +24,8 @@ import StoryPlayer, { StoryContent } from './activity-types/StoryPlayer';
 import AudioTextImageSelection from './activity-types/AudioTextImageSelection';
 import DragDropImageMatching from './activity-types/DragDropImageMatching';
 import InteractiveImageLearning, { InteractiveImageLearningContent } from './activity-types/InteractiveImageLearning';
+import LettersDisplay, { LettersDisplayContent } from './activity-types/TamilVowels';
+import EquationLern, { EquationLernContent } from './activity-types/EquationLern';
 
 interface ActivityRendererProps {
     activityTypeId: number;
@@ -66,6 +68,10 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
             return <DragDropImageMatching content={content as DragDropImageMatchingContent} />;
         case 20: // InteractiveImageLearning
             return <InteractiveImageLearning content={content as InteractiveImageLearningContent} />;
+        case 23: // LettersDisplay
+            return <LettersDisplay content={content as LettersDisplayContent} />;
+        case 24: // EquationLern
+            return <EquationLern content={content as EquationLernContent} />;
 
         default:
             return <Typography p={2} color="text.secondary">Preview for Activity Type ID #{activityTypeId} is not implemented.</Typography>;

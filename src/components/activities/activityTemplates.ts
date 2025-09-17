@@ -301,6 +301,152 @@ export const getActivityTemplate = (activityTypeId: number): string => {
           "height": 15
         }
       ]
+    },
+    23: { // Letters Display
+      "title": "தமிழ் உயிர் எழுத்துக்கள் (Tamil Vowels)",
+      "description": "அ முதல் ஔ வரையிலான 12 உயிர் எழுத்துக்களைக் கற்றுக்கொள்ளுங்கள்",
+      "introAudioUrl": "vowels/intro.mp3",
+      "vowels": [
+        {
+          "id": 1,
+          "letter": "அ",
+          "romanization": "a",
+          "audioUrl": "vowels/a.mp3"
+        },
+        {
+          "id": 2,
+          "letter": "ஆ",
+          "romanization": "aa",
+          "audioUrl": "vowels/aa.mp3"
+        },
+        {
+          "id": 3,
+          "letter": "இ",
+          "romanization": "i",
+          "audioUrl": "vowels/i.mp3"
+        },
+        {
+          "id": 4,
+          "letter": "ஈ",
+          "romanization": "ii",
+          "audioUrl": "vowels/ii.mp3"
+        },
+        {
+          "id": 5,
+          "letter": "உ",
+          "romanization": "u",
+          "audioUrl": "vowels/u.mp3"
+        },
+        {
+          "id": 6,
+          "letter": "ஊ",
+          "romanization": "uu",
+          "audioUrl": "vowels/uu.mp3"
+        },
+        {
+          "id": 7,
+          "letter": "எ",
+          "romanization": "e",
+          "audioUrl": "vowels/e.mp3"
+        },
+        {
+          "id": 8,
+          "letter": "ஏ",
+          "romanization": "ee",
+          "audioUrl": "vowels/ee.mp3"
+        },
+        {
+          "id": 9,
+          "letter": "ஐ",
+          "romanization": "ai",
+          "audioUrl": "vowels/ai.mp3"
+        },
+        {
+          "id": 10,
+          "letter": "ஒ",
+          "romanization": "o",
+          "audioUrl": "vowels/o.mp3"
+        },
+        {
+          "id": 11,
+          "letter": "ஓ",
+          "romanization": "oo",
+          "audioUrl": "vowels/oo.mp3"
+        },
+        {
+          "id": 12,
+          "letter": "ஔ",
+          "romanization": "au",
+          "audioUrl": "vowels/au.mp3"
+        }
+      ]
+    },
+    24: { // Equation Learn
+      "title": "உயிர்மெய் எழுத்துக்கள் (Uyir-Mei Letters)",
+      "description": "மெய்யும் உயிரும் சேர்ந்து உயிர்மெய் எழுத்து உருவாகுவதைக் கற்றுக்கொள்ளுங்கள்",
+      "introAudioUrl": "uyirmei/intro.mp3",
+      "equations": [
+        {
+          "id": 1,
+          "consonant": "க்",
+          "consonantAudioUrl": "uyirmei/consonants/k.mp3",
+          "vowel": "அ",
+          "vowelAudioUrl": "uyirmei/vowels/a.mp3",
+          "result": "க",
+          "resultAudioUrl": "uyirmei/results/ka.mp3",
+          "romanization": "ka"
+        },
+        {
+          "id": 2,
+          "consonant": "ங்",
+          "consonantAudioUrl": "uyirmei/consonants/ng.mp3",
+          "vowel": "அ",
+          "vowelAudioUrl": "uyirmei/vowels/a.mp3",
+          "result": "ங",
+          "resultAudioUrl": "uyirmei/results/nga.mp3",
+          "romanization": "nga"
+        },
+        {
+          "id": 3,
+          "consonant": "ச்",
+          "consonantAudioUrl": "uyirmei/consonants/ch.mp3",
+          "vowel": "அ",
+          "vowelAudioUrl": "uyirmei/vowels/a.mp3",
+          "result": "ச",
+          "resultAudioUrl": "uyirmei/results/cha.mp3",
+          "romanization": "cha"
+        },
+        {
+          "id": 4,
+          "consonant": "ஞ்",
+          "consonantAudioUrl": "uyirmei/consonants/nj.mp3",
+          "vowel": "அ",
+          "vowelAudioUrl": "uyirmei/vowels/a.mp3",
+          "result": "ஞ",
+          "resultAudioUrl": "uyirmei/results/nja.mp3",
+          "romanization": "nja"
+        },
+        {
+          "id": 5,
+          "consonant": "த்",
+          "consonantAudioUrl": "uyirmei/consonants/th.mp3",
+          "vowel": "அ",
+          "vowelAudioUrl": "uyirmei/vowels/a.mp3",
+          "result": "த",
+          "resultAudioUrl": "uyirmei/results/tha.mp3",
+          "romanization": "tha"
+        },
+        {
+          "id": 6,
+          "consonant": "ந்",
+          "consonantAudioUrl": "uyirmei/consonants/nh.mp3",
+          "vowel": "அ",
+          "vowelAudioUrl": "uyirmei/vowels/a.mp3",
+          "result": "ந",
+          "resultAudioUrl": "uyirmei/results/nha.mp3",
+          "romanization": "nha"
+        }
+      ]
     }
     // Add templates for all 18 activity types here...
   };

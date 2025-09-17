@@ -46,7 +46,12 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
         case 6: // SongPlayer
             return <SongPlayer content={content as SongContent} />;
         case 7: // RecognitionGrid
-            return <RecognitionGrid content={content as RecognitionGridContent} />;
+    // "content.pages" ஐ அனுப்பவும், அதனுடன் "title" ஐயும் சேர்க்கவும்
+    const gridContent = {
+        title: content.title,
+        ...content.pages
+    };
+    return <RecognitionGrid content={gridContent} />;
         case 8: // CharacterGrid
             return <CharacterGrid content={content as CharacterGridContent} />;
         case 9: // WordPairMCQ
@@ -63,7 +68,19 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
         default:
             return <Typography p={2} color="text.secondary">Preview for Activity Type ID #{activityTypeId} is not implemented.</Typography>;
         case 14: // Listen & Match
-            return <ListenMatchActivity content={content as ListenMatchContent} />;
+    // பழைய அமைப்பில் இருந்து புதிய அமைப்புக்கு தரவை மாற்றுகிறோம்
+    const transformedContent = {
+        title: content.title,
+        spotlightLetter: '', // தேவைப்படும் ஒரு property
+        items: [{ // "items" வரிசையை உருவாக்குகிறோம்
+            text: content.question.text,
+            imageUrl: content.question.imageUrl,
+            audioUrl: content.question.audioUrl
+        }],
+        solliyangkal: [content.question.solliyangal], // ஸ்டிரிங்கை வரிசையாக மாற்றுகிறோம்
+        vinaakkal: [content.question.vinaakkal]      // ஸ்டிரிங்கை வரிசையாக மாற்றுகிறோம்
+    };
+    return <ListenMatchActivity content={transformedContent} />;
         case 15: // Keddal
             return <Keddal content={content as KeddalContent} />;
     }

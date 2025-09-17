@@ -235,6 +235,7 @@ export const getActivityTemplate = (activityTypeId: number): string => {
         "audioUrl": "",
         "vinaakkal": "உமது பாடசாலைக்குப் பக்கத்தில் என்ன உள்ளது?",
         "isCorrect": true
+        
       }
     }
 

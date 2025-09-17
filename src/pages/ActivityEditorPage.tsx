@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Box, Typography, CircularProgress, Grid, Button, Container, Paper } from '@mui/material';
+import { Box, Typography, CircularProgress, Grid, Button, Container, Paper, IconButton, Snackbar, Alert } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SaveIcon from '@mui/icons-material/Save'; // Import the Save icon
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 import { Activity } from '../types/activity';
 import { MainActivity } from '../types/mainActivity';
@@ -34,6 +35,7 @@ const ActivityEditorPage: React.FC = () => {
     const [previewContent, setPreviewContent] = useState<Partial<Activity> | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [expandedExercise, setExpandedExercise] = useState<number | false>(0);
+    const [copySnackbarOpen, setCopySnackbarOpen] = useState<boolean>(false);
 
     const [mainActivities, setMainActivities] = useState<MainActivity[]>([]);
     const [activityTypes, setActivityTypes] = useState<ActivityType[]>([]);
@@ -143,6 +145,28 @@ const ActivityEditorPage: React.FC = () => {
         setExpandedExercise(index);
     };
 
+    const handleCopyTemplate = async () => {
+        try {
+            const templateJson = getActivityTemplate(activity?.activityTypeId || 0);
+            await navigator.clipboard.writeText(templateJson);
+            setCopySnackbarOpen(true);
+        } catch (error) {
+            console.error('Failed to copy template:', error);
+            // Fallback for browsers that don't support clipboard API
+            const textArea = document.createElement('textarea');
+            textArea.value = getActivityTemplate(activity?.activityTypeId || 0);
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            setCopySnackbarOpen(true);
+        }
+    };
+
+    const handleCloseCopySnackbar = () => {
+        setCopySnackbarOpen(false);
+    };
+
     if (isLoading || !activity) {
         return <CircularProgress />;
     }
@@ -195,7 +219,18 @@ const ActivityEditorPage: React.FC = () => {
                     {/* This component will be created next */}
 
                     <Box mt={3}>
-                        <Typography variant="h6" gutterBottom>JSON Template</Typography>
+                        <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+                            <Typography variant="h6">JSON Template</Typography>
+                            <Button
+                                variant="outlined"
+                                size="small"
+                                startIcon={<ContentCopyIcon />}
+                                onClick={handleCopyTemplate}
+                                disabled={!activity?.activityTypeId}
+                            >
+                                Copy Template
+                            </Button>
+                        </Box>
                         <Typography variant="caption" color="text.secondary">
                             This is the required structure for the selected Activity Type.
                         </Typography>
@@ -229,6 +264,18 @@ const ActivityEditorPage: React.FC = () => {
                     {previewContent && <DevicePreview activityData={previewContent} />}
                 </Grid>
             </Grid>
+            
+            {/* Snackbar for copy confirmation */}
+            <Snackbar
+                open={copySnackbarOpen}
+                autoHideDuration={3000}
+                onClose={handleCloseCopySnackbar}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <Alert onClose={handleCloseCopySnackbar} severity="success" sx={{ width: '100%' }}>
+                    Template JSON copied to clipboard!
+                </Alert>
+            </Snackbar>
         </Container>
     );
 };

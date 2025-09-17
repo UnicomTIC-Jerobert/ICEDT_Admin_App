@@ -173,3 +173,22 @@ export interface DragDropImageMatchingContent {
     title: string;
     images: DragDropImageItem[];       // Single set of images - component will duplicate and shuffle
 }
+
+// --- NEW: Type for Interactive Image Learning Activity ---
+export interface InteractiveObject {
+    id: number;           // Unique ID for this clickable object
+    name: string;         // The name/text of the object, e.g., "மரம்" (Tree)
+    audioUrl: string;     // Audio file to play when clicked
+    // Coordinates are percentages (0-100) for responsive design
+    x: number;            // X-coordinate of the top-left corner
+    y: number;            // Y-coordinate of the top-left corner
+    width: number;        // Width of the clickable area
+    height: number;       // Height of the clickable area
+}
+
+export interface InteractiveImageLearningContent {
+    title: string;
+    imageUrl: string;           // The main learning image
+    backgroundAudioUrl?: string; // Optional background/ambient audio
+    objects: InteractiveObject[]; // All clickable objects in the image
+}

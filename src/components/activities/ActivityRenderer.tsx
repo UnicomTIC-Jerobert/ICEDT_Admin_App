@@ -23,6 +23,7 @@ import SceneFinder, { SceneFinderContent } from './activity-types/SceneFinder';
 import StoryPlayer, { StoryContent } from './activity-types/StoryPlayer';
 import AudioTextImageSelection from './activity-types/AudioTextImageSelection';
 import DragDropImageMatching from './activity-types/DragDropImageMatching';
+import InteractiveImageLearning, { InteractiveImageLearningContent } from './activity-types/InteractiveImageLearning';
 
 interface ActivityRendererProps {
     activityTypeId: number;
@@ -63,6 +64,8 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
             return <AudioTextImageSelection content={content as AudioTextImageSelectionContent} />;
         case 15: // DragDropImageMatching
             return <DragDropImageMatching content={content as DragDropImageMatchingContent} />;
+        case 20: // InteractiveImageLearning
+            return <InteractiveImageLearning content={content as InteractiveImageLearningContent} />;
 
         default:
             return <Typography p={2} color="text.secondary">Preview for Activity Type ID #{activityTypeId} is not implemented.</Typography>;

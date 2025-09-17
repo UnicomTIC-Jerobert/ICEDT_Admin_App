@@ -240,6 +240,67 @@ export const getActivityTemplate = (activityTypeId: number): string => {
           "matchId": 3
         }
       ]
+    },
+    20: { // InteractiveImageLearning
+      "title": "வீட்டில் உள்ள பொருட்கள் (Objects in the House)",
+      "imageUrl": "learning/house_interior.jpg",
+      "backgroundAudioUrl": "learning/house_ambient.mp3",
+      "objects": [
+        {
+          "id": 1,
+          "name": "மேஜை",
+          "audioUrl": "learning/objects/table.mp3",
+          "x": 30,
+          "y": 40,
+          "width": 25,
+          "height": 20
+        },
+        {
+          "id": 2,
+          "name": "நாற்காலி",
+          "audioUrl": "learning/objects/chair.mp3",
+          "x": 15,
+          "y": 50,
+          "width": 15,
+          "height": 25
+        },
+        {
+          "id": 3,
+          "name": "புத்தகம்",
+          "audioUrl": "learning/objects/book.mp3",
+          "x": 35,
+          "y": 35,
+          "width": 8,
+          "height": 6
+        },
+        {
+          "id": 4,
+          "name": "விளக்கு",
+          "audioUrl": "learning/objects/lamp.mp3",
+          "x": 60,
+          "y": 25,
+          "width": 12,
+          "height": 20
+        },
+        {
+          "id": 5,
+          "name": "கடிகாரம்",
+          "audioUrl": "learning/objects/clock.mp3",
+          "x": 75,
+          "y": 15,
+          "width": 10,
+          "height": 10
+        },
+        {
+          "id": 6,
+          "name": "தொலைக்காட்சி",
+          "audioUrl": "learning/objects/tv.mp3",
+          "x": 50,
+          "y": 20,
+          "width": 20,
+          "height": 15
+        }
+      ]
     }
     // Add templates for all 18 activity types here...
   };

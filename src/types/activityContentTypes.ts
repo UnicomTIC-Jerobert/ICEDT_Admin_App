@@ -148,3 +148,81 @@ export interface WordFinderContent {
     title: string;
     challenges: WordFinderChallenge[];
 }
+
+// --- NEW: Type for Audio Text Image Selection Activity ---
+export interface AudioTextImageSelectionContent {
+    title: string;
+    text: string;           // The text to display at the top center
+    audioUrl: string;       // The audio file to play the text
+    images: {
+        id: number;
+        imageUrl: string;
+        isCorrect: boolean;
+    }[];   
+}
+
+// --- NEW: Type for Drag Drop Image Matching Activity ---
+export interface DragDropImageItem {
+    id: number;
+    imageUrl: string;
+    audioUrl: string;       // Audio to play when image is clicked
+    matchId: number;        // ID of the image it should match with
+}
+
+export interface DragDropImageMatchingContent {
+    title: string;
+    images: DragDropImageItem[];       // Single set of images - component will duplicate and shuffle
+}
+
+// --- NEW: Type for Interactive Image Learning Activity ---
+export interface InteractiveObject {
+    id: number;           // Unique ID for this clickable object
+    name: string;         // The name/text of the object, e.g., "மரம்" (Tree)
+    audioUrl: string;     // Audio file to play when clicked
+    // Coordinates are percentages (0-100) for responsive design
+    x: number;            // X-coordinate of the top-left corner
+    y: number;            // Y-coordinate of the top-left corner
+    width: number;        // Width of the clickable area
+    height: number;       // Height of the clickable area
+}
+
+export interface InteractiveImageLearningContent {
+    title: string;
+    imageUrl: string;           // The main learning image
+    backgroundAudioUrl?: string; // Optional background/ambient audio
+    objects: InteractiveObject[]; // All clickable objects in the image
+}
+
+// --- NEW: Type for Letters Display Activity ---
+export interface TamilVowel {
+    id: number;
+    letter: string;        // The Tamil vowel character, e.g., "அ"
+    romanization: string;  // Roman equivalent, e.g., "a"
+    audioUrl: string;      // Audio file for pronunciation
+}
+
+export interface LettersDisplayContent {
+    title: string;
+    description?: string;
+    vowels: TamilVowel[];  // Should contain all 12 vowels
+    introAudioUrl?: string; // Optional intro audio
+}
+
+// --- NEW: Type for Equation Learn Activity ---
+export interface UyirMeiEquation {
+    id: number;
+    consonant: string;          // The consonant, e.g., "க்"
+    consonantAudioUrl: string;  // Audio for consonant
+    vowel: string;              // The vowel, e.g., "அ"
+    vowelAudioUrl: string;      // Audio for vowel
+    result: string;             // The combined result, e.g., "க"
+    resultAudioUrl: string;     // Audio for the result
+    romanization?: string;      // Optional romanization, e.g., "ka"
+}
+
+export interface EquationLernContent {
+    title: string;
+    description?: string;
+    equations: UyirMeiEquation[]; // Array of consonant + vowel combinations
+    introAudioUrl?: string;       // Optional intro audio
+}

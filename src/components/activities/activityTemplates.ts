@@ -5,10 +5,19 @@ export const getActivityTemplate = (activityTypeId: number): string => {
     1: { // FlashCards
       title: "உடல் உறுப்புகள் (Body Parts)",
       word: "காது",
-      imageUrl: "https://.../kaathu.jpg",
-      audioUrl: "https://.../kaathu_sound.mp3"
+      imageUrl: "/malaiyar/lesson1/kan.png",
+      audioUrl: "/malaiyar/lesson1/kan.mp3"
     },
     2: {
+      "title": "'அ' வில் தொடங்கும் சொற்கள்",
+      "spotlightLetter": "அ",
+      "item": {
+        "text": "அம்மா",
+        "imageUrl": "malaiyar/lesson1/amma.png",
+        "audioUrl": "malaiyar/lesson1/amma.mp3"
+      }
+    },
+    3: {
       "title": "'க்' சொற்கள்",
       "spotlightLetter": "க்",
       "items": [
@@ -29,22 +38,12 @@ export const getActivityTemplate = (activityTypeId: number): string => {
         }
       ]
     },
-    3: {
-      "title": "'அ' வில் தொடங்கும் சொற்கள்",
-      "spotlightLetter": "அ",
-      "item": {
-        "text": "அம்மா",
-        "imageUrl": "malaiyar/lesson1/amma.png",
-        "audioUrl": "malaiyar/lesson1/amma.mp3"
-      }
-    },
     4: { // Equation
       leftOperand: "க்",
       rightOperand: "அ",
       correctAnswer: "க",
       options: ["கா", "கி", "க", "கூ"]
     },
-
     5: {
       "title": "At the Market",
       "audioUrl": "https://your-bucket.../market_conversation.mp3",
@@ -223,20 +222,45 @@ export const getActivityTemplate = (activityTypeId: number): string => {
         }
       ]
     },
-    14: {
-      "id": 2,
-      "title": "உறைவிடங்கள்",
-      "question":
-      {
-        "id": "1",
-        "imageUrl": "house.jpg",
-        "text": "வீடு",
-        "solliyangal": "மாற்றியின் வீடு என்பது பாடசாலைக்குப் பக்கத்தில் உள்ளது.",
-        "audioUrl": "",
-        "vinaakkal": "உமது பாடசாலைக்குப் பக்கத்தில் என்ன உள்ளது?",
-        "isCorrect": true
-        
-      }
+    14: { // AudioTextImageSelection
+      "title": "சரியான படத்தைத் தேர்ந்தெடுக்கவும்",
+      "text": "பூனை",
+      "audioUrl": "https://icedt-tamilapp-media.s3.dualstack.eu-north-1.amazonaws.com/malaiyar/lesson4/eetti.mp3",
+      "images": [
+        {
+          "id": 1,
+          "imageUrl": "https://icedt-tamilapp-media.s3.dualstack.eu-north-1.amazonaws.com/malaiyar/lesson4/eetti.jpg",
+          "isCorrect": true
+        },
+        {
+          "id": 2,
+          "imageUrl": "https://icedt-tamilapp-media.s3.dualstack.eu-north-1.amazonaws.com/malaiyar/lesson4/eetti.jpg",
+          "isCorrect": false
+        }
+      ]
+    },
+    15: { // DragDropImageMatching
+      "title": "படங்களை பொருத்துக (Match the Images)",
+      "images": [
+        {
+          "id": 1,
+          "imageUrl": "https://icedt-tamilapp-media.s3.dualstack.eu-north-1.amazonaws.com/animals/cat.jpg",
+          "audioUrl": "https://icedt-tamilapp-media.s3.dualstack.eu-north-1.amazonaws.com/animals/cat_sound.mp3",
+          "matchId": 1
+        },
+        {
+          "id": 2,
+          "imageUrl": "https://icedt-tamilapp-media.s3.dualstack.eu-north-1.amazonaws.com/animals/dog.jpg",
+          "audioUrl": "https://icedt-tamilapp-media.s3.dualstack.eu-north-1.amazonaws.com/animals/dog_sound.mp3",
+          "matchId": 2
+        },
+        {
+          "id": 3,
+          "imageUrl": "https://icedt-tamilapp-media.s3.dualstack.eu-north-1.amazonaws.com/animals/bird.jpg",
+          "audioUrl": "https://icedt-tamilapp-media.s3.dualstack.eu-north-1.amazonaws.com/animals/bird_sound.mp3",
+          "matchId": 3
+        }
+      ]
     },
     16:
     {
@@ -347,6 +371,67 @@ export const getActivityTemplate = (activityTypeId: number): string => {
         }
       ]
     },
+    20: { // InteractiveImageLearning
+      "title": "வீட்டில் உள்ள பொருட்கள் (Objects in the House)",
+      "imageUrl": "learning/house_interior.jpg",
+      "backgroundAudioUrl": "learning/house_ambient.mp3",
+      "objects": [
+        {
+          "id": 1,
+          "name": "மேஜை",
+          "audioUrl": "learning/objects/table.mp3",
+          "x": 30,
+          "y": 40,
+          "width": 25,
+          "height": 20
+        },
+        {
+          "id": 2,
+          "name": "நாற்காலி",
+          "audioUrl": "learning/objects/chair.mp3",
+          "x": 15,
+          "y": 50,
+          "width": 15,
+          "height": 25
+        },
+        {
+          "id": 3,
+          "name": "புத்தகம்",
+          "audioUrl": "learning/objects/book.mp3",
+          "x": 35,
+          "y": 35,
+          "width": 8,
+          "height": 6
+        },
+        {
+          "id": 4,
+          "name": "விளக்கு",
+          "audioUrl": "learning/objects/lamp.mp3",
+          "x": 60,
+          "y": 25,
+          "width": 12,
+          "height": 20
+        },
+        {
+          "id": 5,
+          "name": "கடிகாரம்",
+          "audioUrl": "learning/objects/clock.mp3",
+          "x": 75,
+          "y": 15,
+          "width": 10,
+          "height": 10
+        },
+        {
+          "id": 6,
+          "name": "தொலைக்காட்சி",
+          "audioUrl": "learning/objects/tv.mp3",
+          "x": 50,
+          "y": 20,
+          "width": 20,
+          "height": 15
+        }
+      ]
+    },
     21:
     {
       "title": "பயிற்சி",
@@ -403,10 +488,6 @@ export const getActivityTemplate = (activityTypeId: number): string => {
         "left-ii": "right-ii",
         "left-u": "right-u"
       }
-
-
-
-
     },
     22:
     {
@@ -466,68 +547,207 @@ export const getActivityTemplate = (activityTypeId: number): string => {
         }
       ]
     },
-25:
-{
-  "title": "சொற்களை ஒழுங்குபடுத்துதல்",
-  "activityTitle": "செயல் 05",
-  "instruction": "கீழே கொடுக்கப்பட்டுள்ள சொற்களை சரியான முறையில் வரிசைப்படுத்தி வாக்கியங்களை உருவாக்கவும்.",
-  "sentences": [
-    {
-      "id": "sent1",
-      "scrambled": [
-        "எங்கள்",
-        "தமிழ்",
-        "தாய்மொழி"
-      ],
-      "solution": "தமிழ் எங்கள் தாய்மொழி."
+    23: { // Letters Display
+      "title": "தமிழ் உயிர் எழுத்துக்கள் (Tamil Vowels)",
+      "description": "அ முதல் ஔ வரையிலான 12 உயிர் எழுத்துக்களைக் கற்றுக்கொள்ளுங்கள்",
+      "introAudioUrl": "vowels/intro.mp3",
+      "vowels": [
+        {
+          "id": 1,
+          "letter": "அ",
+          "romanization": "a",
+          "audioUrl": "vowels/a.mp3"
+        },
+        {
+          "id": 2,
+          "letter": "ஆ",
+          "romanization": "aa",
+          "audioUrl": "vowels/aa.mp3"
+        },
+        {
+          "id": 3,
+          "letter": "இ",
+          "romanization": "i",
+          "audioUrl": "vowels/i.mp3"
+        },
+        {
+          "id": 4,
+          "letter": "ஈ",
+          "romanization": "ii",
+          "audioUrl": "vowels/ii.mp3"
+        },
+        {
+          "id": 5,
+          "letter": "உ",
+          "romanization": "u",
+          "audioUrl": "vowels/u.mp3"
+        },
+        {
+          "id": 6,
+          "letter": "ஊ",
+          "romanization": "uu",
+          "audioUrl": "vowels/uu.mp3"
+        },
+        {
+          "id": 7,
+          "letter": "எ",
+          "romanization": "e",
+          "audioUrl": "vowels/e.mp3"
+        },
+        {
+          "id": 8,
+          "letter": "ஏ",
+          "romanization": "ee",
+          "audioUrl": "vowels/ee.mp3"
+        },
+        {
+          "id": 9,
+          "letter": "ஐ",
+          "romanization": "ai",
+          "audioUrl": "vowels/ai.mp3"
+        },
+        {
+          "id": 10,
+          "letter": "ஒ",
+          "romanization": "o",
+          "audioUrl": "vowels/o.mp3"
+        },
+        {
+          "id": 11,
+          "letter": "ஓ",
+          "romanization": "oo",
+          "audioUrl": "vowels/oo.mp3"
+        },
+        {
+          "id": 12,
+          "letter": "ஔ",
+          "romanization": "au",
+          "audioUrl": "vowels/au.mp3"
+        }
+      ]
     },
-    {
-      "id": "sent2",
-      "scrambled": [
-        "தமிழர்",
-        "நாங்கள்"
-      ],
-      "solution": "நாங்கள் தமிழர்."
+    24: { // Equation Learn
+      "title": "உயிர்மெய் எழுத்துக்கள் (Uyir-Mei Letters)",
+      "description": "மெய்யும் உயிரும் சேர்ந்து உயிர்மெய் எழுத்து உருவாகுவதைக் கற்றுக்கொள்ளுங்கள்",
+      "introAudioUrl": "uyirmei/intro.mp3",
+      "equations": [
+        {
+          "id": 1,
+          "consonant": "க்",
+          "consonantAudioUrl": "uyirmei/consonants/k.mp3",
+          "vowel": "அ",
+          "vowelAudioUrl": "uyirmei/vowels/a.mp3",
+          "result": "க",
+          "resultAudioUrl": "uyirmei/results/ka.mp3",
+          "romanization": "ka"
+        },
+        {
+          "id": 2,
+          "consonant": "ங்",
+          "consonantAudioUrl": "uyirmei/consonants/ng.mp3",
+          "vowel": "அ",
+          "vowelAudioUrl": "uyirmei/vowels/a.mp3",
+          "result": "ங",
+          "resultAudioUrl": "uyirmei/results/nga.mp3",
+          "romanization": "nga"
+        },
+        {
+          "id": 3,
+          "consonant": "ச்",
+          "consonantAudioUrl": "uyirmei/consonants/ch.mp3",
+          "vowel": "அ",
+          "vowelAudioUrl": "uyirmei/vowels/a.mp3",
+          "result": "ச",
+          "resultAudioUrl": "uyirmei/results/cha.mp3",
+          "romanization": "cha"
+        },
+        {
+          "id": 4,
+          "consonant": "ஞ்",
+          "consonantAudioUrl": "uyirmei/consonants/nj.mp3",
+          "vowel": "அ",
+          "vowelAudioUrl": "uyirmei/vowels/a.mp3",
+          "result": "ஞ",
+          "resultAudioUrl": "uyirmei/results/nja.mp3",
+          "romanization": "nja"
+        },
+        {
+          "id": 5,
+          "consonant": "த்",
+          "consonantAudioUrl": "uyirmei/consonants/th.mp3",
+          "vowel": "அ",
+          "vowelAudioUrl": "uyirmei/vowels/a.mp3",
+          "result": "த",
+          "resultAudioUrl": "uyirmei/results/tha.mp3",
+          "romanization": "tha"
+        },
+        {
+          "id": 6,
+          "consonant": "ந்",
+          "consonantAudioUrl": "uyirmei/consonants/nh.mp3",
+          "vowel": "அ",
+          "vowelAudioUrl": "uyirmei/vowels/a.mp3",
+          "result": "ந",
+          "resultAudioUrl": "uyirmei/results/nha.mp3",
+          "romanization": "nha"
+        }
+      ]
     },
+    25:
     {
-      "id": "sent3",
-      "scrambled": [
-        "ஓர்",
-        "மொழி",
-        "தமிழ்",
-        "இனிய"
-      ],
-      "solution": "தமிழ் ஓர் இனிய மொழி."
-    },
-    {
-      "id": "sent4",
-      "scrambled": [
-        "தந்த",
-        "மொழி",
-        "சொல்லித்",
-        "அன்னை"
-      ],
-      "solution": "அன்னை சொல்லித் தந்த மொழி."
-    },
-    {
-      "id": "sent5",
-      "scrambled": [
-        "கற்ற",
-        "பள்ளி",
-        "மொழி",
-        "சென்று"
-      ],
-      "solution": "பள்ளி சென்று கற்ற மொழி."
+      "title": "சொற்களை ஒழுங்குபடுத்துதல்",
+      "activityTitle": "செயல் 05",
+      "instruction": "கீழே கொடுக்கப்பட்டுள்ள சொற்களை சரியான முறையில் வரிசைப்படுத்தி வாக்கியங்களை உருவாக்கவும்.",
+      "sentences": [
+        {
+          "id": "sent1",
+          "scrambled": [
+            "எங்கள்",
+            "தமிழ்",
+            "தாய்மொழி"
+          ],
+          "solution": "தமிழ் எங்கள் தாய்மொழி."
+        },
+        {
+          "id": "sent2",
+          "scrambled": [
+            "தமிழர்",
+            "நாங்கள்"
+          ],
+          "solution": "நாங்கள் தமிழர்."
+        },
+        {
+          "id": "sent3",
+          "scrambled": [
+            "ஓர்",
+            "மொழி",
+            "தமிழ்",
+            "இனிய"
+          ],
+          "solution": "தமிழ் ஓர் இனிய மொழி."
+        },
+        {
+          "id": "sent4",
+          "scrambled": [
+            "தந்த",
+            "மொழி",
+            "சொல்லித்",
+            "அன்னை"
+          ],
+          "solution": "அன்னை சொல்லித் தந்த மொழி."
+        },
+        {
+          "id": "sent5",
+          "scrambled": [
+            "கற்ற",
+            "பள்ளி",
+            "மொழி",
+            "சென்று"
+          ],
+          "solution": "பள்ளி சென்று கற்ற மொழி."
+        }
+      ]
     }
-  ]
-}
-
-
-
-
-
-
-
 
     // Add templates for all 18 activity types here...
   };

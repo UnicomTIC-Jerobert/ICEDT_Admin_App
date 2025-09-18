@@ -10,6 +10,7 @@ import MediaSpotlightMultiple, { MediaSpotlightMultipleContent } from './activit
 
 import {
     MCQContent,
+    DragDropImageMatchingContent,
 } from '../../types/activityContentTypes';
 import ConversationPlayer, { ConversationContent } from './activity-types/ConversationPlayer';
 import SongPlayer, { SongContent } from './activity-types/SongPlayer';
@@ -19,10 +20,7 @@ import WordFinder, { WordFinderChallenge } from './activity-types/WordFinder';
 import WordPairMCQ, { WordPairQuestion } from './activity-types/WordPairMCQ';
 import SceneFinder, { SceneFinderContent } from './activity-types/SceneFinder';
 import StoryPlayer, { StoryContent } from './activity-types/StoryPlayer';
-import MatchingActivity from './activity-types/MatchingActivity';
-import ImageChoiceActivity from './activity-types/Matching';
 import ListenMatchActivity, { ListenMatchContent } from './activity-types/Listen&match';
-import Keddal, { KeddalContent } from './activity-types/Keddal';
 import VideoPlayerActivity from './activity-types/VideoPlayer';
 import LetterFillActivity, { LetterFillContent } from './activity-types/LetterFill';
 import DragAndDropActivity, { DragDropContent } from './activity-types/DragandDropActivity';
@@ -30,6 +28,10 @@ import LetterShapeActivity, { LetterShapeContent } from './activity-types/Letter
 import WordScrambleActivity, { WordScrambleContent } from './activity-types/WordScrambleExercise';
 import SentenceScrambleActivity, { SentenceScrambleContent } from './activity-types/SentenceScrambleExercise';
 
+import DragDropImageMatching from './activity-types/DragDropImageMatching';
+import InteractiveImageLearning, { InteractiveImageLearningContent } from './activity-types/InteractiveImageLearning';
+import LettersDisplay, { LettersDisplayContent } from './activity-types/TamilVowels';
+import EquationLern, { EquationLernContent } from './activity-types/EquationLern';
 
 interface ActivityRendererProps {
     activityTypeId: number;
@@ -42,9 +44,9 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
         case 1:
             return <Flashcard content={content as FlashcardContent} />;
         case 2: // VocabularySpotlight
-            return <MediaSpotlightMultiple content={content as MediaSpotlightMultipleContent} />;
-        case 3:
             return <MediaSpotlightSingle content={content as MediaSpotlightSingleContent} />;
+        case 3:
+            return <MediaSpotlightMultiple content={content as MediaSpotlightMultipleContent} />;
         case 4: // Letter Spotlight
             return <EquationFillInTheBlank content={content as Equation} />;
         case 5: // ConversationPlayer
@@ -52,12 +54,7 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
         case 6: // SongPlayer
             return <SongPlayer content={content as SongContent} />;
         case 7: // RecognitionGrid
-    // "content.pages" ஐ அனுப்பவும், அதனுடன் "title" ஐயும் சேர்க்கவும்
-    const gridContent = {
-        title: content.title,
-        ...content.pages
-    };
-    return <RecognitionGrid content={gridContent} />;
+            return <RecognitionGrid content={content as RecognitionGridContent} />;
         case 8: // CharacterGrid
             return <CharacterGrid content={content as CharacterGridContent} />;
         case 9: // WordPairMCQ
@@ -70,37 +67,31 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
             return <StoryPlayer content={content as StoryContent} />;
         case 13: // MultipleChoiceQuestion
             // The MCQ component is smart enough to handle a single object or an array of questions.
-            return <ImageChoiceActivity title={content.title} options={content.options} />;
-        default:
-            return <Typography p={2} color="text.secondary">Preview for Activity Type ID #{activityTypeId} is not implemented.</Typography>;
+            return <MCQActivity content={content as MCQContent} />;
         case 14: // Listen & Match
-    // பழைய அமைப்பில் இருந்து புதிய அமைப்புக்கு தரவை மாற்றுகிறோம்
-    const transformedContent = {
-        title: content.title,
-        spotlightLetter: '', // தேவைப்படும் ஒரு property
-        items: [{ // "items" வரிசையை உருவாக்குகிறோம்
-            text: content.question.text,
-            imageUrl: content.question.imageUrl,
-            audioUrl: content.question.audioUrl
-        }],
-        solliyangkal: [content.question.solliyangal], // ஸ்டிரிங்கை வரிசையாக மாற்றுகிறோம்
-        vinaakkal: [content.question.vinaakkal]      // ஸ்டிரிங்கை வரிசையாக மாற்றுகிறோம்
-    };
-    return <ListenMatchActivity content={transformedContent} />;
-        case 15: // Keddal
-            return <Keddal content={content as KeddalContent} />;
+            return <ListenMatchActivity content={content as ListenMatchContent} />;
+        case 15: // DragDropImageMatching
+            return <DragDropImageMatching content={content as DragDropImageMatchingContent} />;
         case 16: // Video Player
             return <VideoPlayerActivity content={content as any} />;
         case 17: // LetterFill
             return <LetterFillActivity content={content as LetterFillContent} />;
         case 19: // Drag and Drop Activity 
             return <DragAndDropActivity content={content as DragDropContent} />;
-        case 21 : // Letter Shape Matching
+        case 20: // InteractiveImageLearning
+            return <InteractiveImageLearning content={content as InteractiveImageLearningContent} />;
+        case 21: // Letter Shape Matching
             return <LetterShapeActivity content={content as LetterShapeContent} />;
         case 22: // wordScrambleExercise
             return <WordScrambleActivity content={content as WordScrambleContent} />;
+        case 23: // LettersDisplay
+            return <LettersDisplay content={content as LettersDisplayContent} />;
+        case 24: // EquationLern
+            return <EquationLern content={content as EquationLernContent} />;
         case 25: // sentenceScrambleExercise
             return <SentenceScrambleActivity content={content as SentenceScrambleContent} />;
+        default:
+            return <Typography p={2} color="text.secondary">Preview for Activity Type ID #{activityTypeId} is not implemented.</Typography>;
     }
 };
 

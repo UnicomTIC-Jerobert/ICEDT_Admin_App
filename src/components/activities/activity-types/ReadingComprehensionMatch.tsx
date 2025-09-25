@@ -2,7 +2,6 @@
 
 import React, { useState, useMemo, useRef, useCallback } from 'react';
 import { Box, Typography, Paper, Grid, Alert, IconButton } from '@mui/material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 
 // --- Add/Update these types in your activityContentTypes.ts file ---

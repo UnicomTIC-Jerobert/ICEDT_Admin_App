@@ -1,7 +1,7 @@
 // Create this new file: activity-types/DragDropFillInBlank.tsx
 
-import React, { useState, useRef, useEffect } from 'react';
-import { Box, Typography, Paper, Alert } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Typography, Paper } from '@mui/material';
 
 // --- Add these types to your activityContentTypes.ts file ---
 
@@ -15,7 +15,7 @@ export interface DragDropFillInBlankContent {
     id: number;
     title: string;
     // The text is split into two parts, with the blank space in between.
-    promptParts: [string, string]; 
+    promptParts: [string, string];
     choices: WordChoice[];
     correctAnswer: string; // The text of the correct choice
 }
@@ -43,7 +43,7 @@ const DragDropFillInBlank: React.FC<DragDropFillInBlankProps> = ({ content }) =>
         e.preventDefault();
         setIsDropZoneActive(true);
     };
-    
+
     const handleDragLeave = () => {
         setIsDropZoneActive(false);
     };
@@ -85,15 +85,15 @@ const DragDropFillInBlank: React.FC<DragDropFillInBlankProps> = ({ content }) =>
             </Typography>
 
             {/* The Sentence/Prompt Area */}
-            <Paper 
-                elevation={2} 
-                sx={{ 
-                    p: 3, 
-                    mb: 4, 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'center', 
-                    flexWrap: 'wrap', 
+            <Paper
+                elevation={2}
+                sx={{
+                    p: 3,
+                    mb: 4,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexWrap: 'wrap',
                     gap: 1,
                     minHeight: '80px'
                 }}

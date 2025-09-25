@@ -1,6 +1,6 @@
 // REVISED file: activity-types/PronunciationPractice.tsx
 
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback} from 'react';
 import { Box, Typography, Paper, IconButton } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 

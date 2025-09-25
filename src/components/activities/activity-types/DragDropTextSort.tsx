@@ -2,7 +2,6 @@
 
 import React, { useState, useMemo } from 'react';
 import { Box, Typography, Paper, Grid, Alert } from '@mui/material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 
 // --- Type Definitions ---

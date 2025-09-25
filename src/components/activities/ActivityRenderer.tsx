@@ -26,6 +26,14 @@ import DragDropImageMatching from './activity-types/DragDropImageMatching';
 import InteractiveImageLearning, { InteractiveImageLearningContent } from './activity-types/InteractiveImageLearning';
 import LettersDisplay, { LettersDisplayContent } from './activity-types/TamilVowels';
 import EquationLern, { EquationLernContent } from './activity-types/EquationLern';
+import SentenceBuilder, { SentenceBuilderContent } from './activity-types/SentenceBuilder';
+import PronunciationPractice, { PronunciationPracticeContent } from './activity-types/PronunciationPractice';
+import RiddleActivity, { RiddleContent } from './activity-types/RiddleActivity';
+import DragDropWordMatch, { DragDropWordMatchContent } from './activity-types/DragDropWordMatch';
+import ReadingComprehensionMatch, { ReadingComprehensionContent } from './activity-types/ReadingComprehensionMatch';
+import DragDropFillInBlank, { DragDropFillInBlankContent } from './activity-types/DragDropFillInBlank';
+import DragDropTextSort, { DragDropTextSortContent } from './activity-types/DragDropTextSort';
+import MultiDragDropFillInBlank, { MultiDragDropFillInBlankContent } from './activity-types/MultiDragDropFillInBlank';
 
 interface ActivityRendererProps {
     activityTypeId: number;
@@ -72,10 +80,25 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
             return <LettersDisplay content={content as LettersDisplayContent} />;
         case 24: // EquationLern
             return <EquationLern content={content as EquationLernContent} />;
-
+        case 26: // EquationLern
+            return <SentenceBuilder content={content as SentenceBuilderContent} />;
+        case 28: // PronunciationPractice
+            return <PronunciationPractice content={content as PronunciationPracticeContent} />;
+        case 29: // RiddleActivity
+            return <RiddleActivity content={content as RiddleContent} />;
+        case 30: // DragDropWordMatch
+            return <DragDropWordMatch content={content as DragDropWordMatchContent} />;
+        case 31: // ReadingComprehensionMatch
+            return <ReadingComprehensionMatch content={content as ReadingComprehensionContent} />;
+        case 34: // DragDropFillInBlank
+            return <DragDropFillInBlank content={content as DragDropFillInBlankContent} />;
+        case 35: // DragDropTextSort
+            return <DragDropTextSort content={content as DragDropTextSortContent} />;
+        case 36: // MultiDragDropFillInBlank
+            return <MultiDragDropFillInBlank content={content as MultiDragDropFillInBlankContent} />;
         default:
             return <Typography p={2} color="text.secondary">Preview for Activity Type ID #{activityTypeId} is not implemented.</Typography>;
     }
 };
 
-export default ActivityRenderer;
+export default ActivityRenderer; 

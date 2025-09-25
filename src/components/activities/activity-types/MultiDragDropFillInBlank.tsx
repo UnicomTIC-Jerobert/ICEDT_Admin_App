@@ -1,5 +1,3 @@
-// activity-types/MultiDragDropFillInBlank.tsx
-
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Paper, Alert, Button } from '@mui/material';
 

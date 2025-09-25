@@ -467,13 +467,13 @@ export const getActivityTemplate = (activityTypeId: number): string => {
       "fullSentenceText": "കുട്ടി പഴം എടുത്തു",
       "fullSentenceAudioUrl": "https://icedt-tamilapp-media.s3.dualstack.eu-north-1.amazonaws.com/audio/sentence_boy_fruit.mp3"
     },
-    28:{
-       "id": 1,
-       "title": "ஒலித்துப்பழகுவோம் (லகர, ளகர, ழகர)",
-       "text": "பழம்",
-       "audioUrl": "https://icedt-tamilapp-media.s3.dualstack.eu-north-1.amazonaws.com/audio/pronunciation/pazham.mp3"
+    28: {
+      "id": 1,
+      "title": "ஒலித்துப்பழகுவோம் (லகர, ளகர, ழகர)",
+      "text": "பழம்",
+      "audioUrl": "https://icedt-tamilapp-media.s3.dualstack.eu-north-1.amazonaws.com/audio/pronunciation/pazham.mp3"
     },
-    29:{
+    29: {
       "id": 1,
       "title": "நொடி (Riddle)",
       "riddleText": "அள்ள முடியும் கிள்ள முடியாத அது என்ன?",
@@ -492,18 +492,18 @@ export const getActivityTemplate = (activityTypeId: number): string => {
       ],
       "correctChoiceId": 101
     },
-    30:{
-       "title": "எழுத்து வழக்கை பேச்சு வழக்குடன் பொருத்தவும்",
-       "targetTitle": "எழுத்துவழக்குச் சொற்கள் (Written Words)",
-       "sourceTitle": "பேச்சுவழக்குச் சொற்கள் (Spoken Words)",
-       "targets": [
+    30: {
+      "title": "எழுத்து வழக்கை பேச்சு வழக்குடன் பொருத்தவும்",
+      "targetTitle": "எழுத்துவழக்குச் சொற்கள் (Written Words)",
+      "sourceTitle": "பேச்சுவழக்குச் சொற்கள் (Spoken Words)",
+      "targets": [
         { "id": 1, "text": "ஓடுகிறான்" },
         { "id": 2, "text": "பறக்கிறது" },
         { "id": 3, "text": "ஆடுவாள்" },
         { "id": 4, "text": "அழுகிறேன்" },
         { "id": 5, "text": "குடிப்பேன்" }
-       ],
-       "sources": [
+      ],
+      "sources": [
         { "id": 101, "text": "பறக்குது", "matchId": 2 },
         { "id": 102, "text": "குடிப்பன்", "matchId": 5 },
         { "id": 103, "text": "ஓடுறான்", "matchId": 1 },
@@ -511,90 +511,90 @@ export const getActivityTemplate = (activityTypeId: number): string => {
         { "id": 105, "text": "அழுகிறன்", "matchId": 4 }
       ]
     },
-    31:{
-        "title": "கேட்டல் : பூக்கள்",
-        "passage": "பூக்களில் சிவப்பு, வெள்ளை, மஞ்சள் போன்ற பல வண்ணங்கள் உள்ளன. தாமரை நீரில் பூக்கும். காந்தள் நிலத்தில் பூக்கும். பூக்கள் மாலை கட்டுவதற்கு உதவும். தேனீக்கள் பூவில் தேனைக் குடிக்கும்.",
-        "passageAudioUrl": "/audio/comprehension/flowers_passage.mp3",
-        "questions": [
-          {
-            "id": 1,
-            "text": "நீரில் பூக்கும் பூ எது?",
-            "audioUrl": "/audio/comprehension/q_water_flower.mp3"
-          },
-          {
-            "id": 2,
-            "text": "பூக்கள் எதற்கு உதவும்?",
-            "audioUrl": "/audio/comprehension/q_flowers_help.mp3"
-          },
-          {
-            "id": 3,
-            "text": "தேனைக் குடிப்பது எது?",
-            "audioUrl": "/audio/comprehension/q_drinks_honey.mp3"
-          },
-          {
-            "id": 4,
-            "text": "பூக்களில் உள்ள வண்ணம் ஒன்று?",
-            "audioUrl": "/audio/comprehension/q_flower_color.mp3"
-          }
-        ],
-        "answers": [
-          { "id": 101, "text": "தாமரை", "matchId": 1 },
-          { "id": 102, "text": "மாலை", "matchId": 2 },
-          { "id": 103, "text": "தேனீ", "matchId": 3 },
-          { "id": 104, "text": "சிவப்பு", "matchId": 4 }
-        ]
-      },
-      34:{
-        "id": 2,
-        "title": "பொருத்தமான விடையைத் தெரிவு செய்க",
-        "promptParts": ["", " மரத்தில் தாவின."],
-        "choices": 
+    31: {
+      "title": "கேட்டல் : பூக்கள்",
+      "passage": "பூக்களில் சிவப்பு, வெள்ளை, மஞ்சள் போன்ற பல வண்ணங்கள் உள்ளன. தாமரை நீரில் பூக்கும். காந்தள் நிலத்தில் பூக்கும். பூக்கள் மாலை கட்டுவதற்கு உதவும். தேனீக்கள் பூவில் தேனைக் குடிக்கும்.",
+      "passageAudioUrl": "/audio/comprehension/flowers_passage.mp3",
+      "questions": [
+        {
+          "id": 1,
+          "text": "நீரில் பூக்கும் பூ எது?",
+          "audioUrl": "/audio/comprehension/q_water_flower.mp3"
+        },
+        {
+          "id": 2,
+          "text": "பூக்கள் எதற்கு உதவும்?",
+          "audioUrl": "/audio/comprehension/q_flowers_help.mp3"
+        },
+        {
+          "id": 3,
+          "text": "தேனைக் குடிப்பது எது?",
+          "audioUrl": "/audio/comprehension/q_drinks_honey.mp3"
+        },
+        {
+          "id": 4,
+          "text": "பூக்களில் உள்ள வண்ணம் ஒன்று?",
+          "audioUrl": "/audio/comprehension/q_flower_color.mp3"
+        }
+      ],
+      "answers": [
+        { "id": 101, "text": "தாமரை", "matchId": 1 },
+        { "id": 102, "text": "மாலை", "matchId": 2 },
+        { "id": 103, "text": "தேனீ", "matchId": 3 },
+        { "id": 104, "text": "சிவப்பு", "matchId": 4 }
+      ]
+    },
+    34: {
+      "id": 2,
+      "title": "பொருத்தமான விடையைத் தெரிவு செய்க",
+      "promptParts": ["", " மரத்தில் தாவின."],
+      "choices":
         [
           { "id": "2a", "text": "குரங்கு" },
           { "id": "2b", "text": "குரங்குகள்" }
         ],
-        "correctAnswer": "குரங்குகள்"
-      },
-      35:{
-        "title": "குறில், நெடில் எழுத்துகளை சரியான கூண்டில் இடுக",
-        "items": [
-          { "id": "item-a", "text": "அ", "categoryId": "kuril" },
-          { "id": "item-aa", "text": "ஆ", "categoryId": "nedil" },
-          { "id": "item-i", "text": "இ", "categoryId": "kuril" },
-          { "id": "item-ii", "text": "ஈ", "categoryId": "nedil" },
-          { "id": "item-u", "text": "உ", "categoryId": "kuril" },
-          { "id": "item-uu", "text": "ஊ", "categoryId": "nedil" },
-          { "id": "item-e", "text": "எ", "categoryId": "kuril" },
-          { "id": "item-ee", "text": "ஏ", "categoryId": "nedil" },
-          { "id": "item-ai", "text": "ஐ", "categoryId": "nedil" },
-          { "id": "item-o", "text": "ஒ", "categoryId": "kuril" },
-          { "id": "item-oo", "text": "ஓ", "categoryId": "nedil" },
-          { "id": "item-au", "text": "ஔ", "categoryId": "nedil" }
-        ],
-        "categories": [
-          { "id": "kuril", "title": "குறில் எழுத்துகள்" },
-          { "id": "nedil", "title": "நெடில் எழுத்துகள்" }
-        ]
-      },
-      36:{
-        "id": 1,
-        "title": "பின்வரும் குறளை பூர்த்தி செய்க",
-        "promptSegments": [
-          { "type": "text", "content": "அன்பின் வழியது" },
-          { "type": "blank", "content": "blank-1" },
-          { "type": "text", "content": "அஃதிலார்க்கு" },
-          { "type": "blank", "content": "blank-2" },
-          { "type": "text", "content": "போர்த்த உடம்பு" }
-        ],
-        "choices": [
-          { "id": "choice-a", "text": "உயிர்நிலை" },
-          { "id": "choice-b", "text": "என்புதோல்" }
-        ],
-        "correctAnswers": {
-          "blank-1": "உயிர்நிலை",
-          "blank-2": "என்புதோல்"
-        }
+      "correctAnswer": "குரங்குகள்"
+    },
+    35: {
+      "title": "குறில், நெடில் எழுத்துகளை சரியான கூண்டில் இடுக",
+      "items": [
+        { "id": "item-a", "text": "அ", "categoryId": "kuril" },
+        { "id": "item-aa", "text": "ஆ", "categoryId": "nedil" },
+        { "id": "item-i", "text": "இ", "categoryId": "kuril" },
+        { "id": "item-ii", "text": "ஈ", "categoryId": "nedil" },
+        { "id": "item-u", "text": "உ", "categoryId": "kuril" },
+        { "id": "item-uu", "text": "ஊ", "categoryId": "nedil" },
+        { "id": "item-e", "text": "எ", "categoryId": "kuril" },
+        { "id": "item-ee", "text": "ஏ", "categoryId": "nedil" },
+        { "id": "item-ai", "text": "ஐ", "categoryId": "nedil" },
+        { "id": "item-o", "text": "ஒ", "categoryId": "kuril" },
+        { "id": "item-oo", "text": "ஓ", "categoryId": "nedil" },
+        { "id": "item-au", "text": "ஔ", "categoryId": "nedil" }
+      ],
+      "categories": [
+        { "id": "kuril", "title": "குறில் எழுத்துகள்" },
+        { "id": "nedil", "title": "நெடில் எழுத்துகள்" }
+      ]
+    },
+    36: {
+      "id": 1,
+      "title": "பின்வரும் குறளை பூர்த்தி செய்க",
+      "promptSegments": [
+        { "type": "text", "content": "அன்பின் வழியது" },
+        { "type": "blank", "content": "blank-1" },
+        { "type": "text", "content": "அஃதிலார்க்கு" },
+        { "type": "blank", "content": "blank-2" },
+        { "type": "text", "content": "போர்த்த உடம்பு" }
+      ],
+      "choices": [
+        { "id": "choice-a", "text": "உயிர்நிலை" },
+        { "id": "choice-b", "text": "என்புதோல்" }
+      ],
+      "correctAnswers": {
+        "blank-1": "உயிர்நிலை",
+        "blank-2": "என்புதோல்"
       }
+    }
     // Add templates for all 18 activity types here...
   };
 

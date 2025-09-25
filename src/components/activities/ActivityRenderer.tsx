@@ -10,7 +10,6 @@ import MediaSpotlightMultiple, { MediaSpotlightMultipleContent } from './activit
 
 import {
     MCQContent,
-    AudioTextImageSelectionContent,
     DragDropImageMatchingContent,
 } from '../../types/activityContentTypes';
 import ConversationPlayer, { ConversationContent } from './activity-types/ConversationPlayer';
@@ -21,7 +20,14 @@ import WordFinder, { WordFinderChallenge } from './activity-types/WordFinder';
 import WordPairMCQ, { WordPairQuestion } from './activity-types/WordPairMCQ';
 import SceneFinder, { SceneFinderContent } from './activity-types/SceneFinder';
 import StoryPlayer, { StoryContent } from './activity-types/StoryPlayer';
-import AudioTextImageSelection from './activity-types/AudioTextImageSelection';
+import ListenMatchActivity, { ListenMatchContent } from './activity-types/Listen&match';
+import VideoPlayerActivity from './activity-types/VideoPlayer';
+import LetterFillActivity, { LetterFillContent } from './activity-types/LetterFill';
+import DragAndDropActivity, { DragDropContent } from './activity-types/DragandDropActivity';
+import LetterShapeActivity, { LetterShapeContent } from './activity-types/LetterShapeMatching';
+import WordScrambleActivity, { WordScrambleContent } from './activity-types/WordScrambleExercise';
+import SentenceScrambleActivity, { SentenceScrambleContent } from './activity-types/SentenceScrambleExercise';
+
 import DragDropImageMatching from './activity-types/DragDropImageMatching';
 import InteractiveImageLearning, { InteractiveImageLearningContent } from './activity-types/InteractiveImageLearning';
 import LettersDisplay, { LettersDisplayContent } from './activity-types/TamilVowels';
@@ -34,6 +40,10 @@ import ReadingComprehensionMatch, { ReadingComprehensionContent } from './activi
 import DragDropFillInBlank, { DragDropFillInBlankContent } from './activity-types/DragDropFillInBlank';
 import DragDropTextSort, { DragDropTextSortContent } from './activity-types/DragDropTextSort';
 import MultiDragDropFillInBlank, { MultiDragDropFillInBlankContent } from './activity-types/MultiDragDropFillInBlank';
+import LetterSoundMcq, { LetterSoundMcqContent } from './activity-types/LetterSoundMcq';
+import WordsLearning, { WordsLearningContent } from './activity-types/WordsLearning';
+import DragDropSentence,{ FillInTheBlanksContent } from './activity-types/DragDropSentence';
+import HighlightActivity, { HighlightContent } from './activity-types/Highlight';
 
 interface ActivityRendererProps {
     activityTypeId: number;
@@ -46,9 +56,9 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
         case 1:
             return <Flashcard content={content as FlashcardContent} />;
         case 2: // VocabularySpotlight
-            return <MediaSpotlightMultiple content={content as MediaSpotlightMultipleContent} />;
-        case 3:
             return <MediaSpotlightSingle content={content as MediaSpotlightSingleContent} />;
+        case 3:
+            return <MediaSpotlightMultiple content={content as MediaSpotlightMultipleContent} />;
         case 4: // Letter Spotlight
             return <EquationFillInTheBlank content={content as Equation} />;
         case 5: // ConversationPlayer
@@ -70,17 +80,32 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
         case 13: // MultipleChoiceQuestion
             // The MCQ component is smart enough to handle a single object or an array of questions.
             return <MCQActivity content={content as MCQContent} />;
-        case 14: // AudioTextImageSelection
-            return <AudioTextImageSelection content={content as AudioTextImageSelectionContent} />;
+        case 14: // Listen & Match
+            return <ListenMatchActivity content={content as ListenMatchContent} />;
         case 15: // DragDropImageMatching
             return <DragDropImageMatching content={content as DragDropImageMatchingContent} />;
+        case 16: // Video Player
+            return <VideoPlayerActivity content={content as any} />;
+        case 17: // LetterFill
+            return <LetterFillActivity content={content as LetterFillContent} />;
+        case 18: //LetterSoundMcq
+            return <LetterSoundMcq content={content as LetterSoundMcqContent} />;
+        case 19: // Drag and Drop Activity 
+            return <DragAndDropActivity content={content as DragDropContent} />;
         case 20: // InteractiveImageLearning
             return <InteractiveImageLearning content={content as InteractiveImageLearningContent} />;
+        case 21: // Letter Shape Matching
+            return <LetterShapeActivity content={content as LetterShapeContent} />;
+        case 22: // wordScrambleExercise
+            return <WordScrambleActivity content={content as WordScrambleContent} />;
         case 23: // LettersDisplay
             return <LettersDisplay content={content as LettersDisplayContent} />;
         case 24: // EquationLern
             return <EquationLern content={content as EquationLernContent} />;
-        case 26: // EquationLern
+        case 25: // sentenceScrambleExercise
+            return <SentenceScrambleActivity content={content as SentenceScrambleContent} />;
+        case 27: // WordsLearning
+            return <WordsLearning content={content as WordsLearningContent} />;        case 26: // EquationLern
             return <SentenceBuilder content={content as SentenceBuilderContent} />;
         case 28: // PronunciationPractice
             return <PronunciationPractice content={content as PronunciationPracticeContent} />;
@@ -98,6 +123,11 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
             return <MultiDragDropFillInBlank content={content as MultiDragDropFillInBlankContent} />;
         default:
             return <Typography p={2} color="text.secondary">Preview for Activity Type ID #{activityTypeId} is not implemented.</Typography>;
+        // Assuming you have a way to identify this activity type, e.g., by case 32
+        case 33: // DragDropSentence
+            return <DragDropSentence content={content as FillInTheBlanksContent} />;
+        case 37 : // 'HighlightingActivity'
+            return <HighlightActivity content={content as HighlightContent} />;
     }
 };
 

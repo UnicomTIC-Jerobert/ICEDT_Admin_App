@@ -1,4 +1,4 @@
-// This file stores the boilerplate JSON for each activity type.
+// This file stores the boilerplate JSON for each activity type
 
 export const getActivityTemplate = (activityTypeId: number): string => {
   const templates: Record<number, object> = {
@@ -36,7 +36,7 @@ export const getActivityTemplate = (activityTypeId: number): string => {
           "imageUrl": "siruvar/lesson5/thakkali.jpg",
           "audioUrl": "siruvar/lesson5/thakkali.mp3"
         }
-      ]
+      ],
     },
     4: { // Equation
       leftOperand: "க்",
@@ -70,7 +70,7 @@ export const getActivityTemplate = (activityTypeId: number): string => {
           "text": "போதும், நன்றி. எவ்வளவு?",
           "timestamp": 10.1
         }
-      ]
+      ],
     },
     6: {
       "title": "நிலா நிலா ஓடி வா",
@@ -298,7 +298,38 @@ export const getActivityTemplate = (activityTypeId: number): string => {
         "டு"
       ]
     },
-    19:
+    18: //LetterSoundMcq
+    {
+      "activityId": "TAMIL_MCQ_SOUND_IMAGE_01",
+      "title": "செயல் 04: சரியான படத்தைத் தேர்ந்தெடுக்கவும்.",
+      "description": "ஒலிக்கும் எழுத்துக்கான சரியான படத்தைக் கிளிக் செய்யவும்.",
+      "questions": [
+        {
+          "id": 1,
+          "questionAudioUrl": "/assets/sounds/ka.mp3",
+          "correctAnswerId": 101,
+          "options": [
+            {
+              "id": 101,
+              "letter": "க",
+              "imageUrl": "/assets/images/ka.png"
+            },
+            {
+              "id": 102,
+              "letter": "ம",
+              "imageUrl": "/assets/images/ma.png"
+            },
+            {
+              "id": 103,
+              "letter": "த",
+              "imageUrl": "/assets/images/tha.png"
+            }
+          ]
+       }
+    ]
+},
+
+  19: //WordCategory
     {
       "title": "பயிற்சி",
       "activityTitle": "செயல் 02",
@@ -747,10 +778,143 @@ export const getActivityTemplate = (activityTypeId: number): string => {
           "solution": "பள்ளி சென்று கற்ற மொழி."
         }
       ]
+    },
+    27: { // WordsLearning - Multi-Activity Template
+      "title": "சொற்கள் கற்றல்",
+      "description": "பல பயிற்சிகளின் மூலம் சொற்களைக் கற்றுக்கொள்ளுங்கள்",
+      "activities": [
+        // ACTIVITY 1: Family Members - Contains multiple words
+        {
+          "id": 1,
+          "title": "குடும்ப உறுப்பினர்கள்",
+          "description": "குடும்ப உறுப்பினர்களின் பெயர்களைக் கற்றுக்கொள்ளுங்கள்",
+          "words": [
+            // Word 1 in Activity 1
+            {
+              "id": 1,
+              "word": "அம்மா",
+              "wordAudioUrl": "/assets/audio/words/amma_word.mp3",
+              "letters": [
+                {
+                  "id": 1,
+                  "letter": "அ",
+                  "audioUrl": "/assets/audio/letters/a.mp3"
+                },
+                {
+                  "id": 2,
+                  "letter": "ம்",
+                  "audioUrl": "/assets/audio/letters/m.mp3"
+                },
+                {
+                  "id": 3,
+                  "letter": "மா",
+                  "audioUrl": "/assets/audio/letters/maa.mp3"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+   33:{
+  "activityTitle": "சொற்றொடர்களுக்குப் பொருத்தமான சொற்களை எடுத்து வைப்போம்",
+  "instruction": "கீழே உள்ள வாக்கியங்களுக்குப் பொருத்தமான சொற்களை வலதுபுறத்தில் உள்ள பெட்டியிலிருந்து சரியான காலி இடத்தில் இழுத்துவிடவும்.",
+  "sentences": [
+    {
+      "id": "sentence1",
+      "text": "சிந்தித்துச் செயல்படும் பகுத்தறிவு உடையவர்",
+      "correctWordId": "word_manthar"
+    },
+    {
+      "id": "sentence2",
+      "text": "நன்றி மறவாமை",
+      "correctWordId": "word_narpanbu"
+    },
+    {
+      "id": "sentence3",
+      "text": "உயிர்களிடத்தில் காட்டுவது",
+      "correctWordId": "word_anbu"
+    },
+    {
+      "id": "sentence4",
+      "text": "உயிரினும் மேலானது",
+      "correctWordId": "word_ozhukkam"
+    },
+    {
+      "id": "sentence5",
+      "text": "பொறுமை உடையவரிடம் சேராதது",
+      "correctWordId": "word_selvam"
+    },
+    {
+      "id": "sentence6",
+      "text": "திருக்குறள், ஆத்திசூடி, கொன்றைவேந்தன் போன்றவை",
+      "correctWordId": "word_aranoolgal"
     }
+  ],
+  "words": [
+    {
+      "id": "word_ozhukkam",
+      "text": "ஒழுக்கம்"
+    },
+    {
+      "id": "word_manthar",
+      "text": "மாந்தர்"
+    },
+    {
+      "id": "word_anbu",
+      "text": "அன்பு"
+    },
+    {
+      "id": "word_aranoolgal",
+      "text": "அறநூல்கள்"
+    },
+    {
+      "id": "word_narpanbu",
+      "text": "நற்பண்பு"
+    },
+    {
+      "id": "word_selvam",
+      "text": "செல்வம்"
+    }
+  ]
+},
+  37: { 
+  "title": "Unit 6",
+ 
+  "instruction": "வாக்கியங்களில் உள்ள எழுவாய், செயப்படுபொருள், மற்றும் பயனிலையை சரியான நிறத்தைக் கொண்டு அடையாளப்படுத்துக.",
+  "categories": [
+    {
+      "id": "subject",
+      "label": "எழுவாய்",
+      "color": "#FF9800"
+    },
+    {
+      "id": "object",
+      "label": "செயப்படுபொருள்",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "verb",
+      "label": "பயனிலை",
+      "color": "#2196F3"
+    }
+  ],
+  "sentences": [
+    {
+      "id": "sentence1",
+      "text": "கண்ணகி கையில் சிலம்பை வைத்திருந்தாள்.",
+      "parts": [
+        { "text": "கண்ணகி", "type": "subject" },
+        { "text": "சிலம்பை", "type": "object" },
+        { "text": "வைத்திருந்தாள்", "type": "verb" }
+      ]
+    }
+  ]
+  }
+  };  
+    
 
-    // Add templates for all 18 activity types here...
-  };
+  // Fetch the template for the given activity type, or a default message if not found
 
   const template = templates[activityTypeId] || { note: "No template defined for this activity type yet." };
 

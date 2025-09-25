@@ -32,6 +32,10 @@ import DragDropImageMatching from './activity-types/DragDropImageMatching';
 import InteractiveImageLearning, { InteractiveImageLearningContent } from './activity-types/InteractiveImageLearning';
 import LettersDisplay, { LettersDisplayContent } from './activity-types/TamilVowels';
 import EquationLern, { EquationLernContent } from './activity-types/EquationLern';
+import LetterSoundMcq, { LetterSoundMcqContent } from './activity-types/LetterSoundMcq';
+import WordsLearning, { WordsLearningContent } from './activity-types/WordsLearning';
+import DragDropSentence,{ FillInTheBlanksContent } from './activity-types/DragDropSentence';
+import HighlightActivity, { HighlightContent } from './activity-types/Highlight';
 
 interface ActivityRendererProps {
     activityTypeId: number;
@@ -76,6 +80,8 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
             return <VideoPlayerActivity content={content as any} />;
         case 17: // LetterFill
             return <LetterFillActivity content={content as LetterFillContent} />;
+        case 18: //LetterSoundMcq
+            return <LetterSoundMcq content={content as LetterSoundMcqContent} />;
         case 19: // Drag and Drop Activity 
             return <DragAndDropActivity content={content as DragDropContent} />;
         case 20: // InteractiveImageLearning
@@ -90,8 +96,15 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
             return <EquationLern content={content as EquationLernContent} />;
         case 25: // sentenceScrambleExercise
             return <SentenceScrambleActivity content={content as SentenceScrambleContent} />;
+        case 27: // WordsLearning
+            return <WordsLearning content={content as WordsLearningContent} />;
         default:
             return <Typography p={2} color="text.secondary">Preview for Activity Type ID #{activityTypeId} is not implemented.</Typography>;
+        // Assuming you have a way to identify this activity type, e.g., by case 32
+        case 33: // DragDropSentence
+            return <DragDropSentence content={content as FillInTheBlanksContent} />;
+        case 37 : // 'HighlightingActivity'
+            return <HighlightActivity content={content as HighlightContent} />;
     }
 };
 

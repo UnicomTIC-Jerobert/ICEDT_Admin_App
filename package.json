@@ -48,9 +48,8 @@
   },
   "proxy": "http://13.51.194.17",
   "devDependencies": {
-    "@types/react-beautiful-dnd": "^13.1.8",
     "ajv": "^6.12.6",
     "ajv-keywords": "^3.5.2",
-    "react-scripts": "^0.0.0"
+    "react-scripts": "^5.0.1"
   }
 }

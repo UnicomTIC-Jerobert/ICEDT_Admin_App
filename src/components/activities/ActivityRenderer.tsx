@@ -11,6 +11,7 @@ import MediaSpotlightMultiple, { MediaSpotlightMultipleContent } from './activit
 import {
     MCQContent,
     DragDropImageMatchingContent,
+    AudioTextImageSelectionContent,
 } from '../../types/activityContentTypes';
 import ConversationPlayer, { ConversationContent } from './activity-types/ConversationPlayer';
 import SongPlayer, { SongContent } from './activity-types/SongPlayer';
@@ -20,7 +21,6 @@ import WordFinder, { WordFinderChallenge } from './activity-types/WordFinder';
 import WordPairMCQ, { WordPairQuestion } from './activity-types/WordPairMCQ';
 import SceneFinder, { SceneFinderContent } from './activity-types/SceneFinder';
 import StoryPlayer, { StoryContent } from './activity-types/StoryPlayer';
-import ListenMatchActivity, { ListenMatchContent } from './activity-types/Listen&match';
 import VideoPlayerActivity from './activity-types/VideoPlayer';
 import LetterFillActivity, { LetterFillContent } from './activity-types/LetterFill';
 import DragAndDropActivity, { DragDropContent } from './activity-types/DragandDropActivity';
@@ -42,8 +42,10 @@ import DragDropTextSort, { DragDropTextSortContent } from './activity-types/Drag
 import MultiDragDropFillInBlank, { MultiDragDropFillInBlankContent } from './activity-types/MultiDragDropFillInBlank';
 import LetterSoundMcq, { LetterSoundMcqContent } from './activity-types/LetterSoundMcq';
 import WordsLearning, { WordsLearningContent } from './activity-types/WordsLearning';
-import DragDropSentence,{ FillInTheBlanksContent } from './activity-types/DragDropSentence';
+import DragDropSentence, { FillInTheBlanksContent } from './activity-types/DragDropSentence';
 import HighlightActivity, { HighlightContent } from './activity-types/Highlight';
+import AudioTextImageSelection from './activity-types/AudioTextImageSelection';
+
 
 interface ActivityRendererProps {
     activityTypeId: number;
@@ -81,7 +83,7 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
             // The MCQ component is smart enough to handle a single object or an array of questions.
             return <MCQActivity content={content as MCQContent} />;
         case 14: // Listen & Match
-            return <ListenMatchActivity content={content as ListenMatchContent} />;
+            return <AudioTextImageSelection content={content as AudioTextImageSelectionContent} />;
         case 15: // DragDropImageMatching
             return <DragDropImageMatching content={content as DragDropImageMatchingContent} />;
         case 16: // Video Player
@@ -105,7 +107,8 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
         case 25: // sentenceScrambleExercise
             return <SentenceScrambleActivity content={content as SentenceScrambleContent} />;
         case 27: // WordsLearning
-            return <WordsLearning content={content as WordsLearningContent} />;        case 26: // EquationLern
+            return <WordsLearning content={content as WordsLearningContent} />;
+        case 26: // EquationLern
             return <SentenceBuilder content={content as SentenceBuilderContent} />;
         case 28: // PronunciationPractice
             return <PronunciationPractice content={content as PronunciationPracticeContent} />;
@@ -126,7 +129,7 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
         // Assuming you have a way to identify this activity type, e.g., by case 32
         case 33: // DragDropSentence
             return <DragDropSentence content={content as FillInTheBlanksContent} />;
-        case 37 : // 'HighlightingActivity'
+        case 37: // 'HighlightingActivity'
             return <HighlightActivity content={content as HighlightContent} />;
     }
 };

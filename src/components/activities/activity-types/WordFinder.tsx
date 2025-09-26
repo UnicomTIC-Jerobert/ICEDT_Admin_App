@@ -3,7 +3,16 @@ import { Box, Typography, Paper, Chip, Button } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ReplayIcon from '@mui/icons-material/Replay';
 
-// --- COLOCATED TYPES ---
+// Single challenge interface (what we want to use)
+export interface WordFinderSingleChallenge {
+    id: number;
+    title: string;
+    targetLetter: string;
+    wordGrid: string[];
+    correctWords: string[];
+}
+
+// Legacy interfaces (for backward compatibility)
 export interface WordFinderChallenge {
     targetLetter: string;
     wordGrid: string[];
@@ -15,17 +24,15 @@ export interface WordFinderContent {
     challenges: WordFinderChallenge[];
 }
 
-// --- PROPS INTERFACE for the "DUMB" component ---
-// It receives a SINGLE challenge to render.
 interface WordFinderProps {
-    content: WordFinderChallenge;
+    content: WordFinderSingleChallenge;
 }
 
 const WordFinder: React.FC<WordFinderProps> = ({ content }) => {
     const [foundWords, setFoundWords] = useState<string[]>([]);
     const [incorrectGuesses, setIncorrectGuesses] = useState<string[]>([]);
 
-    // Reset the state whenever a new challenge (content prop) is passed in
+    // Reset the state whenever content changes
     useEffect(() => {
         setFoundWords([]);
         setIncorrectGuesses([]);
@@ -45,7 +52,7 @@ const WordFinder: React.FC<WordFinderProps> = ({ content }) => {
             }, 500);
         }
     };
-    
+
     const handleReset = () => {
         setFoundWords([]);
         setIncorrectGuesses([]);
@@ -61,6 +68,8 @@ const WordFinder: React.FC<WordFinderProps> = ({ content }) => {
 
     return (
         <Box p={3} sx={{ fontFamily: 'sans-serif', textAlign: 'center' }}>
+            <Typography variant="h4" component="h1" gutterBottom>{content.title}</Typography>
+
             <Paper elevation={4} sx={{ p: 2, mb: 4, backgroundColor: 'secondary.main', color: 'white' }}>
                 <Typography variant="h6">Find all words with this letter:</Typography>
                 <Typography variant="h1" sx={{ fontWeight: 'bold' }}>
@@ -69,7 +78,7 @@ const WordFinder: React.FC<WordFinderProps> = ({ content }) => {
             </Paper>
 
             <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, flexWrap: 'wrap' }}>
-                {content.wordGrid.map(word => (
+                {content.wordGrid.map((word: string) => (
                     <Chip
                         key={word}
                         label={word}
@@ -85,15 +94,14 @@ const WordFinder: React.FC<WordFinderProps> = ({ content }) => {
             {isComplete && (
                 <Box mt={4} textAlign="center">
                     <Typography variant="h5" color="success.main" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
-                        <CheckCircleIcon fontSize="large" /> Great Job!
+                        <CheckCircleIcon fontSize="large" /> Great Job! Challenge Completed!
                     </Typography>
                     <Button sx={{ mt: 2 }} variant="outlined" startIcon={<ReplayIcon />} onClick={handleReset}>
-                        Reset this round
+                        Reset this challenge
                     </Button>
                 </Box>
             )}
         </Box>
     );
 };
-
 export default WordFinder;

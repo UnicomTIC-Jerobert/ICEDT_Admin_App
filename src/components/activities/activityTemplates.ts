@@ -86,32 +86,25 @@ export const getActivityTemplate = (activityTypeId: number): string => {
     },
     7: {  // RecognitionGrid
       "title": "Find the picture that matches the sound",
-      "pages":
-      {
-        "gridItems": [
-          { "id": 1, "imageUrl": "...", "audioUrl": ".../pal.mp3" },      // பல்
-          { "id": 2, "imageUrl": "...", "audioUrl": ".../kal.mp3" },      // கல்
-          { "id": 3, "imageUrl": "...", "audioUrl": ".../kan.mp3" },      // கண்
-          { "id": 4, "imageUrl": "...", "audioUrl": ".../maram.mp3" },    // மரம்
-          { "id": 5, "imageUrl": "...", "audioUrl": ".../vattam.mp3" },   // வட்டம்
-          { "id": 6, "imageUrl": "...", "audioUrl": ".../naram.mp3" }     // நகரம்
-        ],
-        "correctItemIds": [1, 2, 3] // The user must find பல், கல், and கண் on this page
-      }
+      "gridItems": [
+        { "id": 1, "imageUrl": "...", "audioUrl": ".../pal.mp3" },      // பல்
+        { "id": 2, "imageUrl": "...", "audioUrl": ".../kal.mp3" },      // கல்
+        { "id": 3, "imageUrl": "...", "audioUrl": ".../kan.mp3" },      // கண்
+        { "id": 4, "imageUrl": "...", "audioUrl": ".../maram.mp3" },    // மரம்
+        { "id": 5, "imageUrl": "...", "audioUrl": ".../vattam.mp3" },   // வட்டம்
+        { "id": 6, "imageUrl": "...", "audioUrl": ".../naram.mp3" }     // நகரம்
+      ],
+      "correctItemIds": [1, 2, 3] // The user must find பல், கல், and கண் on this page
     },
     8: { // CharacterGrid
       "title": "Find the letter that matches the sound",
-      "pages":
-      {
-        "gridItems": [
-          { "id": 1, "character": "க", "audioUrl": ".../ka.mp3" },
-          { "id": 2, "character": "ங", "audioUrl": ".../nga.mp3" },
-          { "id": 3, "character": "ச", "audioUrl": ".../sa.mp3" },
-          // ... and so on for all 18 letters
-        ],
-        "correctItemIds": [1, 2, 3] // The user must find all of them
-      }
-
+      "gridItems": [
+        { "id": 1, "character": "க", "audioUrl": ".../ka.mp3" },
+        { "id": 2, "character": "ங", "audioUrl": ".../nga.mp3" },
+        { "id": 3, "character": "ச", "audioUrl": ".../sa.mp3" },
+        // ... and so on for all 18 letters
+      ],
+      "correctItemIds": [1, 2, 3] // The user must find all of them
     },
     9: {// WordPairMCQ
       "title": "Listen to the sound and choose the correct word",
@@ -137,20 +130,11 @@ export const getActivityTemplate = (activityTypeId: number): string => {
         // ... and so on for all word pairs
       ]
     },
-    10: { // word finder
-      "title": "Find the words containing the letter",
-      "challenges": [
-        {
-          "targetLetter": "ல்",
-          "wordGrid": ["பல்", "கல்", "கண்", "மண்", "வயல்", "மரம்", "படம்", "தடம்", "அப்பம்", "வள்ளம்"],
-          "correctWords": ["பல்", "கல்", "வயல்", "வள்ளம்"]
-        },
-        {
-          "targetLetter": "ட்",
-          "wordGrid": ["பம்பரம்", "பட்டம்", "வட்டம்", "நகரம்", "படம்", "தடம்", "கல்", "கண்", "மண்", "அப்பம்"],
-          "correctWords": ["பட்டம்", "வட்டம்"]
-        }
-      ]
+    10: { // word finder - SINGLE CHALLENGE (new way)
+      "title": "Find words with letter ல்",
+      "targetLetter": "ல்",
+      "wordGrid": ["பல்", "கல்", "கண்", "மண்", "வயல்", "மரம்", "படம்", "தடம்", "அப்பம்", "வள்ளம்"],
+      "correctWords": ["பல்", "கல்", "வயல்", "வள்ளம்"]
     },
     11: { // Scene Finder
       "title": "Find the items on the farm",

@@ -17,7 +17,7 @@ import ConversationPlayer, { ConversationContent } from './activity-types/Conver
 import SongPlayer, { SongContent } from './activity-types/SongPlayer';
 import RecognitionGrid, { RecognitionGridContent } from './activity-types/RecognitionGrid';
 import CharacterGrid, { CharacterGridContent } from './activity-types/CharacterGrid';
-import WordFinder, { WordFinderChallenge } from './activity-types/WordFinder';
+import WordFinder, { WordFinderSingleChallenge } from './activity-types/WordFinder';
 import WordPairMCQ, { WordPairQuestion } from './activity-types/WordPairMCQ';
 import SceneFinder, { SceneFinderContent } from './activity-types/SceneFinder';
 import StoryPlayer, { StoryContent } from './activity-types/StoryPlayer';
@@ -74,13 +74,12 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
         case 9: // WordPairMCQ
             return <WordPairMCQ content={content as WordPairQuestion} />;
         case 10: // WordFinder
-            return <WordFinder content={content as WordFinderChallenge} />;
+            return <WordFinder content={content as WordFinderSingleChallenge} />;
         case 11: // SceneFinder
             return <SceneFinder content={content as SceneFinderContent} />;
         case 12: // StoryPlayer
             return <StoryPlayer content={content as StoryContent} />;
         case 13: // MultipleChoiceQuestion
-            // The MCQ component is smart enough to handle a single object or an array of questions.
             return <MCQActivity content={content as MCQContent} />;
         case 14: // Listen & Match
             return <AudioTextImageSelection content={content as AudioTextImageSelectionContent} />;

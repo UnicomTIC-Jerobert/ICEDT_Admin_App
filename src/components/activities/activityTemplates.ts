@@ -1042,6 +1042,166 @@ export const getActivityTemplate = (activityTypeId: number): string => {
           ]
         }
       ]
+    },
+     38: {
+      "id": 1,
+      "title": "பிரித்து எழுதுக!",
+      "compoundWord": "மலர்த்தொட்டி",
+      "choices": [
+        { "id": "c1", "text": "மலர்" }, { "id": "c2", "text": "மரம்" }, { "id": "c3", "text": "சோலை" },
+        { "id": "c4", "text": "தொட்டி" }, { "id": "c5", "text": "கொடி" }, { "id": "c6", "text": "கலம்" },
+        { "id": "c7", "text": "பூ" }, { "id": "c8", "text": "திசை" }, { "id": "c9", "text": "முல்லை" },
+        { "id": "c10", "text": "எட்டு" }
+      ],
+      "correctAnswers": ["மலர்", "தொட்டி"]
+    },
+    40: {
+      "id": 1,
+      "title": "தமிழ்மொழி மற்றும் இலக்கியம்",
+      "questions": [
+        {
+          "id": 1,
+          "statement": "தமிழ்மொழி மிகத் தொன்மையானது.",
+          "isCorrect": true
+        },
+        {
+          "id": 2,
+          "statement": "தமிழ்மொழி இலக்கியவளம் குறைந்தது.",
+          "isCorrect": false
+        },
+        {
+          "id": 3,
+          "statement": "இயல், இசை, நாடகம் என்பன முத்தமிழ்.",
+          "isCorrect": true
+        },
+        {
+          "id": 4,
+          "statement": "சிலப்பதிகாரம் பழந்தமிழர் வரலாற்றையும் பண்பாட்டையும் கூறுகிறது.",
+          "isCorrect": true
+        },
+        {
+          "id": 5,
+          "statement": "அறம், பொருள், இன்பம் என்பன முக்கனி.",
+          "isCorrect": false
+        },
+        {
+          "id": 6,
+          "statement": "தமிழை தாய்மொழியாகக் கொண்டோர் தமிழர்.",
+          "isCorrect": true
+        },
+        {
+          "id": 7,
+          "statement": "பழைமையான தமிழ் இலக்கியங்களில் ஒன்று நாலடியார்.",
+          "isCorrect": true
+        },
+        {
+          "id": 8,
+          "statement": "திருக்குறள் நான்கு அடிகளைக் கொண்டது.",
+          "isCorrect": false
+        }
+      ]
+    },
+    41: {
+      "title": "விலங்குகளும் அவற்றின் ஒலிகளும்",
+      "prompts": [
+        { "id": 1, "name": "நரி", "imageUrl": "/images/animals/fox.png" },
+        { "id": 2, "name": "பசு", "imageUrl": "/images/animals/cow.png" },
+        { "id": 3, "name": "யானை", "imageUrl": "/images/animals/elephant.png" },
+        { "id": 4, "name": "பாம்பு", "imageUrl": "/images/animals/snake.png" },
+        { "id": 5, "name": "நாய்", "imageUrl": "/images/animals/dog.png" },
+        { "id": 6, "name": "பூனை", "imageUrl": "/images/animals/cat.png" }
+      ],
+      "answers": [
+        { "id": 101, "text": "ஊளையிடும்", "matchId": 1 },
+        { "id": 102, "text": "கதறும்", "matchId": 2 },
+        { "id": 103, "text": "பிளிறும்", "matchId": 3 },
+        { "id": 104, "text": "சீறும்", "matchId": 4 },
+        { "id": 105, "text": "குரைக்கும்", "matchId": 5 },
+        { "id": 106, "text": "கத்தும்", "matchId": 6 }
+      ]
+    },
+    42: {
+      "title": "விலங்குகளின் ஒலிகளை படத்துடன் இணைக்க",
+      "imageTargets": [
+        { "id": 1, "name": "குதிரை", "imageUrl": "/images/animals/horse.png" },
+        { "id": 2, "name": "பூனை", "imageUrl": "/images/animals/cat.png" },
+        { "id": 3, "name": "சிங்கம்", "imageUrl": "/images/animals/lion.png" },
+        { "id": 4, "name": "நாய்", "imageUrl": "/images/animals/dog.png" },
+        { "id": 5, "name": "யானை", "imageUrl": "/images/animals/elephant.png" },
+        { "id": 6, "name": "நரி", "imageUrl": "/images/animals/fox.png" }
+      ],
+      "soundSources": [
+        { "id": 101, "text": "கனைக்கும்", "audioUrl": "/audio/sounds/neigh.mp3", "matchId": 1 },
+        { "id": 102, "text": "கத்தும்", "audioUrl": "/audio/sounds/meow.mp3", "matchId": 2 },
+        { "id": 103, "text": "முழங்கும்", "audioUrl": "/audio/sounds/roar.mp3", "matchId": 3 },
+        { "id": 104, "text": "குரைக்கும்", "audioUrl": "/audio/sounds/bark.mp3", "matchId": 4 },
+        { "id": 105, "text": "பிளிறும்", "audioUrl": "/audio/sounds/trumpet.mp3", "matchId": 5 },
+        { "id": 106, "text": "ஊளையிடும்", "audioUrl": "/audio/sounds/howl.mp3", "matchId": 6 }
+      ]
+    },
+    44:{
+      "title": "மேலே, கீழே, உள்ளே, வெளியே வேறுபாடுகளை அறிக",
+      "sceneImageUrl": "/images/scenes/room_with_table.png",
+      "draggableObjects": [
+        { "id": "basket", "name": "கூடை", "imageUrl": "/images/objects/basket.png" },
+        { "id": "box", "name": "பெட்டி", "imageUrl": "/images/objects/box.png" },
+        { "id": "fruit", "name": "செந்தாழைப்பழம்", "imageUrl": "/images/objects/fruit.png" },
+        { "id": "flower", "name": "கார்த்திகைப்பூ", "imageUrl": "/images/objects/flower.png" },
+        { "id": "boy", "name": "சிறுவன்", "imageUrl": "/images/objects/boy.png" },
+        { "id": "grandfather", "name": "தாத்தா", "imageUrl": "/images/objects/grandfather.png" }
+      ],
+      "dropZones": [
+        { "id": "zone-on-table", "name": "On Table", "x": 40, "y": 30, "width": 20, "height": 15 },
+        { "id": "zone-under-table", "name": "Under Table", "x": 40, "y": 70, "width": 20, "height": 15 },
+        { "id": "zone-in-basket", "name": "In Basket", "x": 45, "y": 32, "width": 10, "height": 8 },
+        { "id": "zone-outside-basket", "name": "Outside Basket", "x": 25, "y": 35, "width": 15, "height": 15 },
+        { "id": "zone-near-table", "name": "Near Table", "x": 70, "y": 60, "width": 15, "height": 25 },
+        { "id": "zone-far-from-table", "name": "Far from Table", "x": 10, "y": 60, "width": 15, "height": 25 }
+      ],
+      "instructions": [
+        {
+          "id": 1,
+          "text": "கூடையை மேசையின் மேலே வைக்கவும்.",
+          "audioUrl": "/audio/instructions/basket_on_table.mp3",
+          "draggableObjectId": "basket",
+          "dropZoneId": "zone-on-table"
+        },
+        {
+          "id": 2,
+          "text": "பெட்டியை மேசையின் கீழே வைக்கவும்.",
+          "audioUrl": "/audio/instructions/box_under_table.mp3",
+          "draggableObjectId": "box",
+          "dropZoneId": "zone-under-table"
+        },
+        {
+          "id": 3,
+          "text": "செந்தாழைப்பழத்தைக் கூடைக்கு உள்ளே வைக்கவும்.",
+          "audioUrl": "/audio/instructions/fruit_in_basket.mp3",
+          "draggableObjectId": "fruit",
+          "dropZoneId": "zone-in-basket"
+        },
+        {
+          "id": 4,
+          "text": "கார்த்திகைப்பூவை கூடைக்கு வெளியில் வைக்கவும்.",
+          "audioUrl": "/audio/instructions/flower_outside_basket.mp3",
+          "draggableObjectId": "flower",
+          "dropZoneId": "zone-outside-basket"
+        },
+        {
+          "id": 5,
+          "text": "மேசைக்கு அருகில் சிறுவன் நிற்கிறான்.",
+          "audioUrl": "/audio/instructions/boy_near_table.mp3",
+          "draggableObjectId": "boy",
+          "dropZoneId": "zone-near-table"
+        },
+        {
+          "id": 6,
+          "text": "மேசைக்கு தொலைவில் தாத்தா இருக்கிறார்.",
+          "audioUrl": "/audio/instructions/grandfather_far_from_table.mp3",
+          "draggableObjectId": "grandfather",
+          "dropZoneId": "zone-far-from-table"
+        }
+      ]
     }
   };
   // Fetch the template for the given activity type, or a default message if not found

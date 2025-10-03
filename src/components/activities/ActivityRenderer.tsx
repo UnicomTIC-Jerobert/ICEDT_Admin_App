@@ -45,6 +45,11 @@ import WordsLearning, { WordsLearningContent } from './activity-types/WordsLearn
 import DragDropSentence, { FillInTheBlanksContent } from './activity-types/DragDropSentence';
 import HighlightActivity, { HighlightContent } from './activity-types/Highlight';
 import AudioTextImageSelection from './activity-types/AudioTextImageSelection';
+import WordSplitter, { WordSplitterContent } from './activity-types/WordSplitter';
+import TrueFalseQuiz, { TrueFalseQuizContent } from './activity-types/TrueFalseQuiz';
+import ImageWordMatch, { ImageWordMatchContent } from './activity-types/ImageWordMatch';
+import SoundImageMatch, { SoundImageMatchContent } from './activity-types/SoundImageMatch';
+import PositionalSceneBuilder, { PositionalSceneBuilderContent } from './activity-types/PositionalSceneBuilder';
 
 
 interface ActivityRendererProps {
@@ -119,17 +124,26 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
             return <ReadingComprehensionMatch content={content as ReadingComprehensionContent} />;
         case 34: // DragDropFillInBlank
             return <DragDropFillInBlank content={content as DragDropFillInBlankContent} />;
+        case 33: // DragDropSentence
+            return <DragDropSentence content={content as FillInTheBlanksContent} />;
         case 35: // DragDropTextSort
             return <DragDropTextSort content={content as DragDropTextSortContent} />;
         case 36: // MultiDragDropFillInBlank
             return <MultiDragDropFillInBlank content={content as MultiDragDropFillInBlankContent} />;
-        default:
-            return <Typography p={2} color="text.secondary">Preview for Activity Type ID #{activityTypeId} is not implemented.</Typography>;
-        // Assuming you have a way to identify this activity type, e.g., by case 32
-        case 33: // DragDropSentence
-            return <DragDropSentence content={content as FillInTheBlanksContent} />;
         case 37: // 'HighlightingActivity'
             return <HighlightActivity content={content as HighlightContent} />;
+        case 38: // WordSplitter
+            return <WordSplitter content={content as WordSplitterContent} />;
+        case 40: // TrueFalseQuiz
+            return <TrueFalseQuiz content={content as TrueFalseQuizContent} />;
+        case 41: // ImageWordMatch
+            return <ImageWordMatch content={content as ImageWordMatchContent} />;
+        case 42: // SoundImageMatch
+            return <SoundImageMatch content={content as SoundImageMatchContent} />;
+        case 44: // PositionalSceneBuilder
+            return <PositionalSceneBuilder content={content as PositionalSceneBuilderContent} />;
+        default:
+            return <Typography p={2} color="text.secondary">Preview for Activity Type ID #{activityTypeId} is not implemented.</Typography>;
     }
 };
 

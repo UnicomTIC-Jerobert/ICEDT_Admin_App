@@ -9,15 +9,6 @@ export const getActivityTemplate = (activityTypeId: number): string => {
       audioUrl: "/malaiyar/lesson1/kan.mp3"
     },
     2: {
-      "title": "'அ' வில் தொடங்கும் சொற்கள்",
-      "spotlightLetter": "அ",
-      "item": {
-        "text": "அம்மா",
-        "imageUrl": "malaiyar/lesson1/amma.png",
-        "audioUrl": "malaiyar/lesson1/amma.mp3"
-      }
-    },
-    3: {
       "title": "'க்' சொற்கள்",
       "spotlightLetter": "க்",
       "items": [
@@ -37,6 +28,15 @@ export const getActivityTemplate = (activityTypeId: number): string => {
           "audioUrl": "siruvar/lesson5/thakkali.mp3"
         }
       ],
+    },
+    3: {
+      "title": "'அ' வில் தொடங்கும் சொற்கள்",
+      "spotlightLetter": "அ",
+      "item": {
+        "text": "அம்மா",
+        "imageUrl": "malaiyar/lesson1/amma.png",
+        "audioUrl": "malaiyar/lesson1/amma.mp3"
+      }
     },
     4: { // Equation
       leftOperand: "க்",

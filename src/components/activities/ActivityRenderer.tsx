@@ -57,10 +57,10 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
     switch (activityTypeId) {
         case 1:
             return <Flashcard content={content as FlashcardContent} />;
-        case 2: // VocabularySpotlight
-            return <MediaSpotlightSingle content={content as MediaSpotlightSingleContent} />;
-        case 3:
+        case 2: // VocabularySpotlightMultiple 
             return <MediaSpotlightMultiple content={content as MediaSpotlightMultipleContent} />;
+        case 3: // VocabularySpotlightSingle
+            return <MediaSpotlightSingle content={content as MediaSpotlightSingleContent} />;
         case 4: // Letter Spotlight
             return <EquationFillInTheBlank content={content as Equation} />;
         case 5: // ConversationPlayer

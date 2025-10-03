@@ -52,15 +52,13 @@ const AppContent: React.FC = () => {
                         <Button component={RouterLink} to="/levels" color="inherit">Levels</Button>
                         <Button component={RouterLink} to="/main-activities" color="inherit">Main Activities</Button>
                         <Button component={RouterLink} to="/activity-types" color="inherit">Activity Types</Button>
-                        <Button onClick={logout} color="inherit">Logout</Button> {/* <-- Added Logout Button */}
-
+                        <Button onClick={logout} color="inherit">Logout</Button>
                     </Toolbar>
                 </AppBar>
             )}
             <Container component="main" sx={{ mt: 4 }}>
                 <Routes>
                     <Route path="/login" element={<LoginPage />} />
-                    <Route path="/levels" element={<LevelsPage />} />
                     <Route
                         path="/levels"
                         element={<PrivateRoute><LevelsPage /></PrivateRoute>}

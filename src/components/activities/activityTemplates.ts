@@ -1043,7 +1043,7 @@ export const getActivityTemplate = (activityTypeId: number): string => {
         }
       ]
     },
-     38: {
+    38: {
       "id": 1,
       "title": "பிரித்து எழுதுக!",
       "compoundWord": "மலர்த்தொட்டி",
@@ -1139,7 +1139,50 @@ export const getActivityTemplate = (activityTypeId: number): string => {
         { "id": 106, "text": "ஊளையிடும்", "audioUrl": "/audio/sounds/howl.mp3", "matchId": 6 }
       ]
     },
-    44:{
+
+    43: {
+      "activityTitle": "தரப்பட்ட படத்துக்கேற்ப சொற்றொடர்களை ஒழுங்குபடுத்துக.",
+      "instruction": "கீழே கொடுக்கப்பட்டுள்ள வாக்கியங்களை படத்திற்கேற்ப சரியான வரிசையில் இழுத்து, numerated பெட்டிகளில் விடவும்.",
+      "imageUrl": "/path/to/your/image.png",
+      "sentences": [
+        {
+          "id": "sent1",
+          "text": "அவர்கள் ஒரு மரக்கன்றைக் கொண்டுவந்து தோட்டத்தில் நட்டனர்.",
+          "correctOrder": 2
+        },
+        {
+          "id": "sent2",
+          "text": "ஒரு நாள் மகிழினியும் தம்பியும் தோட்டத்துக்குச் சென்றார்கள்.",
+          "correctOrder": 1
+        },
+        {
+          "id": "sent3",
+          "text": "அப்போது தம்பி மண் போட்டு வேர்ப் பகுதியை மூடினான்.",
+          "correctOrder": 3
+        },
+        {
+          "id": "sent4",
+          "text": "அங்கே மரங்களும் செடிகளும் பூக்களும் காணப்பட்டன.",
+          "correctOrder": 4
+        },
+        {
+          "id": "sent5",
+          "text": "மகிழினி நட்ட மரக்கன்றுக்குத் தண்ணீர் ஊற்றினாள்.",
+          "correctOrder": 5
+        },
+        {
+          "id": "sent6",
+          "text": "தங்களும் மரம் நட்டு வளர்க்க வேண்டுமென முடிவெடுத்தனர்.",
+          "correctOrder": 6
+        },
+        {
+          "id": "sent7",
+          "text": "அவற்றைப் பார்த்த இருவருக்கும் ஓர் எண்ணம் தோன்றியது.",
+          "correctOrder": 7
+        }
+      ]
+    },
+    44: {
       "title": "மேலே, கீழே, உள்ளே, வெளியே வேறுபாடுகளை அறிக",
       "sceneImageUrl": "/images/scenes/room_with_table.png",
       "draggableObjects": [
@@ -1202,8 +1245,80 @@ export const getActivityTemplate = (activityTypeId: number): string => {
           "dropZoneId": "zone-far-from-table"
         }
       ]
+    },
+    45: {
+      "title": "காபி தயாரிப்பது எப்படி?",
+      "introduction": "கீழே தரப்பட்டுள்ள சொற்றொடர்களைக் கவனமாகக் கேளுங்கள். கேட்ட பிறகு, சொற்றொடர்களுக்கு உரிய சரியான படங்களை (சொற்களை) எடுத்து வையுங்கள். ஒரு முறை மட்டுமே ஆடியோ ஒலிக்கும்.",
+      "sentences": [
+        {
+          "id": "sent1",
+          "preBlankText": "சமையலறையின் மேலே",
+          "postBlankText": "வைக்கவும்.",
+          "audioUrl": "/path/to/audio/sentence1.mp3",
+          "correctWordId": "word_coffee"
+        },
+        {
+          "id": "sent2",
+          "preBlankText": "பெட்டியின் மேலே",
+          "postBlankText": "வைக்கவும்.",
+          "audioUrl": "/path/to/audio/sentence2.mp3",
+          "correctWordId": "word_cup"
+        },
+        {
+          "id": "sent3",
+          "preBlankText": "செந்தாழைப்பழத்தைச் சமையலறைக்கு உள்ளே",
+          "postBlankText": "வைக்கவும்.",
+          "audioUrl": "/path/to/audio/sentence3.mp3",
+          "correctWordId": "word_banana"
+        },
+        {
+          "id": "sent4",
+          "preBlankText": "கரண்டியைச் சமையலறைக்கு வெளியில்",
+          "postBlankText": "வைக்கவும்.",
+          "audioUrl": "/path/to/audio/sentence4.mp3",
+          "correctWordId": "word_spoon"
+        },
+        {
+          "id": "sent5",
+          "preBlankText": "மேசைக்கு அருகில்",
+          "postBlankText": "நிற்கிறான்.",
+          "audioUrl": "/path/to/audio/sentence5.mp3",
+          "correctWordId": "word_boy"
+        },
+        {
+          "id": "sent6",
+          "preBlankText": "மேசைக்கு தொலைவில்",
+          "postBlankText": "இருக்கிறார்.",
+          "audioUrl": "/path/to/audio/sentence6.mp3",
+          "correctWordId": "word_father"
+        }
+      ],
+      "words": [
+        { "id": "word_coffee", "text": "காபி" },
+        { "id": "word_cup", "text": "குவளை" },
+        { "id": "word_banana", "text": "செந்தாழைப்பழம்" },
+        { "id": "word_spoon", "text": "கரண்டி" },
+        { "id": "word_boy", "text": "சிறுவன்" },
+        { "id": "word_father", "text": "தாத்தா" }
+      ]
+    },
+    46: {
+
+      "title": "பொருட்களை சரியான அறையில் வைக்கவும்",
+      "instruction": "ஒவ்வொரு பொருளையும் இழுத்து, அது எந்த அறைக்குச் சொந்தமானதோ அந்த அறையில் விடவும்.",
+      "items": [
+        { "id": 1, "name": "அடுப்பு", "imageUrl": "/images/stove.png", "audioUrl": "/audio/stove.mp3", "categoryId": "cat1" },
+        { "id": 2, "name": "சோபா", "imageUrl": "/images/sofa.png", "audioUrl": "/audio/sofa.mp3", "categoryId": "cat2" },
+        { "id": 3, "name": "கட்டில்", "imageUrl": "/images/bed.png", "audioUrl": "/audio/bed.mp3", "categoryId": "cat3" },
+        { "id": 4, "name": "குவளை", "imageUrl": "/images/cup.png", "audioUrl": "/audio/cup.mp3", "categoryId": "cat1" }
+      ],
+      "categories": [
+        { "id": "cat1", "name": "சமையலறை" },
+        { "id": "cat2", "name": "வரவேற்பறை" },
+        { "id": "cat3", "name": "படுக்கையறை" }
+      ]
     }
-  };
+  }
   // Fetch the template for the given activity type, or a default message if not found
 
   const template = templates[activityTypeId] || { note: "No template defined for this activity type yet." };

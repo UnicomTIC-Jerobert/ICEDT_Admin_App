@@ -18,7 +18,7 @@ import SongPlayer, { SongContent } from './activity-types/SongPlayer';
 import RecognitionGrid, { RecognitionGridContent } from './activity-types/RecognitionGrid';
 import CharacterGrid, { CharacterGridContent } from './activity-types/CharacterGrid';
 import WordFinder, { WordFinderSingleChallenge } from './activity-types/WordFinder';
-import WordPairMCQ, { WordPairQuestion } from './activity-types/WordPairMCQ';
+import WordPairMCQ, { WordPairMCQContent} from './activity-types/WordPairMCQ';
 import SceneFinder, { SceneFinderContent } from './activity-types/SceneFinder';
 import StoryPlayer, { StoryContent } from './activity-types/StoryPlayer';
 import VideoPlayerActivity from './activity-types/VideoPlayer';
@@ -50,6 +50,9 @@ import TrueFalseQuiz, { TrueFalseQuizContent } from './activity-types/TrueFalseQ
 import ImageWordMatch, { ImageWordMatchContent } from './activity-types/ImageWordMatch';
 import SoundImageMatch, { SoundImageMatchContent } from './activity-types/SoundImageMatch';
 import PositionalSceneBuilder, { PositionalSceneBuilderContent } from './activity-types/PositionalSceneBuilder';
+import SentenceOrderingActivity, { SentenceOrderingContent } from './activity-types/SentenceOrderingActivity';
+import ListeningMatchingActivity, { ListeningMatchingContent } from './activity-types/ListeningMatchingDragandDrop';
+import DragDropCategorization, { CategorizationContent } from './activity-types/DragDropCategorization';
 
 
 interface ActivityRendererProps {
@@ -77,7 +80,7 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
         case 8: // CharacterGrid
             return <CharacterGrid content={content as CharacterGridContent} />;
         case 9: // WordPairMCQ
-            return <WordPairMCQ content={content as WordPairQuestion} />;
+            return <WordPairMCQ content={content as WordPairMCQContent} />;
         case 10: // WordFinder
             return <WordFinder content={content as WordFinderSingleChallenge} />;
         case 11: // SceneFinder
@@ -110,10 +113,10 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
             return <EquationLern content={content as EquationLernContent} />;
         case 25: // sentenceScrambleExercise
             return <SentenceScrambleActivity content={content as SentenceScrambleContent} />;
+        case 26: // SentenceBuilder
+            return <SentenceBuilder content={content as SentenceBuilderContent} />;
         case 27: // WordsLearning
             return <WordsLearning content={content as WordsLearningContent} />;
-        case 26: // EquationLern
-            return <SentenceBuilder content={content as SentenceBuilderContent} />;
         case 28: // PronunciationPractice
             return <PronunciationPractice content={content as PronunciationPracticeContent} />;
         case 29: // RiddleActivity
@@ -140,8 +143,14 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
             return <ImageWordMatch content={content as ImageWordMatchContent} />;
         case 42: // SoundImageMatch
             return <SoundImageMatch content={content as SoundImageMatchContent} />;
+        case 43: // 'SentenceOrderingActivity'
+            return <SentenceOrderingActivity content={content as SentenceOrderingContent} />;
         case 44: // PositionalSceneBuilder
             return <PositionalSceneBuilder content={content as PositionalSceneBuilderContent} />;
+        case 45: // 'ListeningMatchingActivity'
+            return <ListeningMatchingActivity content={content as ListeningMatchingContent} />;
+        case 46:// DragDropCategorization
+            return< DragDropCategorization content={content as CategorizationContent}/>
         default:
             return <Typography p={2} color="text.secondary">Preview for Activity Type ID #{activityTypeId} is not implemented.</Typography>;
     }

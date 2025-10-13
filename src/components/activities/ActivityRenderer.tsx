@@ -44,6 +44,9 @@ import LetterSoundMcq, { LetterSoundMcqContent } from './activity-types/LetterSo
 import WordsLearning, { WordsLearningContent } from './activity-types/WordsLearning';
 import DragDropSentence,{ FillInTheBlanksContent } from './activity-types/DragDropSentence';
 import HighlightActivity, { HighlightContent } from './activity-types/Highlight';
+import SentenceOrderingActivity, { SentenceOrderingContent } from './activity-types/SentenceOrderingActivity';
+import ListeningMatchingActivity, { ListeningMatchingContent } from './activity-types/ListeningMatchingDragandDrop';
+import DragDropCategorization, { CategorizationContent } from './activity-types/DragDropCategorization';
 
 interface ActivityRendererProps {
     activityTypeId: number;
@@ -128,6 +131,12 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
             return <DragDropSentence content={content as FillInTheBlanksContent} />;
         case 37 : // 'HighlightingActivity'
             return <HighlightActivity content={content as HighlightContent} />;
+        case 43: // 'SentenceOrderingActivity'
+            return <SentenceOrderingActivity content={content as SentenceOrderingContent} />;
+        case 45: // 'ListeningMatchingActivity'
+            return <ListeningMatchingActivity content={content as ListeningMatchingContent} />;
+        case 46:// DragDropCategorization
+            return< DragDropCategorization content={content as CategorizationContent}/>
     }
 };
 

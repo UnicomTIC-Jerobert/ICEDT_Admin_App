@@ -53,6 +53,7 @@ import PositionalSceneBuilder, { PositionalSceneBuilderContent } from './activit
 import SentenceOrderingActivity, { SentenceOrderingContent } from './activity-types/SentenceOrderingActivity';
 import ListeningMatchingActivity, { ListeningMatchingContent } from './activity-types/ListeningMatchingDragandDrop';
 import DragDropCategorization, { CategorizationContent } from './activity-types/DragDropCategorization';
+import ImageOrderingActivity, { ImageOrderingContent } from './activity-types/ImageOrderingActivity';
 
 
 interface ActivityRendererProps {
@@ -151,6 +152,8 @@ const ActivityRenderer: React.FC<ActivityRendererProps> = ({ activityTypeId, con
             return <ListeningMatchingActivity content={content as ListeningMatchingContent} />;
         case 46:// DragDropCategorization
             return< DragDropCategorization content={content as CategorizationContent}/>
+        case 39: // ImageOrderingActivity
+            return <ImageOrderingActivity content={content as ImageOrderingContent} />;
         default:
             return <Typography p={2} color="text.secondary">Preview for Activity Type ID #{activityTypeId} is not implemented.</Typography>;
     }

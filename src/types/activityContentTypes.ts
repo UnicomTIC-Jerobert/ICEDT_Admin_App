@@ -226,3 +226,19 @@ export interface EquationLernContent {
     equations: UyirMeiEquation[]; // Array of consonant + vowel combinations
     introAudioUrl?: string;       // Optional intro audio
 }
+
+// --- NEW: Type for Image Ordering Activity ---
+export interface ImageOrderingItem {
+    id: number;
+    imageUrl: string;
+    audioUrl: string;
+    letter: string;        // The starting letter (அ, ஆ, இ, ஈ)
+    name: string;          // The name/word for the image
+}
+
+export interface ImageOrderingContent {
+    title: string;
+    description?: string;
+    items: ImageOrderingItem[];
+    targetOrder: string[]; // The correct order of letters (e.g., ["அ", "ஆ", "இ", "ஈ"])
+}

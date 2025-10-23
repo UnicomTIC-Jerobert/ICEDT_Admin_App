@@ -1317,6 +1317,41 @@ export const getActivityTemplate = (activityTypeId: number): string => {
         { "id": "cat2", "name": "வரவேற்பறை" },
         { "id": "cat3", "name": "படுக்கையறை" }
       ]
+    },
+    39: {
+      "title": "ஆரம்ப எழுத்துக்களால் படங்களை வரிசைப்படுத்தவும்",
+      "description": "அ, ஆ, இ, ஈ என்ற எழுத்துக்களில் தொடங்கும் படங்களை சரியான வரிசையில் ஒழுங்குபடுத்தவும்",
+      "items": [
+        {
+          "id": 1,
+          "imageUrl": "animals/apple.jpg",
+          "audioUrl": "audio/apple.mp3",
+          "letter": "அ",
+          "name": "ஆப்பிள்"
+        },
+        {
+          "id": 2,
+          "imageUrl": "animals/horse.jpg",
+          "audioUrl": "audio/horse.mp3",
+          "letter": "ஆ",
+          "name": "குதிரை"
+        },
+        {
+          "id": 3,
+          "imageUrl": "animals/iguana.jpg",
+          "audioUrl": "audio/iguana.mp3",
+          "letter": "இ",
+          "name": "இக்குவானா"
+        },
+        {
+          "id": 4,
+          "imageUrl": "animals/elephant.jpg",
+          "audioUrl": "audio/elephant.mp3",
+          "letter": "ஈ",
+          "name": "யானை"
+        }
+      ],
+      "targetOrder": ["அ", "ஆ", "இ", "ஈ"]
     }
   }
   // Fetch the template for the given activity type, or a default message if not found

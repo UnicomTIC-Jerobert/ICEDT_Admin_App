@@ -50,7 +50,6 @@ const ActivityEditorPage: React.FC = () => {
     const [expandedExercise, setExpandedExercise] = useState<number | false>(0);
     const [copySnackbarOpen, setCopySnackbarOpen] = useState<boolean>(false);
 
-    const [mediaSearchOpen, setMediaSearchOpen] = useState<boolean>(false);
     const [mediaSearchQuery, setMediaSearchQuery] = useState<string>('');
     const [mediaSearchResults, setMediaSearchResults] = useState<MediaSearchResult[]>([]);
     const [mediaSearchLoading, setMediaSearchLoading] = useState<boolean>(false);
@@ -132,7 +131,18 @@ const ActivityEditorPage: React.FC = () => {
         // 1. Validate the JSON content before proceeding.
         try {
             // This ensures the string is valid JSON, but we use the string itself in the payload.
-            JSON.parse(activity.contentJson);
+            const parsed = JSON.parse(activity.contentJson);
+            const exercises = Array.isArray(parsed) ? parsed : [parsed];
+            const tplObj = getTemplateObject();
+            if (tplObj) {
+                for (let i = 0; i < exercises.length; i++) {
+                    const errs = validateAgainstTemplate(tplObj, exercises[i], '$');
+                    if (errs.length) {
+                        alert(`Exercise #${i + 1} has invalid format. Fix these: ${errs.slice(0, 5).join(' | ')}`);
+                        return;
+                    }
+                }
+            }
         } catch (error) {
             alert("An exercise contains invalid JSON. Please fix it before saving.");
             return;
@@ -201,13 +211,7 @@ const ActivityEditorPage: React.FC = () => {
         setCopySnackbarOpen(false);
     };
 
-    const handleOpenMediaSearch = () => {
-        setMediaSearchOpen(true);
-        setMediaSearchError('');
-    };
-
-    const handleCloseMediaSearch = () => {
-        setMediaSearchOpen(false);
+    const handleResetMediaSearch = () => {
         setMediaSearchQuery('');
         setMediaSearchResults([]);
         setSelectedMedia(null);
@@ -246,6 +250,49 @@ const ActivityEditorPage: React.FC = () => {
         const trimmed = (name || '').replace(/^\//, '');
         return `${mediaPublicBaseUrl}/${trimmed}`;
     }, [mediaPublicBaseUrl]);
+
+    const validateAgainstTemplate = useCallback((template: any, value: any, path: string): string[] => {
+        if (template === null || template === undefined) return [];
+        if (Array.isArray(template)) {
+            if (!Array.isArray(value)) return [`${path} must be an array`];
+            if (template.length === 0) return [];
+            const itemTemplate = template[0];
+            const errs: string[] = [];
+            value.forEach((it: any, idx: number) => {
+                errs.push(...validateAgainstTemplate(itemTemplate, it, `${path}[${idx}]`));
+            });
+            return errs;
+        }
+
+        const templateType = typeof template;
+        if (templateType !== 'object') {
+            if (typeof value !== templateType) return [`${path} must be a ${templateType}`];
+            return [];
+        }
+
+        if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+            return [`${path} must be an object`];
+        }
+
+        const errs: string[] = [];
+        for (const k of Object.keys(template)) {
+            if (!(k in value)) {
+                errs.push(`${path}.${k} is required`);
+                continue;
+            }
+            errs.push(...validateAgainstTemplate((template as any)[k], (value as any)[k], `${path}.${k}`));
+        }
+        return errs;
+    }, []);
+
+    const getTemplateObject = useCallback(() => {
+        try {
+            const tplStr = getActivityTemplate(activity?.activityTypeId || 0);
+            return JSON.parse(tplStr);
+        } catch {
+            return null;
+        }
+    }, [activity?.activityTypeId]);
 
     const fetchFolders = useCallback(async (prefix: string) => {
         setFoldersLoading(true);
@@ -307,13 +354,9 @@ const ActivityEditorPage: React.FC = () => {
         }
     }, [mediaSearchBaseUrl]);
 
-    useEffect(() => {
-        if (!mediaSearchOpen) return;
-        const t = window.setTimeout(() => {
-            void doMediaSearch(mediaSearchQuery);
-        }, 350);
-        return () => window.clearTimeout(t);
-    }, [mediaSearchOpen, mediaSearchQuery, doMediaSearch]);
+    const handleSubmitMediaSearch = useCallback(() => {
+        void doMediaSearch(mediaSearchQuery);
+    }, [doMediaSearch, mediaSearchQuery]);
 
     const getMediaKind = (nameOrUrl: string): 'image' | 'audio' | 'unknown' => {
         const v = (nameOrUrl || '').toLowerCase();
@@ -425,7 +468,7 @@ const ActivityEditorPage: React.FC = () => {
 
     return (
         // Use a wider container for the 3-column layout
-        <Container maxWidth={false} sx={{ mt: 3, px: 2 }}>
+        <Container maxWidth={false} disableGutters sx={{ mt: 3 }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                 <Typography variant="h4" component="h1">
                     {isEditMode ? `Edit Activity #${activityId}` : `Add New Activity`}
@@ -438,14 +481,6 @@ const ActivityEditorPage: React.FC = () => {
                         sx={{ mr: 2 }}
                     >
                         Back to List
-                    </Button>
-                    <Button
-                        variant="outlined"
-                        startIcon={<SearchIcon />}
-                        onClick={handleOpenMediaSearch}
-                        sx={{ mr: 2 }}
-                    >
-                        Search Media
                     </Button>
                     <Button
                         variant="outlined"
@@ -466,19 +501,156 @@ const ActivityEditorPage: React.FC = () => {
                 </Box>
             </Box>
 
+            {/* Activity Details moved above so left column can be permanent Search Media */}
+            <Paper sx={{ p: 2, mb: 3 }}>
+                <ActivityForm
+                    activityData={activity}
+                    mainActivities={mainActivities}
+                    activityTypes={activityTypes}
+                    onDataChange={handleFormChange}
+                />
+            </Paper>
+
             <Grid container spacing={3}>
-                {/* --- COLUMN 1: Metadata Form & Template Viewer --- */}
+                {/* --- COLUMN 1: Permanent Search Media --- */}
                 <Grid size={{ xs: 12, lg: 3 }}>
                     <Paper sx={{ p: 2, position: 'sticky', top: '24px' }}>
-                        {/* The form no longer needs the onSave prop */}
-                        <ActivityForm
-                            activityData={activity}
-                            mainActivities={mainActivities}
-                            activityTypes={activityTypes}
-                            onDataChange={handleFormChange}
-                        />
-                        {/* JSON Template Viewer */}
+                        <Box display="flex" alignItems="center" justifyContent="space-between" mb={1}>
+                            <Typography variant="h6">Search Media</Typography>
+                            <Button size="small" onClick={handleResetMediaSearch} disabled={mediaSearchLoading}>
+                                Reset
+                            </Button>
+                        </Box>
 
+                        <TextField
+                            fullWidth
+                            label="Search by name"
+                            value={mediaSearchQuery}
+                            onChange={(e) => setMediaSearchQuery(e.target.value)}
+                            placeholder="e.g. aaduthal"
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    handleSubmitMediaSearch();
+                                }
+                            }}
+                        />
+
+                        <Box mt={1} display="flex" gap={1}>
+                            <Button
+                                variant="contained"
+                                startIcon={<SearchIcon />}
+                                onClick={handleSubmitMediaSearch}
+                                disabled={mediaSearchLoading || !mediaSearchQuery.trim()}
+                                fullWidth
+                            >
+                                Search
+                            </Button>
+                        </Box>
+
+                        <Box mt={2}>
+                            {mediaSearchLoading && <Typography variant="body2">Loading...</Typography>}
+                            {!!mediaSearchError && <Typography variant="body2" color="error">{mediaSearchError}</Typography>}
+                            {!mediaSearchLoading && !mediaSearchError && mediaSearchResults.length === 0 && mediaSearchQuery.trim() && (
+                                <Typography variant="body2">No results</Typography>
+                            )}
+                        </Box>
+
+                        <Paper variant="outlined" sx={{ mt: 1, maxHeight: 240, overflowY: 'auto' }}>
+                            <List dense>
+                                {mediaSearchResults.map((r) => (
+                                    <ListItem
+                                        key={`${r.name}-${r.url}`}
+                                        onClick={() => setSelectedMedia(r)}
+                                        sx={{ cursor: 'pointer', alignItems: 'flex-start' }}
+                                        divider
+                                    >
+                                        <Box width="100%">
+                                            <ListItemText
+                                                primary={r.name}
+                                                secondary={getMediaKind(r.name) !== 'unknown' ? getMediaKind(r.name) : ''}
+                                                primaryTypographyProps={{
+                                                    sx: {
+                                                        wordBreak: 'break-word',
+                                                        lineHeight: 1.2,
+                                                    }
+                                                }}
+                                                secondaryTypographyProps={{ sx: { lineHeight: 1.1 } }}
+                                                sx={{ m: 0 }}
+                                            />
+                                        </Box>
+                                    </ListItem>
+                                ))}
+                            </List>
+                        </Paper>
+
+                        <Box mt={2}>
+                            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+                                Preview
+                            </Typography>
+                            {!selectedMedia && <Typography variant="body2">Select a result to preview</Typography>}
+                            {selectedMedia && (
+                                <Paper variant="outlined" sx={{ p: 1.5 }}>
+                                    <Typography variant="body2" sx={{ wordBreak: 'break-all' }}>
+                                        {selectedMedia.name}
+                                    </Typography>
+
+                                    <Box mt={1} display="flex" gap={1} flexWrap="wrap">
+                                        <Button
+                                            size="small"
+                                            variant="outlined"
+                                            sx={{ whiteSpace: 'nowrap' }}
+                                            onClick={() => {
+                                                const normalizedPath = `/${(selectedMedia.name || '').replace(/^\//, '')}`;
+                                                void copyToClipboard(normalizedPath, 'Media path copied!');
+                                            }}
+                                        >
+                                            Copy Path
+                                        </Button>
+                                        <Button
+                                            size="small"
+                                            variant="outlined"
+                                            sx={{ whiteSpace: 'nowrap' }}
+                                            disabled={!mediaPublicBaseUrl}
+                                            onClick={() => {
+                                                const publicUrl = getPublicMediaUrl(selectedMedia.name);
+                                                void copyToClipboard(publicUrl, 'Public media URL copied!');
+                                            }}
+                                        >
+                                            Copy Public URL
+                                        </Button>
+                                        <Button
+                                            size="small"
+                                            variant="outlined"
+                                            sx={{ whiteSpace: 'nowrap' }}
+                                            onClick={() => {
+                                                void copyToClipboard(selectedMedia.url, 'Signed URL copied!');
+                                            }}
+                                        >
+                                            Copy Signed URL
+                                        </Button>
+                                    </Box>
+
+                                    <Box mt={1.5}>
+                                        {getMediaKind(getPublicMediaUrl(selectedMedia.name) || selectedMedia.url) === 'image' && (
+                                            <img
+                                                src={getPublicMediaUrl(selectedMedia.name) || selectedMedia.url}
+                                                alt={selectedMedia.name}
+                                                style={{ maxWidth: '100%', maxHeight: 180, display: 'block', margin: '0 auto' }}
+                                            />
+                                        )}
+                                        {getMediaKind(getPublicMediaUrl(selectedMedia.name) || selectedMedia.url) === 'audio' && (
+                                            <audio controls src={getPublicMediaUrl(selectedMedia.name) || selectedMedia.url} style={{ width: '100%' }} />
+                                        )}
+                                        {getMediaKind(getPublicMediaUrl(selectedMedia.name) || selectedMedia.url) === 'unknown' && (
+                                            <Typography variant="body2" color="text.secondary">
+                                                No preview available for this file type.
+                                            </Typography>
+                                        )}
+                                    </Box>
+                                </Paper>
+                            )}
+                        </Box>
                     </Paper>
                 </Grid>
 
@@ -544,144 +716,6 @@ const ActivityEditorPage: React.FC = () => {
                     {mediaCopySnackbarText || 'Template JSON copied to clipboard!'}
                 </Alert>
             </Snackbar>
-
-            <Dialog open={mediaSearchOpen} onClose={handleCloseMediaSearch} fullWidth maxWidth="md">
-                <DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <span>Search Media</span>
-                    <IconButton onClick={handleCloseMediaSearch} aria-label="close">
-                        <CloseIcon />
-                    </IconButton>
-                </DialogTitle>
-                <DialogContent dividers>
-                    <TextField
-                        fullWidth
-                        label="Search by name"
-                        value={mediaSearchQuery}
-                        onChange={(e) => setMediaSearchQuery(e.target.value)}
-                        placeholder="e.g. aaduthal"
-                        autoFocus
-                    />
-
-                    <Box mt={2} display="flex" gap={2}>
-                        <Box flex={1} minWidth={0}>
-                            <Typography variant="subtitle2" sx={{ mb: 1 }}>
-                                Results
-                            </Typography>
-                            {mediaSearchLoading && <Typography variant="body2">Loading...</Typography>}
-                            {!!mediaSearchError && <Typography variant="body2" color="error">{mediaSearchError}</Typography>}
-                            {!mediaSearchLoading && !mediaSearchError && mediaSearchResults.length === 0 && mediaSearchQuery.trim() && (
-                                <Typography variant="body2">No results</Typography>
-                            )}
-                            <Paper variant="outlined" sx={{ maxHeight: 360, overflowY: 'auto' }}>
-                                <List dense>
-                                    {mediaSearchResults.map((r) => (
-                                        <ListItem
-                                            key={`${r.name}-${r.url}`}
-                                            onClick={() => setSelectedMedia(r)}
-                                            sx={{ cursor: 'pointer', alignItems: 'flex-start' }}
-                                            divider
-                                        >
-                                            <Box width="100%">
-                                                <ListItemText
-                                                    primary={r.name}
-                                                    secondary={getMediaKind(r.name) !== 'unknown' ? getMediaKind(r.name) : ''}
-                                                    primaryTypographyProps={{
-                                                        sx: {
-                                                            wordBreak: 'break-word',
-                                                            lineHeight: 1.2,
-                                                        }
-                                                    }}
-                                                    secondaryTypographyProps={{ sx: { lineHeight: 1.1 } }}
-                                                    sx={{ m: 0 }}
-                                                />
-                                                <Box
-                                                    mt={1}
-                                                    display="flex"
-                                                    gap={1}
-                                                    flexWrap="wrap"
-                                                    onClick={(e) => e.stopPropagation()}
-                                                >
-                                                    <Button
-                                                        size="small"
-                                                        variant="outlined"
-                                                        sx={{ whiteSpace: 'nowrap' }}
-                                                        onClick={() => {
-                                                            const normalizedPath = `/${(r.name || '').replace(/^\//, '')}`;
-                                                            void copyToClipboard(normalizedPath, 'Media path copied!');
-                                                        }}
-                                                    >
-                                                        Copy Path
-                                                    </Button>
-                                                    <Button
-                                                        size="small"
-                                                        variant="outlined"
-                                                        sx={{ whiteSpace: 'nowrap' }}
-                                                        disabled={!mediaPublicBaseUrl}
-                                                        onClick={() => {
-                                                            const publicUrl = getPublicMediaUrl(r.name);
-                                                            void copyToClipboard(publicUrl, 'Public media URL copied!');
-                                                        }}
-                                                    >
-                                                        Copy Public URL
-                                                    </Button>
-                                                    <Button
-                                                        size="small"
-                                                        variant="outlined"
-                                                        sx={{ whiteSpace: 'nowrap' }}
-                                                        onClick={() => { void copyToClipboard(r.url, 'Signed URL copied!'); }}
-                                                    >
-                                                        Copy Signed URL
-                                                    </Button>
-                                                </Box>
-                                            </Box>
-                                        </ListItem>
-                                    ))}
-                                </List>
-                            </Paper>
-                        </Box>
-
-                        <Box flex={1} minWidth={0}>
-                            <Typography variant="subtitle2" sx={{ mb: 1 }}>
-                                Preview
-                            </Typography>
-                            {!selectedMedia && <Typography variant="body2">Select a result to preview</Typography>}
-                            {selectedMedia && (
-                                <Paper variant="outlined" sx={{ p: 2 }}>
-                                    <Typography variant="body2" sx={{ wordBreak: 'break-all' }}>
-                                        {selectedMedia.name}
-                                    </Typography>
-                                    {!!getPublicMediaUrl(selectedMedia.name) && (
-                                        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', wordBreak: 'break-all', mt: 0.5 }}>
-                                            {getPublicMediaUrl(selectedMedia.name)}
-                                        </Typography>
-                                    )}
-
-                                    <Box mt={2}>
-                                        {getMediaKind(getPublicMediaUrl(selectedMedia.name) || selectedMedia.url) === 'image' && (
-                                            <img
-                                                src={getPublicMediaUrl(selectedMedia.name) || selectedMedia.url}
-                                                alt={selectedMedia.name}
-                                                style={{ maxWidth: '100%', maxHeight: 260, display: 'block', margin: '0 auto' }}
-                                            />
-                                        )}
-                                        {getMediaKind(getPublicMediaUrl(selectedMedia.name) || selectedMedia.url) === 'audio' && (
-                                            <audio controls src={getPublicMediaUrl(selectedMedia.name) || selectedMedia.url} style={{ width: '100%' }} />
-                                        )}
-                                        {getMediaKind(getPublicMediaUrl(selectedMedia.name) || selectedMedia.url) === 'unknown' && (
-                                            <Typography variant="body2" color="text.secondary">
-                                                No preview available for this file type.
-                                            </Typography>
-                                        )}
-                                    </Box>
-                                </Paper>
-                            )}
-                        </Box>
-                    </Box>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseMediaSearch}>Close</Button>
-                </DialogActions>
-            </Dialog>
 
             <Dialog open={mediaUploadOpen} onClose={handleCloseMediaUpload} fullWidth maxWidth="sm">
                 <DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>

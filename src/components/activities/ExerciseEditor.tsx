@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Box, Typography, IconButton, Accordion, AccordionSummary, AccordionDetails, TextField, Button, Paper } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PreviewIcon from '@mui/icons-material/Preview';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Activity } from '../../types/activity';
+import { getActivityTemplate } from './activityTemplates';
 
 interface ExerciseEditorProps {
     activityData: Partial<Activity>;
@@ -21,6 +22,7 @@ const ExerciseEditor: React.FC<ExerciseEditorProps> = ({
 }) => {
     const [exercises, setExercises] = useState<string[]>(['{}']);
     const [jsonErrors, setJsonErrors] = useState<string[]>(['']);
+    const [formatErrors, setFormatErrors] = useState<string[]>(['']);
 
     useEffect(() => {
         try {
@@ -29,23 +31,66 @@ const ExerciseEditor: React.FC<ExerciseEditorProps> = ({
             const stringifiedExercises = exerciseArray.map(ex => JSON.stringify(ex, null, 2));
             setExercises(stringifiedExercises);
             setJsonErrors(new Array(stringifiedExercises.length).fill(''));
+            setFormatErrors(new Array(stringifiedExercises.length).fill(''));
         } catch {
             setExercises(['{}']);
             setJsonErrors(['']);
+            setFormatErrors(['']);
         }
     }, [activityData.contentJson]);
 
-    const triggerParentUpdate = (updatedExercises: string[]) => {
+    const validateAgainstTemplate = useCallback((template: any, value: any, path: string): string[] => {
+        if (template === null || template === undefined) return [];
+        if (Array.isArray(template)) {
+            if (!Array.isArray(value)) return [`${path} must be an array`];
+            if (template.length === 0) return [];
+            const itemTemplate = template[0];
+            const errs: string[] = [];
+            value.forEach((it: any, idx: number) => {
+                errs.push(...validateAgainstTemplate(itemTemplate, it, `${path}[${idx}]`));
+            });
+            return errs;
+        }
+
+        const templateType = typeof template;
+        if (templateType !== 'object') {
+            if (typeof value !== templateType) return [`${path} must be a ${templateType}`];
+            return [];
+        }
+
+        if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+            return [`${path} must be an object`];
+        }
+
+        const errs: string[] = [];
+        for (const k of Object.keys(template)) {
+            if (!(k in value)) {
+                errs.push(`${path}.${k} is required`);
+                continue;
+            }
+            errs.push(...validateAgainstTemplate((template as any)[k], (value as any)[k], `${path}.${k}`));
+        }
+        return errs;
+    }, []);
+
+    const getTemplateObject = useCallback(() => {
+        try {
+            const tplStr = getActivityTemplate(activityData.activityTypeId || 0);
+            return JSON.parse(tplStr);
+        } catch {
+            return null;
+        }
+    }, [activityData.activityTypeId]);
+
+    const triggerParentUpdateIfValid = useCallback((updatedExercises: string[]) => {
         try {
             const parsedObjects = updatedExercises.map(exStr => JSON.parse(exStr));
             const combinedJsonString = JSON.stringify(parsedObjects, null, 2);
             onDataChange({ ...activityData, contentJson: combinedJsonString });
         } catch {
-            // If there's an error, we still pass the raw string up so the user can see the error
-            const rawCombined = `[${updatedExercises.join(',')}]`;
-            onDataChange({ ...activityData, contentJson: rawCombined });
+            return;
         }
-    };
+    }, [activityData, onDataChange]);
 
     const handleExerciseChange = (index: number, value: string) => {
         const updatedExercises = [...exercises];
@@ -53,21 +98,37 @@ const ExerciseEditor: React.FC<ExerciseEditorProps> = ({
         setExercises(updatedExercises);
 
         const updatedErrors = [...jsonErrors];
+        const updatedFormatErrors = [...formatErrors];
         try {
-            JSON.parse(value);
+            const parsed = JSON.parse(value);
             updatedErrors[index] = '';
+
+            const tplObj = getTemplateObject();
+            if (!tplObj) {
+                updatedFormatErrors[index] = '';
+            } else {
+                const errs = validateAgainstTemplate(tplObj, parsed, '$');
+                updatedFormatErrors[index] = errs.length ? errs.slice(0, 3).join(' | ') : '';
+            }
         } catch {
             updatedErrors[index] = 'Invalid JSON';
+            updatedFormatErrors[index] = '';
         }
         setJsonErrors(updatedErrors);
-        triggerParentUpdate(updatedExercises);
+        setFormatErrors(updatedFormatErrors);
+
+        const hasAnyJsonError = updatedErrors.some(Boolean);
+        if (!hasAnyJsonError) {
+            triggerParentUpdateIfValid(updatedExercises);
+        }
     };
 
     const addExercise = () => {
         const newExercises = [...exercises, '{}'];
         setExercises(newExercises);
         setJsonErrors([...jsonErrors, '']);
-        triggerParentUpdate(newExercises);
+        setFormatErrors([...formatErrors, '']);
+        triggerParentUpdateIfValid(newExercises);
         onSetExpanded(newExercises.length - 1);
     };
 
@@ -78,9 +139,11 @@ const ExerciseEditor: React.FC<ExerciseEditorProps> = ({
         }
         const newExercises = exercises.filter((_, i) => i !== index);
         const newErrors = jsonErrors.filter((_, i) => i !== index);
+        const newFormatErrors = formatErrors.filter((_, i) => i !== index);
         setExercises(newExercises);
         setJsonErrors(newErrors);
-        triggerParentUpdate(newExercises);
+        setFormatErrors(newFormatErrors);
+        triggerParentUpdateIfValid(newExercises);
     };
 
     return (
@@ -95,7 +158,7 @@ const ExerciseEditor: React.FC<ExerciseEditorProps> = ({
                                 <Button
                                     variant="outlined" size="small" startIcon={<PreviewIcon />}
                                     onClick={(e) => { e.stopPropagation(); onPreviewExercise(exerciseJson); }}
-                                    sx={{ mr: 1 }} disabled={!!jsonErrors[index]}
+                                    sx={{ mr: 1 }} disabled={!!jsonErrors[index] || !!formatErrors[index]}
                                 >
                                     Preview
                                 </Button>
@@ -114,8 +177,8 @@ const ExerciseEditor: React.FC<ExerciseEditorProps> = ({
                             fullWidth multiline rows={15}
                             value={exerciseJson}
                             onChange={(e) => handleExerciseChange(index, e.target.value)}
-                            required error={!!jsonErrors[index]}
-                            helperText={jsonErrors[index]}
+                            required error={!!jsonErrors[index] || !!formatErrors[index]}
+                            helperText={jsonErrors[index] || formatErrors[index]}
                             variant="outlined" sx={{ fontFamily: 'monospace' }}
                         />
                     </AccordionDetails>

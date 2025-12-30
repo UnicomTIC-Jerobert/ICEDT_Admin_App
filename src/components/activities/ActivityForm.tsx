@@ -27,13 +27,13 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
             <Grid size={{xs:12}}>
                 <Typography variant="h6" gutterBottom>Activity Details</Typography>
             </Grid>
-            <Grid size={{xs:12}}>
+            <Grid size={{ xs: 12, md: 6 }}>
                 <TextField fullWidth label="Activity Title" name="title" value={activityData.title || ''} onChange={handleFieldChange} />
             </Grid>
-            <Grid size={{xs:12}}>
+            <Grid size={{ xs: 12, md: 6 }}>
                 <TextField fullWidth type="number" label="Sequence Order" name="sequenceOrder" value={activityData.sequenceOrder || ''} onChange={handleFieldChange} required InputLabelProps={{ shrink: true }}/>
             </Grid>
-            <Grid size={{xs:12}}>
+            <Grid size={{ xs: 12, md: 6 }}>
                 <FormControl fullWidth>
                     <InputLabel>Main Activity Category</InputLabel>
                     <Select name="mainActivityId" value={activityData.mainActivityId || ''} onChange={handleFieldChange} label="Main Activity Category" required>
@@ -41,7 +41,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
                     </Select>
                 </FormControl>
             </Grid>
-            <Grid size={{xs:12}}>
+            <Grid size={{ xs: 12, md: 6 }}>
                 <FormControl fullWidth>
                     <InputLabel>Activity Type</InputLabel>
                     <Select name="activityTypeId" value={activityData.activityTypeId || ''} onChange={handleFieldChange} label="Activity Type" required>

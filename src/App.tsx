@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link as RouterLink, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link as RouterLink, Navigate, useLocation } from 'react-router-dom';
 import { CssBaseline, ThemeProvider, createTheme, AppBar, Toolbar, Typography, Container, Button, Box, CircularProgress } from '@mui/material';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
@@ -36,6 +36,9 @@ function App() {
 
 const AppContent: React.FC = () => {
     const { isAuthenticated, isLoading, logout } = useAuth();
+    const location = useLocation();
+
+    const isFullWidthPage = location.pathname === '/activity-edit';
 
     if (isLoading) {
         return <Box display="flex" justifyContent="center" alignItems="center" height="100vh"><CircularProgress /></Box>;
@@ -56,7 +59,12 @@ const AppContent: React.FC = () => {
                     </Toolbar>
                 </AppBar>
             )}
-            <Container component="main" sx={{ mt: 4 }}>
+            <Container
+                component="main"
+                maxWidth={isFullWidthPage ? false : undefined}
+                disableGutters={isFullWidthPage}
+                sx={{ mt: isFullWidthPage ? 0 : 4, px: isFullWidthPage ? '80px' : undefined }}
+            >
                 <Routes>
                     <Route path="/login" element={<LoginPage />} />
                     <Route

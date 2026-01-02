@@ -1,10 +1,12 @@
 import React, { useRef } from 'react';
 import { Box, Typography, Paper, Grid, Card, CardMedia, CardContent, IconButton } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 interface MediaSpotlightItem {
     text: string;
     imageUrl: string;
+
     audioUrl?: string;
 }
 export interface MediaSpotlightMultipleContent {
@@ -41,7 +43,7 @@ const MediaSpotlightMultiple: React.FC<MediaSpotlightMultipleProps> = ({ content
 
     const playAudio = (audioUrl?: string) => {
         if (audioUrl && audioRef.current) {
-            audioRef.current.src = audioUrl;
+            audioRef.current.src = resolveMediaUrl(audioUrl);
             audioRef.current.play().catch(e => console.error("Audio playback failed:", e));
         }
     };
@@ -78,7 +80,7 @@ const MediaSpotlightMultiple: React.FC<MediaSpotlightMultipleProps> = ({ content
                             <CardMedia
                                 component="img"
                                 height="120"
-                                image={`${process.env.REACT_APP_MEDIA_URL}/${item.imageUrl}`}
+                                image={resolveMediaUrl(item.imageUrl)}
                                 alt={item.text}
                                 sx={{ objectFit: 'contain', p: 1 }}
                             />

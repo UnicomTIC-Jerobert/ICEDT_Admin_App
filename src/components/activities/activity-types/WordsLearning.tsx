@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { Box, Typography, Button, CircularProgress, LinearProgress } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 // --- TypeScript interfaces ---
 
@@ -41,6 +42,7 @@ interface WordsLearningProps {
 }
 
 const WordsLearning: React.FC<WordsLearningProps> = ({ content }) => {
+
     // --- State Management ---
     const [currentActivityIndex, setCurrentActivityIndex] = useState(0);
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -51,7 +53,6 @@ const WordsLearning: React.FC<WordsLearningProps> = ({ content }) => {
     const [phase, setPhase] = useState<'word' | 'letters' | 'transition'>('word');
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
-    const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL || '';
     const activities = content.activities;
     const currentActivity = activities[currentActivityIndex];
     const wordsData = useMemo(() => currentActivity?.words || [], [currentActivity]);
@@ -60,7 +61,7 @@ const WordsLearning: React.FC<WordsLearningProps> = ({ content }) => {
     const playAudio = useCallback((audioUrl: string, onEnded?: () => void) => {
         if (audioUrl && audioRef.current) {
             setIsPlaying(true);
-            audioRef.current.src = `${mediaBaseUrl}${audioUrl}`;
+            audioRef.current.src = resolveMediaUrl(audioUrl);
             
             const handleEnded = () => {
                 setIsPlaying(false);
@@ -75,7 +76,7 @@ const WordsLearning: React.FC<WordsLearningProps> = ({ content }) => {
                 if (onEnded) onEnded();
             });
         }
-    }, [mediaBaseUrl]);
+    }, []);
 
     // --- Activity Logic ---
     useEffect(() => {

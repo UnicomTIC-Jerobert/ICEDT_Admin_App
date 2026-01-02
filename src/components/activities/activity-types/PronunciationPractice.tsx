@@ -3,6 +3,7 @@
 import React, { useState, useRef, useCallback} from 'react';
 import { Box, Typography, Paper, IconButton } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 // --- In your types/activityContentTypes.ts file ---
 
@@ -32,7 +33,7 @@ const PronunciationPractice: React.FC<PronunciationPracticeProps> = ({ content }
      */
     const playAudio = useCallback((audioUrl: string) => {
         if (audioRef.current) {
-            audioRef.current.src = audioUrl;
+            audioRef.current.src = resolveMediaUrl(audioUrl);
             setIsPlaying(true);
             audioRef.current.play().catch(e => {
                 console.error("Audio playback error:", e);

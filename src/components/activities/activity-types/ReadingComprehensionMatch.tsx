@@ -3,6 +3,7 @@
 import React, { useState, useMemo, useRef, useCallback } from 'react';
 import { Box, Typography, Paper, Grid, Alert, IconButton } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 // --- Add/Update these types in your activityContentTypes.ts file ---
 
@@ -42,7 +43,7 @@ const ReadingComprehensionMatch: React.FC<ReadingComprehensionMatchProps> = ({ c
     // A single, reusable function to play any audio URL
     const playAudio = useCallback((audioUrl: string) => {
         if (audioRef.current) {
-            audioRef.current.src = audioUrl;
+            audioRef.current.src = resolveMediaUrl(audioUrl);
             audioRef.current.play().catch(e => console.error("Audio playback error:", e));
         }
     }, []);

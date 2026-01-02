@@ -3,6 +3,7 @@ import { Box, Typography, Paper, IconButton, Slider, Avatar } from '@mui/materia
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import ReplayIcon from '@mui/icons-material/Replay';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 // --- NEW: Type for Song Player Activity ---
 export interface LyricLine {
@@ -107,7 +108,7 @@ const SongPlayer: React.FC<SongPlayerProps> = ({ content }) => {
             <Box textAlign="center" mb={2}>
                 <Avatar
                     variant="rounded"
-                    src={content.albumArtUrl || 'default_album_art.png'}
+                    src={resolveMediaUrl(content.albumArtUrl || 'default_album_art.png')}
                     sx={{ width: 150, height: 150, m: 'auto', mb: 2, boxShadow: 3 }}
                 />
                 <Typography variant="h5" component="h1" fontWeight="bold">{content.title}</Typography>
@@ -152,7 +153,7 @@ const SongPlayer: React.FC<SongPlayerProps> = ({ content }) => {
 
             {/* Audio Player Controls */}
             <Box>
-                <audio ref={audioRef} src={content.audioUrl} style={{ display: 'none' }} />
+                <audio ref={audioRef} src={resolveMediaUrl(content.audioUrl)} style={{ display: 'none' }} />
                 <Slider aria-label="time-indicator" value={currentTime} min={0} step={1} max={duration || 0} onChange={handleSliderChange} />
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', px: 1 }}>
                     <Typography variant="caption">{formatTime(currentTime)}</Typography>

@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Box, Typography, Paper, Button, Card, CardMedia, CardContent, Alert } from '@mui/material';
 import ReplayIcon from '@mui/icons-material/Replay';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 // --- In your types/activityContentTypes.ts file ---
 
@@ -48,7 +49,7 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({ content }) => {
 
     const playAudio = useCallback((audioUrl: string) => {
         if (audioRef.current) {
-            audioRef.current.src = audioUrl;
+            audioRef.current.src = resolveMediaUrl(audioUrl);
             audioRef.current.play().catch(e => console.error("Audio playback error:", e));
         }
     }, []);
@@ -57,7 +58,7 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({ content }) => {
     useEffect(() => {
         if (isComplete) {
             const timer = setTimeout(() => {
-                playAudio(content.fullSentenceAudioUrl);
+                playAudio(resolveMediaUrl(content.fullSentenceAudioUrl));
             }, 1000);
             return () => clearTimeout(timer);
         }
@@ -119,7 +120,7 @@ const SentenceBuilder: React.FC<SentenceBuilderProps> = ({ content }) => {
                     sx={getPartStyle('imageWord')}
                     onClick={() => handlePartClick('imageWord', content.imageWord.audioUrl)}
                 >
-                    <CardMedia component="img" height="150" image={content.imageWord.imageUrl} alt={content.imageWord.text} />
+                    <CardMedia component="img" height="150" image={resolveMediaUrl(content.imageWord.imageUrl)} alt={content.imageWord.text} />
                     <CardContent>
                         <Typography variant="h5">{content.imageWord.text}</Typography>
                     </CardContent>

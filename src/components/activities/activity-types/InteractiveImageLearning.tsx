@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Box, Typography, Paper, IconButton, Button } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import ReplayIcon from '@mui/icons-material/Replay';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 // --- Type definitions for Interactive Image Learning Activity ---
 export interface InteractiveObject {
@@ -32,16 +33,9 @@ const InteractiveImageLearning: React.FC<InteractiveImageLearningProps> = ({ con
     const [showObjectName, setShowObjectName] = useState<{ id: number; name: string } | null>(null);
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
-    const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL || '';
-
-    const getFullUrl = (url: string) => {
-        if (url.startsWith('http')) return url;
-        return `${mediaBaseUrl}/${url}`;
-    };
-
     const playAudio = (audioUrl: string, objectId: number, objectName: string) => {
         if (audioRef.current) {
-            audioRef.current.src = getFullUrl(audioUrl);
+            audioRef.current.src = resolveMediaUrl(audioUrl);
             setCurrentlyPlaying(objectId);
             setShowObjectName({ id: objectId, name: objectName });
             
@@ -125,7 +119,7 @@ const InteractiveImageLearning: React.FC<InteractiveImageLearningProps> = ({ con
             {/* The Interactive Image Container */}
             <Box sx={{ flexGrow: 1, position: 'relative', width: '100%', maxWidth: '800px', margin: 'auto' }}>
                 <img 
-                    src={getFullUrl(content.imageUrl)} 
+                    src={resolveMediaUrl(content.imageUrl)} 
                     alt={content.title} 
                     style={{ 
                         width: '100%', 

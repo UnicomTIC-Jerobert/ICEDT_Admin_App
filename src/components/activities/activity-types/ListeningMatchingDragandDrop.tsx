@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Box, Typography, Paper, Chip, ThemeProvider, createTheme, CssBaseline } from "@mui/material";
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 // --- Interfaces for the new Data Structure ---
 export interface WordChoice {
@@ -50,7 +51,7 @@ const ListeningMatchingDragandDrop: React.FC<{ content: ListeningMatchingContent
   const playAudio = useCallback((audioUrl: string, onEnded?: () => void) => {
     if (audioUrl && audioRef.current) {
       setIsPlaying(true);
-      audioRef.current.src = audioUrl; // Assuming full URL is provided in JSON
+      audioRef.current.src = resolveMediaUrl(audioUrl);
       
       const handleEnded = () => {
         setIsPlaying(false);

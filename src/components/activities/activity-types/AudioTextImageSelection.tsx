@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { Box, Typography, IconButton, Card, CardMedia, Button, Alert } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import { AudioTextImageSelectionContent } from '../../../types/activityContentTypes';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 interface AudioTextImageSelectionProps {
     content: AudioTextImageSelectionContent;
@@ -15,7 +16,7 @@ const AudioTextImageSelection: React.FC<AudioTextImageSelectionProps> = ({ conte
 
     const playAudio = useCallback(() => {
         if (content?.audioUrl && audioRef.current) {
-            audioRef.current.src = content.audioUrl;
+            audioRef.current.src = resolveMediaUrl(content.audioUrl);
             audioRef.current.play().catch(e => {
                 console.warn("Audio autoplay blocked by browser:", e);
                 // Silently fail - this is expected behavior in most browsers
@@ -26,7 +27,7 @@ const AudioTextImageSelection: React.FC<AudioTextImageSelectionProps> = ({ conte
     useEffect(() => {
         // Set audio source when component loads
         if (content?.audioUrl && audioRef.current) {
-            audioRef.current.src = content.audioUrl;
+            audioRef.current.src = resolveMediaUrl(content.audioUrl);
         }
     }, [content]);
 
@@ -145,7 +146,7 @@ const AudioTextImageSelection: React.FC<AudioTextImageSelectionProps> = ({ conte
                         <CardMedia
                             component="img"
                             height="250"
-                            image={image.imageUrl}
+                            image={resolveMediaUrl(image.imageUrl)}
                             alt={`Option ${image.id}`}
                             sx={{
                                 objectFit: 'cover',

@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { Box, Typography, IconButton } from "@mui/material";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 export interface VideoPlayerContent {
   title: string;          // Activity title
@@ -43,7 +44,7 @@ const VideoPlayerActivity: React.FC<{ content: VideoPlayerContent }> = ({ conten
           controls={false}
           style={{ borderRadius: "12px", boxShadow: "0px 4px 12px rgba(0,0,0,0.2)" }}
         >
-          <source src={content.videoUrl} type="video/mp4" />
+          <source src={resolveMediaUrl(content.videoUrl)} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
         <IconButton

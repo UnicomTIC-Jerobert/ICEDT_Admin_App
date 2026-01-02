@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Box, Typography, Paper, Grid, IconButton} from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 // --- COLOCATED TYPES ---
 export interface CharacterGridItem {
@@ -39,14 +40,14 @@ const CharacterGrid: React.FC<CharacterGridProps> = ({ content }) => {
     // Autoplay the sound for the next item to find
     useEffect(() => {
         if (currentItemToFind?.audioUrl) {
-            const timer = setTimeout(() => playAudio(currentItemToFind.audioUrl), 500);
+            const timer = setTimeout(() => playAudio(resolveMediaUrl(currentItemToFind.audioUrl)), 500);
             return () => clearTimeout(timer);
         }
     }, [currentItemToFind]);
 
     const playAudio = (audioUrl: string) => {
         if (audioRef.current) {
-            audioRef.current.src = audioUrl;
+            audioRef.current.src = resolveMediaUrl(audioUrl);
             audioRef.current.play().catch(e => console.error("Audio playback failed:", e));
         }
     };

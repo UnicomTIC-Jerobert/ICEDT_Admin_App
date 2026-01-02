@@ -4,6 +4,7 @@ import React, { useState, useRef, useCallback } from 'react';
 import { Box, Typography, Paper, IconButton, Card, CardMedia, Button, Alert, Grid } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import ReplayIcon from '@mui/icons-material/Replay';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 // --- Add these types to your activityContentTypes.ts file ---
 
@@ -35,7 +36,7 @@ const RiddleActivity: React.FC<RiddleActivityProps> = ({ content }) => {
 
     const playRiddleAudio = useCallback(() => {
         if (audioRef.current) {
-            audioRef.current.src = content.riddleAudioUrl;
+            audioRef.current.src = resolveMediaUrl(content.riddleAudioUrl);
             audioRef.current.play().catch(e => console.error("Audio playback failed:", e));
         }
     }, [content.riddleAudioUrl]);
@@ -120,7 +121,7 @@ const RiddleActivity: React.FC<RiddleActivityProps> = ({ content }) => {
                                 <CardMedia
                                     component="img"
                                     height="180"
-                                    image={choice.imageUrl}
+                                    image={resolveMediaUrl(choice.imageUrl)}
                                     alt={choice.text}
                                     sx={{ objectFit: 'cover' }}
                                 />

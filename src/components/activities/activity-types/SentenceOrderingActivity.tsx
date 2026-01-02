@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Paper, Chip, Button, ThemeProvider, createTheme, CssBaseline } from "@mui/material";
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 // --- TypeScript Interfaces ---
 export interface Sentence {
@@ -133,7 +134,7 @@ const SentenceOrderingComponent: React.FC<{ content: SentenceOrderingContent }> 
       
       {/* --- UI CHANGE: Image Display is now at the top --- */}
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 3 }}>
-          <img src={content.imageUrl} alt="Activity visual" style={{ maxWidth: '100%', maxHeight: '300px', borderRadius: '8px', border: '1px solid #ddd' }} />
+          <img src={resolveMediaUrl(content.imageUrl)} alt="Activity visual" style={{ maxWidth: '100%', maxHeight: '300px', borderRadius: '8px', border: '1px solid #ddd' }} />
       </Box>
 
       {/* Number Pool (where unplaced numbers are held) */}

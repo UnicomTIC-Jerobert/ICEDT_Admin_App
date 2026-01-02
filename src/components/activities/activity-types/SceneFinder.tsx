@@ -3,6 +3,7 @@ import { Box, Typography, Paper,IconButton, Button } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ReplayIcon from '@mui/icons-material/Replay';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 // --- NEW: Type for Interactive Scene Finder Activity ---
 export interface Hotspot {
@@ -44,14 +45,14 @@ const SceneFinder: React.FC<SceneFinderProps> = ({ content }) => {
     useEffect(() => {
         // Autoplay the prompt for the current item to find
         if (currentItem?.audioUrl) {
-            const timer = setTimeout(() => playAudio(currentItem.audioUrl), 500);
+            const timer = setTimeout(() => playAudio(resolveMediaUrl(currentItem.audioUrl)), 500);
             return () => clearTimeout(timer);
         }
     }, [currentItem]);
 
     const playAudio = (audioUrl: string) => {
         if (audioRef.current) {
-            audioRef.current.src = audioUrl;
+            audioRef.current.src = resolveMediaUrl(audioUrl);
             audioRef.current.play().catch(e => console.error(e));
         }
     };
@@ -89,14 +90,14 @@ const SceneFinder: React.FC<SceneFinderProps> = ({ content }) => {
                 <Typography variant="h6" color="primary.main" fontWeight="bold">
                     {isComplete ? "Well Done!" : currentItem?.name || "..."}
                 </Typography>
-                <IconButton onClick={() => currentItem && playAudio(currentItem.audioUrl)} disabled={isComplete}>
+                <IconButton onClick={() => currentItem && playAudio(resolveMediaUrl(currentItem.audioUrl))} disabled={isComplete}>
                     <VolumeUpIcon fontSize="large" />
                 </IconButton>
             </Paper>
 
             {/* The Scene Container */}
             <Box sx={{ flexGrow: 1, position: 'relative', width: '100%', maxWidth: '800px', margin: 'auto' }}>
-                <img src={content.sceneImageUrl} alt={content.title} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                <img src={resolveMediaUrl(content.sceneImageUrl)} alt={content.title} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                 
                 {/* Overlay for Hotspots */}
                 {itemsToFind.map(hotspot => {

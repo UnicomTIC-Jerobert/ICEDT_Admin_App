@@ -3,6 +3,7 @@ import { Box, Typography, Paper, IconButton, Slider, Stack, Grid } from '@mui/ma
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import ReplayIcon from '@mui/icons-material/Replay';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 // --- NEW: Type for Conversation Activity ---
 export interface ChatMessage {
@@ -130,7 +131,7 @@ const ConversationPlayer: React.FC<ConversationPlayerProps> = ({ content }) => {
 
             {/* Audio Player Controls */}
             <Paper elevation={4} sx={{ p: 1.5, borderRadius: '16px' }}>
-                <audio ref={audioRef} src={content.audioUrl} style={{ display: 'none' }} />
+                <audio ref={audioRef} src={resolveMediaUrl(content.audioUrl)} style={{ display: 'none' }} />
                 <Grid container alignItems="center" spacing={2}>
                     <Grid>
                         <IconButton onClick={togglePlayPause}>

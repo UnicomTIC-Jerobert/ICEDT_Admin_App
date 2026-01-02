@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 export interface ImageOrderingItem {
     id: number;
@@ -29,7 +30,6 @@ export interface ImageOrderingContent {
 }
 
 const ImageOrderingActivity: React.FC<{ content: ImageOrderingContent }> = ({ content }) => {
-    const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL || '';
     const [items, setItems] = useState<ImageOrderingItem[]>([]);
     const [isCorrect, setIsCorrect] = useState(false);
     const [draggedItem, setDraggedItem] = useState<ImageOrderingItem | null>(null);
@@ -80,7 +80,7 @@ const ImageOrderingActivity: React.FC<{ content: ImageOrderingContent }> = ({ co
 
     const handlePlayAudio = (audioUrl: string) => {
         if (audioRef.current) {
-            audioRef.current.src = `${mediaBaseUrl}${audioUrl}`;
+            audioRef.current.src = resolveMediaUrl(audioUrl);
             audioRef.current.play().catch(err => console.error('Audio play error:', err));
         }
     };
@@ -153,7 +153,7 @@ const ImageOrderingActivity: React.FC<{ content: ImageOrderingContent }> = ({ co
                                 <CardMedia
                                     component="img"
                                     height="200"
-                                    image={`${mediaBaseUrl}${item.imageUrl}`}
+                                    image={resolveMediaUrl(item.imageUrl)}
                                     alt={item.name}
                                     sx={{ objectFit: 'cover' }}
                                 />

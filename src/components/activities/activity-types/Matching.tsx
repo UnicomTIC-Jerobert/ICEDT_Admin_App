@@ -3,6 +3,7 @@ import { Box, Typography, Grid, Card, CardActionArea, CardMedia, Button } from "
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import ReplayIcon from "@mui/icons-material/Replay";
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 interface ImageChoice {
   id: string;
@@ -45,7 +46,7 @@ const ImageChoiceActivity: React.FC<ImageChoiceActivityProps> = ({ title, option
                 <CardMedia
                   component="img"
                   height="180"
-                  image={choice.imageUrl}
+                  image={resolveMediaUrl(choice.imageUrl)}
                   alt="option"
                 />
               </CardActionArea>

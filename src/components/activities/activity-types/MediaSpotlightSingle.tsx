@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useCallback } from 'react';
 import { Box, Typography, Paper, IconButton, Card, CardMedia, CardContent } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 // --- NEW: Type for Media Spotlight Activity (Carousel) ---
 interface MediaSpotlightItem {
@@ -46,8 +47,7 @@ const MediaSpotlightSingle: React.FC<MediaSpotlightProps> = ({ content }) => {
     //    Its behavior depends on the 'content' prop, so 'content' is its dependency.
     const playAudio = useCallback(() => {
         if (content?.item?.audioUrl && audioRef.current) {
-            const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL || '';
-            audioRef.current.src = `${mediaBaseUrl}${content.item.audioUrl}`;
+            audioRef.current.src = resolveMediaUrl(content.item.audioUrl);
             audioRef.current.play().catch(e => console.error("Audio playback failed:", e));
         }
     }, [content]); // This function will be recreated only when the 'content' prop changes.
@@ -61,8 +61,6 @@ const MediaSpotlightSingle: React.FC<MediaSpotlightProps> = ({ content }) => {
     if (!content || !content.item) {
         return <Typography color="error">Invalid MediaSpotlight content.</Typography>;
     }
-
-    const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL || '';
 
     return (
         <Box p={2} sx={{ fontFamily: 'sans-serif', textAlign: 'center' }}>
@@ -90,7 +88,7 @@ const MediaSpotlightSingle: React.FC<MediaSpotlightProps> = ({ content }) => {
                     <CardMedia
                         component="img"
                         height="180"
-                        image={`${mediaBaseUrl}${content.item.imageUrl}`}
+                        image={resolveMediaUrl(content.item.imageUrl)}
                         alt={content.item.text}
                         sx={{ objectFit: 'contain', p: 1 }}
                     />

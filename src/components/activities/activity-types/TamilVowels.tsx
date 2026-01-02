@@ -3,6 +3,7 @@ import { Box, Typography, Grid, Button, Card, CardContent } from '@mui/material'
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import ReplayIcon from '@mui/icons-material/Replay';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 // --- Type definitions for Letters Display Activity ---
 export interface TamilVowel {
@@ -30,16 +31,9 @@ const LettersDisplay: React.FC<LettersDisplayProps> = ({ content }) => {
     const [isSequencePlaying, setIsSequencePlaying] = useState<boolean>(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
-    const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL || '';
-
-    const getFullUrl = (url: string) => {
-        if (url.startsWith('http')) return url;
-        return `${mediaBaseUrl}/${url}`;
-    };
-
     const playAudio = (audioUrl: string, vowelId: number) => {
         if (audioRef.current) {
-            audioRef.current.src = getFullUrl(audioUrl);
+            audioRef.current.src = resolveMediaUrl(audioUrl);
             setPlayingVowelId(vowelId);
 
             audioRef.current.play()
@@ -76,7 +70,7 @@ const LettersDisplay: React.FC<LettersDisplayProps> = ({ content }) => {
 
             await new Promise((resolve) => {
                 if (audioRef.current) {
-                    audioRef.current.src = getFullUrl(vowel.audioUrl);
+                    audioRef.current.src = resolveMediaUrl(vowel.audioUrl);
                     setPlayingVowelId(vowel.id);
 
                     audioRef.current.play().catch(e => console.error('Error playing audio:', e));

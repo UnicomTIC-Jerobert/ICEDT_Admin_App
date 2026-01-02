@@ -5,6 +5,7 @@ import { Box, Typography, Paper, IconButton, Alert, Button } from '@mui/material
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import ReplayIcon from '@mui/icons-material/Replay';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 // --- Add these types to your activityContentTypes.ts file ---
 
@@ -61,7 +62,7 @@ const PositionalSceneBuilder: React.FC<PositionalSceneBuilderProps> = ({ content
 
     const playAudio = useCallback((audioUrl: string) => {
         if (audioRef.current) {
-            audioRef.current.src = audioUrl;
+            audioRef.current.src = resolveMediaUrl(audioUrl);
             audioRef.current.play().catch(e => console.error("Audio error:", e));
         }
     }, []);
@@ -135,7 +136,7 @@ const PositionalSceneBuilder: React.FC<PositionalSceneBuilderProps> = ({ content
 
             {/* Main Scene Area */}
             <Box sx={{ position: 'relative', width: '100%', maxWidth: '800px', margin: 'auto', border: '1px solid #ccc' }}>
-                <img src={content.sceneImageUrl} alt="Main scene" style={{ width: '100%', display: 'block' }} />
+                <img src={resolveMediaUrl(content.sceneImageUrl)} alt="Main scene" style={{ width: '100%', display: 'block' }} />
 
                 {/* Render Drop Zones (for interaction) */}
                 {content.dropZones.map(zone => (
@@ -163,7 +164,7 @@ const PositionalSceneBuilder: React.FC<PositionalSceneBuilderProps> = ({ content
                     return (
                         <img
                             key={objectId}
-                            src={objectData.imageUrl}
+                            src={resolveMediaUrl(objectData.imageUrl)}
                             alt={objectData.name}
                             style={{
                                 position: 'absolute',
@@ -185,7 +186,7 @@ const PositionalSceneBuilder: React.FC<PositionalSceneBuilderProps> = ({ content
                     <Box
                         key={obj.id}
                         component="img"
-                        src={obj.imageUrl}
+                        src={resolveMediaUrl(obj.imageUrl)}
                         alt={obj.name}
                         draggable
                         onDragStart={(e) => handleDragStart(e, obj.id)}

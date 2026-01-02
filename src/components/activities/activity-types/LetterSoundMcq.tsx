@@ -3,6 +3,7 @@ import { Box, Typography, Card, CardMedia, Grid, IconButton, Button, CircularPro
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 // --- புதிய JSON வடிவமைப்பிற்கான TypeScript வகைகள் ---
 
@@ -44,15 +45,14 @@ const LetterSoundMcq: React.FC<LetterSoundMcqProps> = ({ content }) => {
     const [isFinished, setIsFinished] = useState(false);
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
-    const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL || '';
 
     // --- Audio Playback ---
     const playAudio = useCallback((audioUrl: string) => {
         if (audioUrl && audioRef.current) {
-            audioRef.current.src = `${mediaBaseUrl}${audioUrl}`;
+            audioRef.current.src = resolveMediaUrl(audioUrl);
             audioRef.current.play().catch(e => console.error("Audio playback failed:", e));
         }
-    }, [mediaBaseUrl]);
+    }, []);
 
     // --- Game Logic (புதிய JSON-க்கு ஏற்ப மாற்றப்பட்டது) ---
     useEffect(() => {
@@ -158,7 +158,7 @@ const LetterSoundMcq: React.FC<LetterSoundMcqProps> = ({ content }) => {
                                 <CardMedia
                                     component="img"
                                     height="200"
-                                    image={`${mediaBaseUrl}${option.imageUrl}`}
+                                    image={resolveMediaUrl(option.imageUrl)}
                                     alt={option.letter}
                                     sx={{ objectFit: 'contain', p: 2, opacity: isAnswered && !isCorrect ? 0.5 : 1 }}
                                 />

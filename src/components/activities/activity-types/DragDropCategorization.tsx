@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Box, Typography, Card, CardMedia, Button, Paper, Grid } from '@mui/material';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 // Types (JSON வடிவமைப்புக்கான வகைகள்)
 export interface Item {
@@ -102,7 +103,7 @@ const DragDropCategorization: React.FC<DragDropCategorizationProps> = ({ content
                                 onDragEnd={handleDragEnd}
                                 sx={{ m: 1, cursor: 'grab', opacity: draggedItem?.id === item.id ? 0.5 : 1 }}
                             >
-                                <CardMedia component="img" height="100" image={item.imageUrl} alt={item.name} />
+                                <CardMedia component="img" height="100" image={resolveMediaUrl(item.imageUrl)} alt={item.name} />
                             </Card>
                         ))}
                     </Paper>
@@ -121,7 +122,7 @@ const DragDropCategorization: React.FC<DragDropCategorizationProps> = ({ content
                                 >
                                     {(placedItems[category.id] || []).map(item => (
                                         <Card key={item.id} sx={{ m: 1 }}>
-                                            <CardMedia component="img" height="80" image={item.imageUrl} alt={item.name} />
+                                            <CardMedia component="img" height="80" image={resolveMediaUrl(item.imageUrl)} alt={item.name} />
                                         </Card>
                                     ))}
                                 </Paper>

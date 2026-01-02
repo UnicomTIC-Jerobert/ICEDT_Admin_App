@@ -3,6 +3,7 @@ import { Box, Typography, Paper, IconButton, Slider, Card, CardMedia } from '@mu
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import ReplayIcon from '@mui/icons-material/Replay';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 // --- NEW: Type for Story Player Activity ---
 export interface StoryScene {
@@ -29,7 +30,7 @@ const StoryPlayer: React.FC<StoryPlayerProps> = ({ content }) => {
     const [duration, setDuration] = useState(0);
     const [activeSceneIndex, setActiveSceneIndex] = useState<number>(0);
 
-     // Effect for audio event listeners and scene synchronization
+    // Effect for audio event listeners and scene synchronization
     useEffect(() => {
         const audio = audioRef.current;
         if (!audio) return;
@@ -124,7 +125,7 @@ const StoryPlayer: React.FC<StoryPlayerProps> = ({ content }) => {
                 <Card elevation={4} sx={{ width: '100%', borderRadius: 3 }}>
                     <CardMedia
                         component="img"
-                        image={currentScene.imageUrl}
+                        image={resolveMediaUrl(currentScene.imageUrl)}
                         alt={`Scene for "${currentScene.text.substring(0, 20)}..."`}
                         sx={{
                             width: '100%',
@@ -156,7 +157,7 @@ const StoryPlayer: React.FC<StoryPlayerProps> = ({ content }) => {
 
             {/* --- Audio Player Controls at the very bottom --- */}
             <Box>
-                <audio ref={audioRef} src={content.audioUrl} style={{ display: 'none' }} />
+                <audio ref={audioRef} src={resolveMediaUrl(content.audioUrl)} style={{ display: 'none' }} />
                 <Slider aria-label="time-indicator" value={currentTime} min={0} step={1} max={duration || 0} onChange={handleSliderChange} />
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', px: 1 }}>
                     <Typography variant="caption">{formatTime(currentTime)}</Typography>

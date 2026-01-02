@@ -4,6 +4,7 @@ import React, { useState, useMemo, useRef, useCallback } from 'react';
 import { Box, Typography, Paper, Grid, Card, CardMedia, IconButton, Alert } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 // --- Add these types to your activityContentTypes.ts file ---
 
@@ -48,7 +49,7 @@ const SoundImageMatch: React.FC<SoundImageMatchProps> = ({ content }) => {
 
     const playAudio = useCallback((audioUrl: string) => {
         if (audioRef.current) {
-            audioRef.current.src = audioUrl;
+            audioRef.current.src = resolveMediaUrl(audioUrl);
             audioRef.current.play().catch(e => console.error("Audio playback error:", e));
         }
     }, []);
@@ -99,7 +100,7 @@ const SoundImageMatch: React.FC<SoundImageMatchProps> = ({ content }) => {
                                         backgroundColor: matchedPairs[image.id] ? '#e8f5e9' : '#fafafa',
                                     }}
                                 >
-                                    <CardMedia component="img" height="150" image={image.imageUrl} alt={image.name} />
+                                    <CardMedia component="img" height="150" image={resolveMediaUrl(image.imageUrl)} alt={image.name} />
                                     {matchedPairs[image.id] && (
                                         <CheckCircleIcon sx={{ position: 'absolute', top: 8, right: 8, fontSize: 40, color: 'success.main' }} />
                                     )}

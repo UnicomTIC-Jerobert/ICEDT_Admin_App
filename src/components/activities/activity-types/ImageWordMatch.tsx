@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo} from 'react';
 import { Box, Typography, Paper, Grid, Card, CardMedia, Alert } from '@mui/material';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 // --- Add these types to your activityContentTypes.ts file ---
 
@@ -74,8 +75,9 @@ const ImageWordMatch: React.FC<ImageWordMatchProps> = ({ content }) => {
                     <Grid  size={{xs:12}} key={prompt.id}>
                         <Paper sx={{ p: 1, display: 'flex', alignItems: 'center', gap: 2 }}>
                             <Card sx={{ width: 100, height: 100 }}>
-                                <CardMedia component="img" image={prompt.imageUrl} alt={prompt.name} sx={{ objectFit: 'cover', height: '100%' }} />
+                                <CardMedia component="img" image={resolveMediaUrl(prompt.imageUrl)} alt={prompt.name} sx={{ objectFit: 'cover', height: '100%' }} />
                             </Card>
+
                             <Box
                                 onDragOver={handleDragOver}
                                 onDrop={(e) => handleDrop(e, prompt.id)}

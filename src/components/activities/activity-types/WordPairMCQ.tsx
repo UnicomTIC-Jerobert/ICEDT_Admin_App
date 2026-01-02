@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef} from 'react';
 import { Box, Typography, Paper, Button, IconButton } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 // --- COLOCATED TYPES ---
 export interface WordPairQuestion {
@@ -72,7 +73,7 @@ const WordPairMCQ: React.FC<WordPairProps> = ({ content }) => {
 
     return (
         <Box p={2} textAlign="center">
-            <audio ref={audioRef} src={currentQuestion.promptAudioUrl} />
+            <audio ref={audioRef} src={resolveMediaUrl(currentQuestion.promptAudioUrl)} />
             <Paper elevation={2} sx={{ p: 2, mb: 4 }}>
                 <Typography variant="h6">Listen and choose the correct word:</Typography>
                 <IconButton onClick={playAudio}><VolumeUpIcon fontSize="large" color="primary" /></IconButton>

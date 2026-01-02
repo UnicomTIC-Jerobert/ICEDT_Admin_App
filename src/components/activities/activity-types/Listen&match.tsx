@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { Box, Typography,Grid, Card, CardMedia, CardContent, IconButton, List, ListItem, ListItemText } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 
 
@@ -24,7 +25,7 @@ const ListenMatchActivity: React.FC<{ content: ListenMatchContent }> = ({ conten
 
   const playAudio = (audioUrl?: string) => {
     if (audioUrl && audioRef.current) {
-      audioRef.current.src = audioUrl;
+      audioRef.current.src = resolveMediaUrl(audioUrl);
       audioRef.current.play().catch(e => console.error("Audio playback failed:", e));
     }
   };
@@ -45,10 +46,11 @@ const ListenMatchActivity: React.FC<{ content: ListenMatchContent }> = ({ conten
               <CardMedia
                 component="img"
                 height="120"
-                image={`${process.env.REACT_APP_MEDIA_URL}/${item.imageUrl}`}
+                image={resolveMediaUrl(item.imageUrl)}
                 alt={item.text}
                 sx={{ objectFit: 'contain', p: 1 }}
               />
+
               <CardContent sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <Typography variant="h6">{item.text}</Typography>
                 {item.audioUrl && (

@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useCallback } from 'react'; // 1. Import useCallback
 import { Box, Typography, IconButton, Card, CardMedia, CardContent } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 export interface FlashcardContent {
     title: string;
@@ -21,9 +22,7 @@ const Flashcard: React.FC<FlashcardProps> = ({ content }) => {
     //    This function now depends on 'content', so we list it in the dependency array.
     const playAudio = useCallback(() => {
         if (content?.audioUrl && audioRef.current) {
-            // Assuming REACT_APP_MEDIA_URL is a base URL for your S3 content
-            const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL || '';
-            audioRef.current.src = `${mediaBaseUrl}${content.audioUrl}`;
+            audioRef.current.src = resolveMediaUrl(content.audioUrl);
             audioRef.current.play().catch(e => console.error("Audio playback failed:", e));
         }
     }, [content]); // This function will only be recreated if 'content' changes.
@@ -41,8 +40,6 @@ const Flashcard: React.FC<FlashcardProps> = ({ content }) => {
         return <Typography color="error">No flashcard content to display.</Typography>;
     }
     
-    const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL || '';
-
     return (
         <Box p={3} sx={{ fontFamily: 'sans-serif', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Typography variant="h5" component="h2" mb={3}>{content.title}</Typography>
@@ -52,7 +49,7 @@ const Flashcard: React.FC<FlashcardProps> = ({ content }) => {
                     component="img"
                     height="240"
                     // Construct the full image URL
-                    image={`${mediaBaseUrl}${content.imageUrl}`}
+                    image={resolveMediaUrl(content.imageUrl)}
                     alt={content.word}
                     sx={{ objectFit: 'cover' }}
                 />

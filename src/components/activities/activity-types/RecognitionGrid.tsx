@@ -3,6 +3,7 @@ import { Box, Typography, Paper, Grid, IconButton, Button } from '@mui/material'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ReplayIcon from '@mui/icons-material/Replay';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 // --- REFINED: Type for Recognition Grid Activity ---
 // This now represents a SINGLE grid/exercise.
@@ -39,14 +40,14 @@ const RecognitionGrid: React.FC<RecognitionGridProps> = ({ content }) => {
     // Automatically play the sound for the next item to find
     useEffect(() => {
         if (currentItemToFind?.audioUrl) {
-            const timer = setTimeout(() => playAudio(currentItemToFind.audioUrl), 500);
+            const timer = setTimeout(() => playAudio(resolveMediaUrl(currentItemToFind.audioUrl)), 500);
             return () => clearTimeout(timer);
         }
     }, [currentItemToFind]);
 
     const playAudio = (audioUrl: string) => {
         if (audioRef.current) {
-            audioRef.current.src = audioUrl;
+            audioRef.current.src = resolveMediaUrl(audioUrl);
             audioRef.current.play().catch(e => console.error("Audio playback failed:", e));
         }
     };
@@ -76,7 +77,7 @@ const RecognitionGrid: React.FC<RecognitionGridProps> = ({ content }) => {
 
             <Paper elevation={2} sx={{ p: 1, mb: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
                 <Typography variant="h6">Listen:</Typography>
-                <IconButton onClick={() => currentItemToFind && playAudio(currentItemToFind.audioUrl)} disabled={isComplete}>
+                <IconButton onClick={() => currentItemToFind && playAudio(resolveMediaUrl(currentItemToFind.audioUrl))} disabled={isComplete}>
                     <VolumeUpIcon fontSize="large" color="primary" />
                 </IconButton>
             </Paper>
@@ -93,7 +94,7 @@ const RecognitionGrid: React.FC<RecognitionGridProps> = ({ content }) => {
                                     transition: 'transform 0.2s', '&:hover': { transform: 'scale(1.05)' }
                                 }}
                             >
-                                <img src={item.imageUrl} alt={`item ${item.id}`} style={{ width: '100%', display: 'block' }} />
+                                <img src={resolveMediaUrl(item.imageUrl)} alt={`item ${item.id}`} style={{ width: '100%', display: 'block' }} />
                                 {foundItems.includes(item.id) && (
                                     <Box sx={{ /* Checkmark overlay styles */ }}>
                                         <CheckCircleIcon sx={{ fontSize: 60, color: 'white' }} />

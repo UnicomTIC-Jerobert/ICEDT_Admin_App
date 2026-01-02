@@ -4,6 +4,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import ReplayIcon from '@mui/icons-material/Replay';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 // --- Type definitions for Equation Learn Activity ---
 export interface UyirMeiEquation {
@@ -34,17 +35,11 @@ const EquationLern: React.FC<EquationLernProps> = ({ content }) => {
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
-    const mediaBaseUrl = process.env.REACT_APP_MEDIA_URL || '';
     const currentEquation = content.equations[currentEquationIndex];
-
-    const getFullUrl = useCallback((url: string) => {
-        if (url.startsWith('http')) return url;
-        return `${mediaBaseUrl}/${url}`;
-    }, [mediaBaseUrl]);
 
     const playAudio = useCallback((audioUrl: string) => {
         if (audioRef.current) {
-            audioRef.current.src = getFullUrl(audioUrl);
+            audioRef.current.src = resolveMediaUrl(audioUrl);
             setIsPlaying(true);
             
             audioRef.current.play()
@@ -60,7 +55,7 @@ const EquationLern: React.FC<EquationLernProps> = ({ content }) => {
                 setIsPlaying(false);
             };
         }
-    }, [getFullUrl]);
+    }, []);
 
     // Auto-play audio and auto-progress through steps
     useEffect(() => {

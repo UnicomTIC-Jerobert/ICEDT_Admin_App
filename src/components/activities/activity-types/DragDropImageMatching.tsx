@@ -3,6 +3,7 @@ import { Box, Typography, Card, CardMedia, Button, Alert, Grid } from '@mui/mate
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ReplayIcon from '@mui/icons-material/Replay';
 import { DragDropImageMatchingContent, DragDropImageItem } from '../../../types/activityContentTypes';
+import { resolveMediaUrl } from '../../../utils/resolveMediaUrl';
 
 interface DragDropImageMatchingProps {
     content: DragDropImageMatchingContent;
@@ -39,7 +40,7 @@ const DragDropImageMatching: React.FC<DragDropImageMatchingProps> = ({ content }
 
     const playAudio = useCallback((audioUrl: string) => {
         if (audioRef.current) {
-            audioRef.current.src = audioUrl;
+            audioRef.current.src = resolveMediaUrl(audioUrl);
             audioRef.current.play().catch(e => {
                 console.warn("Audio playback failed:", e);
             });
@@ -169,7 +170,7 @@ const DragDropImageMatching: React.FC<DragDropImageMatchingProps> = ({ content }
                                 <CardMedia
                                     component="img"
                                     height="120"
-                                    image={item.imageUrl}
+                                    image={resolveMediaUrl(item.imageUrl)}
                                     alt={`Draggable item ${item.id}`}
                                     sx={{ objectFit: 'cover' }}
                                 />
@@ -205,7 +206,7 @@ const DragDropImageMatching: React.FC<DragDropImageMatchingProps> = ({ content }
                                 <CardMedia
                                     component="img"
                                     height="120"
-                                    image={item.imageUrl}
+                                    image={resolveMediaUrl(item.imageUrl)}
                                     alt={`Drop target ${item.id}`}
                                     sx={{ objectFit: 'cover' }}
                                 />

@@ -11,6 +11,7 @@ import LessonsPage from './pages/LessonsPage';
 import ActivitiesListPage from './pages/ActivitiesListPage';
 import ActivityEditorPage from './pages/ActivityEditorPage';
 import LoginPage from './pages/LoginPage';
+import LessonPdfsPage from './pages/LessonPdfsPage';
 import PrivateRoute from './components/common/PrivateRoute';
 
 const theme = createTheme({
@@ -90,6 +91,10 @@ const AppContent: React.FC = () => {
                     <Route
                         path="/activity-edit"
                         element={<PrivateRoute><ActivityEditorPage /></PrivateRoute>}
+                    />
+                    <Route
+                        path="/lesson-pdfs"
+                        element={<PrivateRoute><LessonPdfsPage /></PrivateRoute>}
                     />
                     <Route path="/" element={<Navigate to={isAuthenticated ? "/levels" : "/login"} />} />
                 </Routes>

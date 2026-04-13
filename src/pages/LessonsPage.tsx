@@ -56,15 +56,24 @@ const LessonsPage: React.FC = () => {
         { field: 'sequenceOrder' as keyof Lesson, headerName: 'Sequence Order', type: 'number' as const }
     ];
 
-    // Define the custom "Manage Activities" link.
+    // Define the custom "Manage Activities" and "Manage PDFs" links.
     const renderCustomLessonActions = (lesson: Lesson) => (
-        <Button
-            component={RouterLink}
-            to={`/activities?lessonId=${lesson.lessonId}`}
-            variant="outlined" size="small" sx={{ mr: 1 }}
-        >
-            Manage Activities
-        </Button>
+        <>
+            <Button
+                component={RouterLink}
+                to={`/activities?lessonId=${lesson.lessonId}`}
+                variant="outlined" size="small" sx={{ mr: 1 }}
+            >
+                Manage Activities
+            </Button>
+            <Button
+                component={RouterLink}
+                to={`/lesson-pdfs?lessonId=${lesson.lessonId}`}
+                variant="outlined" size="small" sx={{ mr: 1 }} color="secondary"
+            >
+                Manage PDFs
+            </Button>
+        </>
     );
 
     return (

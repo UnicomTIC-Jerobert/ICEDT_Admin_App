@@ -18,7 +18,7 @@ export const uploadPdf = async (lessonId: number | string, title: string, file: 
     formData.append('title', title);
     formData.append('file', file);
 
-    const response = await axiosClient.post(`/api/lessons/${lessonId}/pdfs`, formData, {
+    const response = await axiosClient.post(`/lessons/${lessonId}/pdfs`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
     });
 

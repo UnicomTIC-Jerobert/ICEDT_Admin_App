@@ -12,7 +12,8 @@ export const getLessonsByLevelId = (levelId: number | string): Promise<Lesson[]>
 
 // POST a new lesson
 export const create = (newItem: LessonCreateDto & { levelId: number }): Promise<Lesson> => {
-    return apiClient.post<Lesson, typeof newItem>('/lessons', newItem);
+    const { levelId, ...body } = newItem;
+    return apiClient.post<Lesson, typeof body>(`/levels/${levelId}/lessons`, body);
 };
 
 // PUT (update) an existing lesson

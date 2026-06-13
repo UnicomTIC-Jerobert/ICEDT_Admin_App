@@ -7,5 +7,6 @@ export interface Lesson {
     description: string | null;
     sequenceOrder: number;
     slug: string;
+    lessonImageUrl?: string | null;
     level?: Level; // Optional navigation property
 }

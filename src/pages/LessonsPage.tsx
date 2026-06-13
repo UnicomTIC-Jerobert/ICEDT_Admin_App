@@ -53,7 +53,8 @@ const LessonsPage: React.FC = () => {
         { field: 'lessonName' as keyof Lesson, headerName: 'Lesson Name', type: 'string' as const },
         { field: 'slug' as keyof Lesson, headerName: 'Slug', type: 'string' as const },
         { field: 'description' as keyof Lesson, headerName: 'Description', type: 'string' as const },
-        { field: 'sequenceOrder' as keyof Lesson, headerName: 'Sequence Order', type: 'number' as const }
+        { field: 'sequenceOrder' as keyof Lesson, headerName: 'Sequence Order', type: 'number' as const },
+        { field: 'lessonImageUrl' as keyof Lesson, headerName: 'Image URL', type: 'string' as const },
     ];
 
     // Define the custom "Manage Activities" and "Manage PDFs" links.

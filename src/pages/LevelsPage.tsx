@@ -2,41 +2,45 @@ import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Button } from '@mui/material';
 import InlineCrudTable, { ColumnDef } from '../components/common/InlineCrudTable';
-import ImageUploadCell from '../components/common/ImageUploadCell'; // Assuming this exists
+import ImageUploadCell from '../components/common/ImageUploadCell';
 import { Level } from '../types/level';
 import * as levelApi from '../api/levelApi';
 import { LevelCreateDto } from '../api/levelApi';
+import { resolveMediaUrl } from '../utils/resolveMediaUrl';
 
 const LevelsPage: React.FC = () => {
     
     // Define the columns using the now-generic ColumnDef type
     const columns: ColumnDef<Level, LevelCreateDto>[] = [
-        { 
-            field: 'levelName', 
-            headerName: 'Level Name', 
-            type: 'string' 
-        },
-        { 
-            field: 'slug', 
-            headerName: 'Slug (for URLs)', 
-            type: 'string' 
-        },
-        { 
-            field: 'sequenceOrder', 
-            headerName: 'Sequence Order', 
-            type: 'number' 
+        {
+            field: 'levelName',
+            headerName: 'Level Name',
+            type: 'string'
         },
         {
-            field: 'imageUrl',
+            field: 'slug',
+            headerName: 'Slug (for URLs)',
+            type: 'string'
+        },
+        {
+            field: 'sequenceOrder',
+            headerName: 'Sequence Order',
+            type: 'number'
+        },
+        {
+            field: 'barcode',
+            headerName: 'Barcode',
+            type: 'string'
+        },
+        {
+            field: 'coverImageUrl',
             headerName: 'Image',
-            // Render an <img> tag in display mode
-            renderCell: (value) => 
-                value ? <img src={value as string} alt="Level" style={{ height: '40px', width: 'auto' }} /> : 'No Image',
-            // Render our custom ImageUploadCell component in edit mode
+            renderCell: (value) =>
+                value ? <img src={resolveMediaUrl(value as string)} alt="Level" style={{ height: '40px', width: 'auto' }} /> : 'No Image',
             renderEditCell: (value, onChange) => (
-                <ImageUploadCell 
-                    value={value as string | null} 
-                    onUrlChange={(newUrl) => onChange('imageUrl', newUrl)}
+                <ImageUploadCell
+                    value={value as string | null}
+                    onUrlChange={(newUrl) => onChange('coverImageUrl', newUrl)}
                 />
             )
         }

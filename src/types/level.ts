@@ -3,5 +3,6 @@ export interface Level {
   levelName: string;
   sequenceOrder: number;
   slug: string;
-  imageUrl:string;
+  coverImageUrl?: string | null;
+  barcode: string;
 }

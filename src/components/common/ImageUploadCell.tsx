@@ -1,11 +1,13 @@
 import React from 'react';
 import { Button, Box } from '@mui/material';
-import * as mediaApi from '../../api/mediaApi'; // You will create this
+import * as mediaApi from '../../api/mediaApi';
 
 interface ImageUploadCellProps {
-    value: string | null; // The current ImageUrl
+    value: string | null;
     onUrlChange: (newUrl: string) => void;
 }
+
+const MEDIA_BASE_URL = (process.env.REACT_APP_MEDIA_URL || '').replace(/\/+$/, '');
 
 const ImageUploadCell: React.FC<ImageUploadCellProps> = ({ value, onUrlChange }) => {
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -13,11 +15,15 @@ const ImageUploadCell: React.FC<ImageUploadCellProps> = ({ value, onUrlChange })
         if (!file) return;
 
         try {
-            //Step A: Upload the file to the media controller
-            const response = await mediaApi.uploadSingleFile(file, 'levels'); // Folder name
+            const response = await mediaApi.uploadSingleFile(file, 'levels');
 
-            // Step B: Use the returned URL to update the parent form's state
-            onUrlChange(response.url);
+            let relativePath = response.url;
+            if (MEDIA_BASE_URL && relativePath.startsWith(MEDIA_BASE_URL)) {
+                relativePath = relativePath.slice(MEDIA_BASE_URL.length);
+                if (!relativePath.startsWith('/')) relativePath = '/' + relativePath;
+            }
+
+            onUrlChange(relativePath);
 
         } catch (error) {
             console.error("Upload failed", error);

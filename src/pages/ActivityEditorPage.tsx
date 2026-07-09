@@ -168,9 +168,7 @@ const ActivityEditorPage: React.FC = () => {
 
             if (isEditMode && activityId) {
                 await activityApi.update(activityId, payload as any);
-                await activityApi.update(activityId, payload as any);
             } else {
-                await activityApi.create(payload as any);
                 await activityApi.create(payload as any);
             }
             alert('Activity saved successfully!');

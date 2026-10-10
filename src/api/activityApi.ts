@@ -8,7 +8,7 @@ export type ActivityUpdateDto = Omit<Activity, 'activityId' | 'activityType' | '
 
 // GET all activities for a specific lesson
 export const getActivitiesByLessonId = (lessonId: number | string): Promise<Activity[]> => {
-    return apiClient.get<Activity[]>(`/lessons/${lessonId}/activities`);
+    return apiClient.get<Activity[]>(`/lessons/${lessonId}/activities?includeHidden=true`);
 };
 
 // GET a single activity by its own ID

@@ -9,6 +9,7 @@ export interface Activity {
     activityTypeId: number;
     mainActivityId: number;
     contentJson: string;
+    isHidden?: boolean;
     
     // Optional navigation properties for display purposes
     activityType?: ActivityType; 

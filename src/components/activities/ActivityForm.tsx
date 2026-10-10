@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextField, Grid, FormControl, InputLabel, Select, MenuItem, Typography, SelectChangeEvent } from '@mui/material';
+import { TextField, Grid, FormControl, InputLabel, Select, MenuItem, Typography, SelectChangeEvent, FormControlLabel, Switch } from '@mui/material';
 import { Activity } from '../../types/activity';
 import { MainActivity } from '../../types/mainActivity';
 import { ActivityType } from '../../types/activityType';
@@ -32,6 +32,19 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
                 <TextField fullWidth type="number" label="Sequence Order" name="sequenceOrder" value={activityData.sequenceOrder || ''} onChange={handleFieldChange} required InputLabelProps={{ shrink: true }}/>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={!!activityData.isHidden}
+                            onChange={(e) => onDataChange({ ...activityData, isHidden: e.target.checked })}
+                            name="isHidden"
+                            color="primary"
+                        />
+                    }
+                    label="Hide Activity from Mobile App"
+                />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
                 <FormControl fullWidth>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, Link as RouterLink } from 'react-router-dom';
 import {
     Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
-    Button, IconButton, Box, Typography, CircularProgress
+    Button, IconButton, Box, Typography, CircularProgress, Chip
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -142,7 +142,12 @@ const ActivitiesListPage: React.FC = () => {
                            activities.map(activity => (
                                <TableRow key={activity.activityId}>
                                    <TableCell>{activity.activityId}</TableCell>
-                                   <TableCell>{activity.title}</TableCell>
+                                   <TableCell>
+                                       {activity.title}
+                                       {activity.isHidden && (
+                                           <Chip label="Hidden" color="default" size="small" sx={{ ml: 1 }} />
+                                       )}
+                                   </TableCell>
                                    <TableCell>{activity.sequenceOrder}</TableCell>
                                    <TableCell>
                                        <IconButton onClick={() => handleOpenPreview(activity.activityId)} color="info" title="Preview Activity">

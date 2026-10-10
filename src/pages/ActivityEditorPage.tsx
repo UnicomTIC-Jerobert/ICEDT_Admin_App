@@ -155,7 +155,8 @@ const ActivityEditorPage: React.FC = () => {
             contentJson: activity.contentJson,
             lessonId: Number(activity.lessonId),
             activityTypeId: Number(activity.activityTypeId),
-            mainActivityId: Number(activity.mainActivityId)
+            mainActivityId: Number(activity.mainActivityId),
+            isHidden: !!activity.isHidden
         };
 
         // 3. Validate that required IDs are present.

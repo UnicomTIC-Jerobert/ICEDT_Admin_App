@@ -137,6 +137,9 @@ const ExerciseEditor: React.FC<ExerciseEditorProps> = ({
             alert("An activity must have at least one exercise.");
             return;
         }
+        if (!window.confirm(`Are you sure you want to delete Exercise #${index + 1}?`)) {
+            return;
+        }
         const newExercises = exercises.filter((_, i) => i !== index);
         const newErrors = jsonErrors.filter((_, i) => i !== index);
         const newFormatErrors = formatErrors.filter((_, i) => i !== index);
